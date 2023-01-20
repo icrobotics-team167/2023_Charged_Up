@@ -48,7 +48,7 @@ public class FollowPath extends Action {
         follower = new RamseteController();
         // Track width calculated with robot characterization
         kinematics = new DifferentialDriveKinematics(0.678673198);
-        odometry = new DifferentialDriveOdometry(Subsystems.driveBase.getGyroHeading(), trajectory.getInitialPose());
+        odometry = new DifferentialDriveOdometry(Subsystems.driveBase.getGyroHeading(), 0, 0, trajectory.getInitialPose());//0 are temporary values
     }
 
     @Override

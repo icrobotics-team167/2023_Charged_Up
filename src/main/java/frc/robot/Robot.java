@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
         autoChooser.addOption(AutoRoutine.SHOOT_3.name, AutoRoutine.SHOOT_3);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
-        driverStation = DriverStation.getInstance();
+        //driverStation = DriverStation.getInstance();
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
