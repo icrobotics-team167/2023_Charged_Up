@@ -1,6 +1,8 @@
 # 2023 Charged Up
-##Contributors
-*Catherine Yang
+
+## Contributors: 
+* Matthew Bedell
+* Catherine Yang
 
 ## Contributors: 
 * Matthew Bedell
