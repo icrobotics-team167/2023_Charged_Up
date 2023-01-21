@@ -11,7 +11,7 @@ public class Config {
 
         // Controllers
         public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
-        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.PS;
+        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.XB;
 
         // Dead zones
         public static final boolean TANK_DEAD_ZONE_ENABLED = true;
