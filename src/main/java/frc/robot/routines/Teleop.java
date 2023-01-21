@@ -26,19 +26,19 @@ public class Teleop {
 
     public void init() {
         driveBase.setHighGear();
-        driveBase.setCoast();
+        // driveBase.setCoast();
         driveBase.resetEncoders();
-        intake.setMode(Intake.Mode.OFF);
-        intake.retract();
+        // intake.setMode(Intake.Mode.OFF);
+        // intake.retract();
         // indexer.setMode(Indexer.Mode.OFF);
-        shooter.start();
-        climber.retract();
+        // shooter.start();
+        // climber.retract();
         // climbMode = false;
     }
 
     public void periodic() {
 
-        driveBase.setCoast();
+        // driveBase.setCoast();
         // //Classic Tank Drive Controls
         // if(controls.doFlipityFlop()) {
         //     driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
@@ -58,51 +58,51 @@ public class Teleop {
         } else{
             driveBase.setHighGear();
         }
+        
+        // // Shooter
+        // if (controls.doToggleShooter()) {
+        //     shooter.toggle();
+        // }
 
-        // Shooter
-        if (controls.doToggleShooter()) {
-            shooter.toggle();
-        }
+        // if (controls.doRetractIntake()){
+        //     intake.retract();
+        // }
 
-        if (controls.doRetractIntake()){
-            intake.retract();
-        }
+        // if (controls.doExtendIntake()){
+        //     intake.extend();
+        // }
 
-        if (controls.doExtendIntake()){
-            intake.extend();
-        }
+        // if (controls.doRunIntake()){
+        //     intake.extend();
+        //     intake.setMode(Intake.Mode.FORWARD);
+        //     indexer.setMode(Indexer.Mode.INDEX);
+        // } else if (controls.doRunIntakeRev()){
+        //     intake.extend();
+        //     intake.setMode(Intake.Mode.REVERSE);
+        // } else{
+        //     intake.setMode(Intake.Mode.OFF);
+        //     indexer.setMode(Indexer.Mode.OFF);
+        // }
 
-        if (controls.doRunIntake()){
-            intake.extend();
-            intake.setMode(Intake.Mode.FORWARD);
-            indexer.setMode(Indexer.Mode.INDEX);
-        } else if (controls.doRunIntakeRev()){
-            intake.extend();
-            intake.setMode(Intake.Mode.REVERSE);
-        } else{
-            intake.setMode(Intake.Mode.OFF);
-            indexer.setMode(Indexer.Mode.OFF);
-        }
+        // if(controls.doRunPreShooter()){
+        //     intake.retract();
+        //     intake.setMode(Intake.Mode.FORWARD);
+        //     indexer.setMode(Indexer.Mode.SHOOT);
+        // }
 
-        if(controls.doRunPreShooter()){
-            intake.retract();
-            intake.setMode(Intake.Mode.FORWARD);
-            indexer.setMode(Indexer.Mode.SHOOT);
-        }
+        // climber.climb(controls.getElevatorSpeed());
 
-        climber.climb(controls.getElevatorSpeed());
-
-        if(controls.doArmExtend()){
-            climber.extend();
-        } else if(controls.doArmRetract()){
-            climber.retract();
-        }
+        // if(controls.doArmExtend()){
+        //     climber.extend();
+        // } else if(controls.doArmRetract()){
+        //     climber.retract();
+        // }
 
 
-        // Run
-        intake.run();
-        indexer.run();
-        shooter.run();
+        // // Run
+        // intake.run();
+        // indexer.run();
+        // shooter.run();
 
     }
 
