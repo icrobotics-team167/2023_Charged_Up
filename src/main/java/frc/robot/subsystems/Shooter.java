@@ -21,9 +21,9 @@ public class Shooter {
     private boolean on;
     private int ShooterRPM, BackSpinRPM;
     private CANSparkMax shooterMotorController;
-    private CANSparkMax shooterMotorController2;
+    // private CANSparkMax shooterMotorController2;
     private RelativeEncoder shooterEncoder;
-    private RelativeEncoder shooterEncoder2;
+    // private RelativeEncoder shooterEncoder2;
 
     private Shooter() {
         shooterMotorController = new CANSparkMax(Config.Ports.Shooter.SHOOTER, MotorType.kBrushless);
@@ -35,20 +35,20 @@ public class Shooter {
         shooterMotorController.setSmartCurrentLimit(80);
         shooterMotorController.setSecondaryCurrentLimit(40);
         
-        shooterMotorController2 = new CANSparkMax(Config.Ports.Shooter.SHOOTER2, MotorType.kBrushless);
-        shooterMotorController.restoreFactoryDefaults();
-        shooterMotorController.setIdleMode(IdleMode.kCoast);
-        shooterMotorController.setInverted(true);
-        shooterMotorController.setOpenLoopRampRate(0);
-        shooterMotorController.setClosedLoopRampRate(0);
-        shooterMotorController.setSmartCurrentLimit(80);
-        shooterMotorController.setSecondaryCurrentLimit(40);
+        // shooterMotorController2 = new CANSparkMax(Config.Ports.Shooter.SHOOTER2, MotorType.kBrushless);
+        // shooterMotorController2.restoreFactoryDefaults();
+        // shooterMotorController2.setIdleMode(IdleMode.kCoast);
+        // shooterMotorController2.setInverted(true);
+        // shooterMotorController2.setOpenLoopRampRate(0);
+        // shooterMotorController2.setClosedLoopRampRate(0);
+        // shooterMotorController2.setSmartCurrentLimit(80);
+        // shooterMotorController2.setSecondaryCurrentLimit(40);
 
         shooterEncoder = shooterMotorController.getEncoder();
         shooterEncoder.setPosition(0);
 
-        shooterEncoder2 = shooterMotorController2.getEncoder();
-        shooterEncoder2.setPosition(0);
+        // shooterEncoder2 = shooterMotorController2.getEncoder();
+        // shooterEncoder2.setPosition(0);
 
         on = false;
         ShooterRPM = Config.Settings.SHOOTING_RPM;
@@ -58,7 +58,7 @@ public class Shooter {
     public void run() {
         if (on) {
             int actualShooterRPM = (int) shooterEncoder.getVelocity();
-            int actualBackSpinRPM = (int) shooterEncoder2.getVelocity();
+            // int actualBackSpinRPM = (int) shooterEncoder2.getVelocity();
 
             if (actualShooterRPM <= ShooterRPM) {
                 shooterMotorController.set(1);
@@ -66,16 +66,16 @@ public class Shooter {
                 shooterMotorController.set(0);
             }
 
-            if (actualBackSpinRPM <= BackSpinRPM) {
-                shooterMotorController2.set(1);
-            } else {
-                shooterMotorController2.set(0);
-            }
+            // if (actualBackSpinRPM <= BackSpinRPM) {
+            //     shooterMotorController2.set(1);
+            // } else {
+            //     shooterMotorController2.set(0);
+            // }
 
 
         } else {
             shooterMotorController.set(0);
-            shooterMotorController2.set(0);
+            // shooterMotorController2.set(0);
         }
     }
 
@@ -101,7 +101,7 @@ public class Shooter {
 
     public void testShooter() {
         shooterMotorController.set(0.2);
-        shooterMotorController2.set(0.2);
+        // shooterMotorController2.set(0.2);
     }
 
     public int getTargetRPM() {
@@ -118,11 +118,11 @@ public class Shooter {
         return shootRPM;
     }
     
-    public int getBackSpinRPM() {
-        int backSpinRPM = (int) shooterEncoder2.getVelocity();
+    // public int getBackSpinRPM() {
+    //     int backSpinRPM = (int) shooterEncoder2.getVelocity();
         
-        return backSpinRPM;
-    }
+    //     return backSpinRPM;
+    // }
 
     public boolean isInStoppedMode() {
         return !on;
