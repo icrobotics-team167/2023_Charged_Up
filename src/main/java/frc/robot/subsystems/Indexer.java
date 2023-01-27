@@ -37,7 +37,7 @@ public class Indexer {
     private Indexer() {
 
 
-        liftMotorController = new CANSparkMax(Config.Ports.Indexer.LIFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        liftMotorController = new CANSparkMax(Config.Ports.Indexer.INDEX_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         liftMotorController.restoreFactoryDefaults();
         liftMotorController.setIdleMode(CANSparkMax.IdleMode.kCoast);
         liftMotorController.setInverted(true);

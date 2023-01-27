@@ -76,7 +76,7 @@ public class Config {
         // Intake ports
         public static final class Intake {
             // CAN Bus Addresses
-            public static final int INTAKE_MOTOR = 9;//12;
+            public static final int INTAKE_MOTOR = 12;
             public static final int OMNI_MOTOR = 10;
             
             //PCM ports
@@ -86,8 +86,8 @@ public class Config {
         // Indexer ports
         public static final class Indexer {
             //CAN Bus Addresses
-            public static final int PRE_SHOOTER = 12;//15;
-            public static final int LIFT_MOTOR = 11;
+            public static final int PRE_SHOOTER = 15;
+            public static final int INDEX_MOTOR = 11;
 
             // public static final int LIMIT_SWITCH = 0;
         }
@@ -97,14 +97,14 @@ public class Config {
             //CAN Bus Addresses
             
             public static final int SHOOTER = 14;
-            public static final int SHOOTER2 = 13;//9;
+            // public static final int SHOOTER2 = 13;//9;
         }
 
         // Climb ports
         public static final class Climb {
             //CAN Bus Addresses
             public static final int WINCH2 = 16;
-            public static final int WINCH = 15;//13;
+            public static final int WINCH = 13;
 
             //PCM
             public static final int CLIMBER_ARMS = 7;
