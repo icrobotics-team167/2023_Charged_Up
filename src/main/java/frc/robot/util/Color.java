@@ -21,14 +21,16 @@ public final class Color {
 
     // Construct a color from HSV
     public static Color fromHSV(double hue, double saturation, double value) {
-        // java.awt.Color color = new java.awt.Color(java.awt.Color.HSBtoRGB((float)hue, (float)saturation, (float)value));
+        // java.awt.Color color = new java.awt.Color(java.awt.Color.HSBtoRGB((float)hue,
+        // (float)saturation, (float)value));
         // return new Color(color.getRed(), color.getGreen(), color.getBlue());
         return null;
     }
 
     // Construct a color from CMYK
     public static Color fromCMYK(double cyan, double magenta, double yellow, double black) {
-        return new Color(255 * (1 - cyan) * (1 - black), 255 * (1 - magenta) * (1 - black), 255 * (1 - yellow) * (1 - black));
+        return new Color(255 * (1 - cyan) * (1 - black), 255 * (1 - magenta) * (1 - black),
+                255 * (1 - yellow) * (1 - black));
     }
 
     // Find the "distance" between two colors i.e. how similar they are
@@ -36,7 +38,8 @@ public final class Color {
         return Math.sqrt(this.distanceFrom(other));
     }
 
-    // Find the "distance" without taking the square root to avoid more expensive computation
+    // Find the "distance" without taking the square root to avoid more expensive
+    // computation
     private double distanceSquaredFrom(Color other) {
         return Math.pow(red - other.red, 2) + Math.pow(green - other.green, 2) + Math.pow(blue - other.blue, 2);
     }
@@ -92,7 +95,8 @@ public final class Color {
                     return -1;
                 }
                 return 1;
-            default: return 0;
+            default:
+                return 0;
         }
     }
 

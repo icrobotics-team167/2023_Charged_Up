@@ -5,8 +5,11 @@ import frc.robot.routines.auto.AutoState;
 public abstract class Action {
 
     public abstract void init();
+
     public abstract void periodic();
+
     public abstract boolean isDone();
+
     public abstract void done();
 
     protected AutoState state;

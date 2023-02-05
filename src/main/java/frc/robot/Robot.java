@@ -17,10 +17,8 @@ import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
 import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.AutoRoutine;
-import frc.robot.routines.auto.RunShooter;
 import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.DriveStraight;
-import frc.robot.routines.auto.StartShooter;
 import frc.robot.routines.auto.Wait;
 import frc.robot.subsystems.Subsystems;
 
@@ -43,7 +41,7 @@ public class Robot extends TimedRobot {
         autoChooser.addOption(AutoRoutine.SHOOT_3.name, AutoRoutine.SHOOT_3);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
-        //driverStation = DriverStation.getInstance();
+        // driverStation = DriverStation.getInstance();
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -78,29 +76,27 @@ public class Robot extends TimedRobot {
         } else {
             // Fallback
             // This should be unreachable in normal conditions
-            // This could only occur if the secondary controller is configured but the primary controller isn't
+            // This could only occur if the secondary controller is configured but the
+            // primary controller isn't
             controls = new NullController();
         }
 
         new Thread(() -> {
             UsbCamera camera = CameraServer.startAutomaticCapture();
-//            camera.setFPS(30);
-//            camera.setRessssa1olution(320, 240);
+            // camera.setFPS(30);
+            // camera.setRessssa1olution(320, 240);
         }).start();
 
         Subsystems.setInitialStates();
-//******************AUTO********************* */
+        // ******************AUTO********************* */
         auto = new Routine(new Action[] {
 
-            // Center auto
-            new StartShooter(),
-            
-            new DriveStraight(40, .5, 1.4),
-            new Wait(1),
-            new DriveStraight(100, -.5, 1.2), 
+                // Center auto
 
-            new RunShooter(15, 1),
-            
+                new DriveStraight(40, .5, 1.4),
+                new Wait(1),
+                new DriveStraight(100, -.5, 1.2),
+
         });
         teleop = new Teleop(controls);
     }
@@ -110,14 +106,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("drive/leftEncoderPosition", Subsystems.driveBase.getLeftEncoderPosition());
         SmartDashboard.putNumber("drive/rightEncoderPosition", Subsystems.driveBase.getRightEncoderPosition());
         SmartDashboard.putNumber("drive/gyroAngle", Subsystems.driveBase.getAngle());
-
-        SmartDashboard.putNumber("shooter/rpm", Subsystems.shooter.getShooterRPM());
-        SmartDashboard.putBoolean("shooter/upToSpeed", Subsystems.shooter.isUpToSpeed());
-        SmartDashboard.putNumber("shooter/shooter/voltage", Subsystems.shooter.getShootVoltage());
-
-
-        // SmartDashboard.putBoolean("indexer/isShooting", Subsystems.indexer.isShooting());
-        // SmartDashboard.putNumber("indexer/rpm", Subsystems.indexer.getTurnRPM());
     }
 
     @Override
@@ -131,9 +119,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         auto.exec();
-        Subsystems.intake.run();
-        Subsystems.indexer.run();
-        Subsystems.shooter.run();
     }
 
     @Override

@@ -64,7 +64,8 @@ public class SmartPointTurn extends Action {
         if (speed > 0) {
             double degreesTraveled = Subsystems.driveBase.getAngle() - initialAngle;
             if (degreesTraveled > degreesClockwise - accelerationDegrees) {
-                Subsystems.driveBase.pointTurn(minSpeed + ((((degreesClockwise - degreesTraveled) / accelerationDegrees)) * speedRange));
+                Subsystems.driveBase.pointTurn(
+                        minSpeed + ((((degreesClockwise - degreesTraveled) / accelerationDegrees)) * speedRange));
             } else if (degreesTraveled < accelerationDegrees) {
                 Subsystems.driveBase.pointTurn(minSpeed + ((degreesTraveled / accelerationDegrees) * speedRange));
             } else {
@@ -73,7 +74,8 @@ public class SmartPointTurn extends Action {
         } else if (speed < 0) {
             double degreesTraveled = Math.abs(Subsystems.driveBase.getAngle() - initialAngle);
             if (degreesTraveled > degreesClockwise - accelerationDegrees) {
-                Subsystems.driveBase.pointTurn(-(minSpeed + ((((degreesClockwise - degreesTraveled) / accelerationDegrees)) * speedRange)));
+                Subsystems.driveBase.pointTurn(
+                        -(minSpeed + ((((degreesClockwise - degreesTraveled) / accelerationDegrees)) * speedRange)));
             } else if (degreesTraveled < accelerationDegrees) {
                 Subsystems.driveBase.pointTurn(-(minSpeed + ((degreesTraveled / accelerationDegrees) * speedRange)));
             } else {

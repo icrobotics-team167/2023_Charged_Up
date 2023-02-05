@@ -40,6 +40,7 @@ public class XBController implements Controller {
     }
 
     private boolean leftTriggerPrevious = false;
+
     private boolean getLeftTriggerPressed() {
         boolean result = !leftTriggerPrevious && getLeftTrigger();
         leftTriggerPrevious = getLeftTrigger();
@@ -47,6 +48,7 @@ public class XBController implements Controller {
     }
 
     private boolean leftTriggerToggle = false;
+
     @Override
     public boolean getLeftTriggerToggled() {
         if (getLeftTriggerPressed()) {
@@ -61,6 +63,7 @@ public class XBController implements Controller {
     }
 
     private boolean leftBumperToggle = false;
+
     @Override
     public boolean getLeftBumperToggled() {
         if (controller.getLeftBumperPressed()) {
@@ -78,8 +81,9 @@ public class XBController implements Controller {
     public boolean getRightTrigger() {
         return controller.getRightTriggerAxis() >= 0.2;
     }
-    
+
     private boolean rightTriggerPrevious = false;
+
     private boolean getRightTriggerPressed() {
         boolean result = !rightTriggerPrevious && getRightTrigger();
         rightTriggerPrevious = getRightTrigger();
@@ -87,6 +91,7 @@ public class XBController implements Controller {
     }
 
     private boolean rightTriggerToggle = false;
+
     @Override
     public boolean getRightTriggerToggled() {
         if (getRightTriggerPressed()) {
@@ -101,6 +106,7 @@ public class XBController implements Controller {
     }
 
     private boolean rightBumperToggle = false;
+
     @Override
     public boolean getRightBumperToggled() {
         if (controller.getRightBumperPressed()) {
@@ -125,6 +131,7 @@ public class XBController implements Controller {
     }
 
     private boolean leftStickButtonToggle = false;
+
     @Override
     public boolean getLeftStickButtonToggled() {
         if (controller.getLeftStickButtonPressed()) {
@@ -137,7 +144,6 @@ public class XBController implements Controller {
     public double getRightStickX() {
         return controller.getRightX();
     }
-    
 
     @Override
     public double getRightStickY() {
@@ -150,6 +156,7 @@ public class XBController implements Controller {
     }
 
     private boolean rightStickButtonToggle = false;
+
     @Override
     public boolean getRightStickButtonToggled() {
         if (controller.getRightStickButtonPressed()) {

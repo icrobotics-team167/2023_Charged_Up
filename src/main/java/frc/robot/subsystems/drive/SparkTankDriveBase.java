@@ -44,7 +44,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private final double LEFT_KI = 0;
     private final double LEFT_KD = 0;
     private final double LEFT_KF = 0.000268; // with slower paths?: 0.00075
-    private SparkMaxPIDController  rightPID;
+    private SparkMaxPIDController rightPID;
     private final double RIGHT_KP = 0.0015; // last tried: 0.0001
     private final double RIGHT_KI = 0;
     private final double RIGHT_KD = 0;
@@ -54,6 +54,7 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     // Singleton
     private static SparkTankDriveBase instance;
+
     public static SparkTankDriveBase getInstance() {
         if (instance == null) {
             instance = new SparkTankDriveBase();
@@ -121,10 +122,10 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave2.follow(rightMaster);
 
         Solenoid = new Solenoid(
-            Config.Settings.SPARK_TANK_ENABLED ? Config.Ports.SparkTank.PCM : 2,
-            PneumaticsModuleType.CTREPCM,
-            Config.Ports.SparkTank.LOW_GEAR
-        
+                Config.Settings.SPARK_TANK_ENABLED ? Config.Ports.SparkTank.PH : 2,
+                PneumaticsModuleType.REVPH,
+                Config.Ports.SparkTank.LOW_GEAR
+
         );
 
         highGear = true;
@@ -138,26 +139,23 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     @Override
-    public void arcadeDrive(double throttle, double wheel){
+    public void arcadeDrive(double throttle, double wheel) {
         double Lval = throttle - wheel;
         double Rval = throttle + wheel;
-        
+
         double leftSpeed = Lval;
         double rightSpeed = Rval;
 
-        if(Math.abs(Lval) > 1) {
-            leftSpeed  = Lval/Math.abs(Lval);
-            rightSpeed = Rval/Math.abs(Lval);
-        }
-        else if(Math.abs(Rval) > 1){
-            leftSpeed  = Lval/Math.abs(Rval);
-            rightSpeed = Rval/Math.abs(Rval);
+        if (Math.abs(Lval) > 1) {
+            leftSpeed = Lval / Math.abs(Lval);
+            rightSpeed = Rval / Math.abs(Lval);
+        } else if (Math.abs(Rval) > 1) {
+            leftSpeed = Lval / Math.abs(Rval);
+            rightSpeed = Rval / Math.abs(Rval);
         }
         rightMaster.set(-leftSpeed * 0.3);
         leftMaster.set(-rightSpeed * 0.3);
     }
-
-
 
     @Override
     public void toggleGearing() {
@@ -287,8 +285,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kCoast);
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kCoast);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    } 
-    
+    }
+
     @Override
     public void setBrake() {
         leftMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
