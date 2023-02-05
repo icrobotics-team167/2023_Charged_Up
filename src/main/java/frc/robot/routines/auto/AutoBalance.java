@@ -36,28 +36,28 @@ public class AutoBalance extends Action {
     public void periodic() {
         double roll = ahrs.getRoll();
 
-        double noMoveAngle = 1.0;
-        double minSpeedAngle = 2.0;
+        double noMoveAngle = 2.0;
+        double minSpeedAngle = 3.0;
         double maxSpeedAngle = 12.0;
-        double minSpeed = 0.2;
-        double maxSpeed = 0.5;
+        double minSpeed = 0.1;
+        double maxSpeed = 0.4;
         double slope = (maxSpeed - minSpeed) / (maxSpeedAngle - minSpeedAngle);
 
         if (Math.abs(roll) <= noMoveAngle) {
             Subsystems.driveBase.stop();
         } else if (roll > noMoveAngle) {
             if (roll <= minSpeedAngle) {
-                Subsystems.driveBase.tankDrive(minSpeed, minSpeed);
+                Subsystems.driveBase.tankDrive(minSpeed * -1, minSpeed * -1);
             } else {
                 double speed = slope * roll + (minSpeed - minSpeedAngle * slope);
-                Subsystems.driveBase.tankDrive(speed, speed);
+                Subsystems.driveBase.tankDrive(speed * -1, speed * -1);
             }
         } else if (roll < noMoveAngle * -1) {
             if (roll >= minSpeedAngle * -1) {
-                Subsystems.driveBase.tankDrive(minSpeed * -1, minSpeed * -1);
+                Subsystems.driveBase.tankDrive(minSpeed, minSpeed);
             } else {
                 double speed = slope * roll * -1 + (minSpeed - minSpeedAngle * slope);
-                Subsystems.driveBase.tankDrive(speed * -1, speed * -1);
+                Subsystems.driveBase.tankDrive(speed, speed);
             }
         }
         SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
