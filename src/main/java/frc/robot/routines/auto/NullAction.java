@@ -5,11 +5,12 @@ import frc.robot.routines.Action;
 public class NullAction extends Action {
 
     @Override
-    public void init() {}
+    public void init() {
+    }
 
     @Override
     public void periodic() {
-        
+
     }
 
     @Override
@@ -18,6 +19,7 @@ public class NullAction extends Action {
     }
 
     @Override
-    public void done() {}
+    public void done() {
+    }
 
 }

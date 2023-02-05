@@ -61,33 +61,39 @@ public class DriveStraight extends Action {
         timer.reset();
     }
 
-    //new code starts here: 
+    // new code starts here:
     public void periodic() {
         if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) {
             state = AutoState.DONE;
-             Subsystems.driveBase.stop();
+            Subsystems.driveBase.stop();
         }
 
         Subsystems.driveBase.tankDrive(-speed, -speed);
 
         // if (speed > 0) {
-        //     double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition() - leftEncoderInitialPosition;
-        //     double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition() - rightEncoderInitialPosition;
-        //     double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        //     Subsystems.driveBase.straightDrive(maxSpeed, false);
-        //     if (metersTraveled > meters - accelerationMeters) {
-        //         Subsystems.driveBase.stop();
-        //     }
+        // double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition() -
+        // leftEncoderInitialPosition;
+        // double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition()
+        // - rightEncoderInitialPosition;
+        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
+        // Subsystems.driveBase.straightDrive(maxSpeed, false);
+        // if (metersTraveled > meters - accelerationMeters) {
+        // Subsystems.driveBase.stop();
+        // }
         // } else if (speed < 0) {
-        //     double leftEncoderPosition = Math.abs(Subsystems.driveBase.getLeftEncoderPosition() - leftEncoderInitialPosition);
-        //     double rightEncoderPosition = Math.abs(Subsystems.driveBase.getRightEncoderPosition() - rightEncoderInitialPosition);
-        //     double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        //     Subsystems.driveBase.straightDrive(-maxSpeed, false);
-        //     if (metersTraveled > meters - accelerationMeters) {
-        //         Subsystems.driveBase.stop();
-        //     }
+        // double leftEncoderPosition =
+        // Math.abs(Subsystems.driveBase.getLeftEncoderPosition() -
+        // leftEncoderInitialPosition);
+        // double rightEncoderPosition =
+        // Math.abs(Subsystems.driveBase.getRightEncoderPosition() -
+        // rightEncoderInitialPosition);
+        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
+        // Subsystems.driveBase.straightDrive(-maxSpeed, false);
+        // if (metersTraveled > meters - accelerationMeters) {
+        // Subsystems.driveBase.stop();
+        // }
         // } else {
-        //     Subsystems.driveBase.stop();
+        // Subsystems.driveBase.stop();
         // }
     }
 
@@ -96,9 +102,11 @@ public class DriveStraight extends Action {
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
         if (speed > 0) {
-            return leftEncoderPosition - leftEncoderInitialPosition >= meters || rightEncoderPosition - rightEncoderInitialPosition >= meters;
+            return leftEncoderPosition - leftEncoderInitialPosition >= meters
+                    || rightEncoderPosition - rightEncoderInitialPosition >= meters;
         } else if (speed < 0) {
-            return leftEncoderPosition - leftEncoderInitialPosition <= -meters || rightEncoderPosition - rightEncoderInitialPosition <= -meters;
+            return leftEncoderPosition - leftEncoderInitialPosition <= -meters
+                    || rightEncoderPosition - rightEncoderInitialPosition <= -meters;
         } else {
             return true;
         }

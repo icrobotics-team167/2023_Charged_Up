@@ -40,6 +40,7 @@ public class PSController implements Controller {
     }
 
     private boolean leftTriggerPrevious = false;
+
     private boolean getBackButtonPressed() {
         boolean result = !leftTriggerPrevious && getLeftTrigger();
         leftTriggerPrevious = getLeftTrigger();
@@ -47,6 +48,7 @@ public class PSController implements Controller {
     }
 
     private boolean leftTriggerToggle = false;
+
     @Override
     public boolean getLeftTriggerToggled() {
         if (getBackButtonPressed()) {
@@ -61,6 +63,7 @@ public class PSController implements Controller {
     }
 
     private boolean leftBumperToggle = false;
+
     @Override
     public boolean getLeftBumperToggled() {
         if (controller.getLeftBumperPressed()) {
@@ -80,13 +83,15 @@ public class PSController implements Controller {
     }
 
     private boolean rightTriggerPrevious = false;
+
     private boolean getRightTriggerPressed() {
         boolean result = !rightTriggerPrevious && getRightTrigger();
         rightTriggerPrevious = getRightTrigger();
         return result;
     }
-    
+
     private boolean rightTriggerToggle = false;
+
     @Override
     public boolean getRightTriggerToggled() {
         if (getRightTriggerPressed()) {
@@ -101,6 +106,7 @@ public class PSController implements Controller {
     }
 
     private boolean rightBumperToggle = false;
+
     @Override
     public boolean getRightBumperToggled() {
         if (controller.getRightBumperPressed()) {
@@ -123,8 +129,9 @@ public class PSController implements Controller {
     public boolean getLeftStickButton() {
         return controller.getRawButton(11);
     }
-    
+
     private boolean leftStickButtonToggle = false;
+
     @Override
     public boolean getLeftStickButtonToggled() {
         if (controller.getRawButtonPressed(11)) {
@@ -149,6 +156,7 @@ public class PSController implements Controller {
     }
 
     private boolean rightStickButtonToggle = false;
+
     @Override
     public boolean getRightStickButtonToggled() {
         if (controller.getRawButtonPressed(12)) {
@@ -228,7 +236,9 @@ public class PSController implements Controller {
     public boolean getTouchpadButton() {
         return controller.getRawButton(14);
     }
+
     private boolean TouchpadButtonToggle = false;
+
     public boolean getTouchpadButtonToggled() {
         if (controller.getRawButtonPressed(14)) {
             TouchpadButtonToggle = !TouchpadButtonToggle;

@@ -72,22 +72,27 @@ public class SmartDriveStraight extends Action {
             double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition() - rightEncoderInitialPosition;
             double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
 
-            
             if (metersTraveled > meters - accelerationMeters) {
-                Subsystems.driveBase.straightDrive(minSpeed + ((((meters - metersTraveled) / accelerationMeters)) * speedRange), false);
+                Subsystems.driveBase.straightDrive(
+                        minSpeed + ((((meters - metersTraveled) / accelerationMeters)) * speedRange), false);
             } else if (metersTraveled < accelerationMeters) {
-                Subsystems.driveBase.straightDrive(minSpeed + ((metersTraveled / accelerationMeters) * speedRange), false);
+                Subsystems.driveBase.straightDrive(minSpeed + ((metersTraveled / accelerationMeters) * speedRange),
+                        false);
             } else {
                 Subsystems.driveBase.straightDrive(maxSpeed, false);
             }
         } else if (speed < 0) {
-            double leftEncoderPosition = Math.abs(Subsystems.driveBase.getLeftEncoderPosition() - leftEncoderInitialPosition);
-            double rightEncoderPosition = Math.abs(Subsystems.driveBase.getRightEncoderPosition() - rightEncoderInitialPosition);
+            double leftEncoderPosition = Math
+                    .abs(Subsystems.driveBase.getLeftEncoderPosition() - leftEncoderInitialPosition);
+            double rightEncoderPosition = Math
+                    .abs(Subsystems.driveBase.getRightEncoderPosition() - rightEncoderInitialPosition);
             double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
             if (metersTraveled > meters - accelerationMeters) {
-                Subsystems.driveBase.straightDrive(-(minSpeed + ((((meters - metersTraveled) / accelerationMeters)) * speedRange)), false);
+                Subsystems.driveBase.straightDrive(
+                        -(minSpeed + ((((meters - metersTraveled) / accelerationMeters)) * speedRange)), false);
             } else if (metersTraveled < accelerationMeters) {
-                Subsystems.driveBase.straightDrive(-(minSpeed + ((metersTraveled / accelerationMeters) * speedRange)), false);
+                Subsystems.driveBase.straightDrive(-(minSpeed + ((metersTraveled / accelerationMeters) * speedRange)),
+                        false);
             } else {
                 Subsystems.driveBase.straightDrive(-maxSpeed, false);
             }
@@ -101,9 +106,11 @@ public class SmartDriveStraight extends Action {
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
         if (speed > 0) {
-            return leftEncoderPosition - leftEncoderInitialPosition >= meters || rightEncoderPosition - rightEncoderInitialPosition >= meters;
+            return leftEncoderPosition - leftEncoderInitialPosition >= meters
+                    || rightEncoderPosition - rightEncoderInitialPosition >= meters;
         } else if (speed < 0) {
-            return leftEncoderPosition - leftEncoderInitialPosition <= -meters || rightEncoderPosition - rightEncoderInitialPosition <= -meters;
+            return leftEncoderPosition - leftEncoderInitialPosition <= -meters
+                    || rightEncoderPosition - rightEncoderInitialPosition <= -meters;
         } else {
             return true;
         }

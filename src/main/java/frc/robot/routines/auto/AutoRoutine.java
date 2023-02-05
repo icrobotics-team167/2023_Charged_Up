@@ -14,6 +14,7 @@ public enum AutoRoutine {
 
     public String name;
     public String trajectoryFile;
+
     AutoRoutine(String name, String trajectoryFile) {
         this.name = name;
         this.trajectoryFile = trajectoryFile;

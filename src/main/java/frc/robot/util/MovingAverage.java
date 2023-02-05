@@ -11,7 +11,8 @@ public class MovingAverage {
 
     /**
      * Constructs a moving average filter
-     * @param size How many ticks to store inputs for
+     * 
+     * @param size     How many ticks to store inputs for
      * @param weighted Whether or not to weight recent data more
      */
     public MovingAverage(int size, boolean weighted) {

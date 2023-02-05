@@ -48,30 +48,36 @@ public class FollowPath extends Action {
         follower = new RamseteController();
         // Track width calculated with robot characterization
         kinematics = new DifferentialDriveKinematics(0.678673198);
-        odometry = new DifferentialDriveOdometry(Subsystems.driveBase.getGyroHeading(), 0, 0, trajectory.getInitialPose());//0 are temporary values
+        odometry = new DifferentialDriveOdometry(Subsystems.driveBase.getGyroHeading(), 0, 0,
+                trajectory.getInitialPose());// 0 are temporary values
     }
 
     @Override
     public void periodic() {
-        Subsystems.intake.retract();
 
-        // System.out.println("Gyro heading (radians): " + Subsystems.driveBase.getGyroHeading());
-        // System.out.println("Left encoder (meters): " + Subsystems.driveBase.getLeftEncoderPosition());
-        // System.out.println("Right encoder (meters): " + Subsystems.driveBase.getRightEncoderPosition());
+        // System.out.println("Gyro heading (radians): " +
+        // Subsystems.driveBase.getGyroHeading());
+        // System.out.println("Left encoder (meters): " +
+        // Subsystems.driveBase.getLeftEncoderPosition());
+        // System.out.println("Right encoder (meters): " +
+        // Subsystems.driveBase.getRightEncoderPosition());
 
-        odometry.update(Subsystems.driveBase.getGyroHeading(), Subsystems.driveBase.getLeftEncoderPosition(), Subsystems.driveBase.getRightEncoderPosition());
+        odometry.update(Subsystems.driveBase.getGyroHeading(), Subsystems.driveBase.getLeftEncoderPosition(),
+                Subsystems.driveBase.getRightEncoderPosition());
 
         DifferentialDriveWheelSpeeds targetWheelSpeeds = kinematics.toWheelSpeeds(follower.calculate(
-            odometry.getPoseMeters(),
-            trajectory.sample(timer.get())
-        ));
+                odometry.getPoseMeters(),
+                trajectory.sample(timer.get())));
 
-        // System.out.println("Left target (m/s): " + targetWheelSpeeds.leftMetersPerSecond);
-        // System.out.println("Right target (m/s): " + targetWheelSpeeds.rightMetersPerSecond + "\n");
+        // System.out.println("Left target (m/s): " +
+        // targetWheelSpeeds.leftMetersPerSecond);
+        // System.out.println("Right target (m/s): " +
+        // targetWheelSpeeds.rightMetersPerSecond + "\n");
 
         System.out.println("Left SetSpeed: " + targetWheelSpeeds.leftMetersPerSecond);
         System.out.println("Right SetSpeed: " + targetWheelSpeeds.rightMetersPerSecond);
-        Subsystems.driveBase.setReferences(targetWheelSpeeds.leftMetersPerSecond, targetWheelSpeeds.rightMetersPerSecond);
+        Subsystems.driveBase.setReferences(targetWheelSpeeds.leftMetersPerSecond,
+                targetWheelSpeeds.rightMetersPerSecond);
     }
 
     @Override

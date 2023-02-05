@@ -20,7 +20,8 @@ public class Wait extends Action {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 
     @Override
     public boolean isDone() {
