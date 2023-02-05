@@ -16,6 +16,7 @@ import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
 import frc.robot.routines.Teleop;
+import frc.robot.routines.auto.AutoBalance;
 import frc.robot.routines.auto.AutoRoutine;
 import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.DriveStraight;
@@ -93,9 +94,7 @@ public class Robot extends TimedRobot {
 
                 // Center auto
 
-                new DriveStraight(40, .5, 1.4),
-                new Wait(1),
-                new DriveStraight(100, -.5, 1.2),
+                new AutoBalance(),
 
         });
         teleop = new Teleop(controls);
