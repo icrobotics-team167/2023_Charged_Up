@@ -8,12 +8,17 @@ import frc.robot.util.PeriodicTimer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.PID;
 
 public class AutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
     private AHRS ahrs;
+    private PID pidController;
+    private double maxOutput;
+    private boolean motorsEnabled;
+    private double sensitivityThreshold;
 
     public AutoBalance() {
         super();
@@ -30,37 +35,42 @@ public class AutoBalance extends Action {
     public void init() {
         Subsystems.driveBase.setBrake();
         timer.reset();
+        motorsEnabled = true;
+        // Minimum value before pidOutput takes effect, if it is below sensitivityThreshold pidOutput is set to 0
+        sensitivityThreshold = 0.02;
+        // Max roll value we saw was +-12, scaling proportional coefficient to that
+        maxOutput = 0.1;
+        // * -1 is there to flip the output values around (positive roll means we want
+        // to drive backwards)
+        double proportionalCoefficient = maxOutput / 12.0 * -1;
+        // Target roll value. Not 0 because the robot isn't perfectly flat on the cart
+        double target = 0.0;
+        pidController = new PID(proportionalCoefficient, 0, 0.0, timer.get(), target, 0);
     }
 
     // new code starts here:
     public void periodic() {
         double roll = ahrs.getRoll();
+        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+        double pidOutput = pidController.compute(roll, timer.get());
+        SmartDashboard.putNumber("Raw PID Output", pidOutput);
+        
+        if (Math.abs(pidOutput) < sensitivityThreshold) {
+            pidOutput = 0.0;
+        }
+        // Clamp pidOutput to be between -maxOutput and maxOutput
+        pidOutput = Math.max(pidOutput, -maxOutput);
+        pidOutput = Math.min(pidOutput, maxOutput);
 
-        double noMoveAngle = 2.0;
-        double minSpeedAngle = 3.0;
-        double maxSpeedAngle = 12.0;
-        double minSpeed = 0.1;
-        double maxSpeed = 0.4;
-        double slope = (maxSpeed - minSpeed) / (maxSpeedAngle - minSpeedAngle);
-
-        if (Math.abs(roll) <= noMoveAngle) {
-            Subsystems.driveBase.stop();
-        } else if (roll > noMoveAngle) {
-            if (roll <= minSpeedAngle) {
-                Subsystems.driveBase.tankDrive(minSpeed * -1, minSpeed * -1);
+        if (motorsEnabled) {
+            if (pidOutput == 0.0) {
+                Subsystems.driveBase.stop();
             } else {
-                double speed = slope * roll + (minSpeed - minSpeedAngle * slope);
-                Subsystems.driveBase.tankDrive(speed * -1, speed * -1);
-            }
-        } else if (roll < noMoveAngle * -1) {
-            if (roll >= minSpeedAngle * -1) {
-                Subsystems.driveBase.tankDrive(minSpeed, minSpeed);
-            } else {
-                double speed = slope * roll * -1 + (minSpeed - minSpeedAngle * slope);
-                Subsystems.driveBase.tankDrive(speed, speed);
+                Subsystems.driveBase.arcadeDrive(pidOutput, 0.0);
             }
         }
-        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+
+        SmartDashboard.putNumber("Motor Signal", pidOutput);
     }
 
     @Override
