@@ -7,7 +7,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.ControlType;
-// import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 // import com.revrobotics.RelativeEncoder;
 // import com.revrobotics.SparkMaxPIDController;
 // import com.revrobotics.SparkMaxRelativeEncoder;
@@ -36,7 +36,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private boolean straightDriving;
     private double straightDriveAngleSetpoint;
     private PIDController straightDrivePID;
-    private final double STRAIGHT_DRIVE_KP = 0.015; // 0.02 works
+    private final double STRAIGHT_DRIVE_KP = -0.015; // 0.02 works
     private final double STRAIGHT_DRIVE_KI = 0;
     private final double STRAIGHT_DRIVE_KD = 0;
     private SparkMaxPIDController leftPID;
@@ -91,8 +91,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        leftEncoder = leftMaster.getAlternateEncoder(4096);
-        rightEncoder = rightMaster.getAlternateEncoder(4096);
+        leftEncoder = leftMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,42);
+        rightEncoder = rightMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,42);
         leftMaster.setSmartCurrentLimit(80);
         leftMaster.setSecondaryCurrentLimit(60);
         rightMaster.setSmartCurrentLimit(80);
