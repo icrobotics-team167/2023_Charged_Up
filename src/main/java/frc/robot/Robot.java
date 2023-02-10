@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.cscore.UsbCamera;
+
+import java.time.Duration;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,6 +21,7 @@ import frc.robot.routines.Routine;
 import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.routines.auto.AutoRoutine;
+import frc.robot.routines.auto.DriveForwardsUntil;
 import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.DriveStraight;
 import frc.robot.routines.auto.Wait;
@@ -91,11 +95,14 @@ public class Robot extends TimedRobot {
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
         auto = new Routine(new Action[] {
-
+                // Drive forwards until we sense ourselves starting up the ramp
+                new DriveForwardsUntil(
+                        ahrs -> ahrs.getRoll() >= 5, // condition
+                        0.3, // speed
+                        Duration.ofMillis(3_500) // duration
+                ),
                 // Center auto
-
                 new AutoBalance(),
-
         });
         teleop = new Teleop(controls);
     }
