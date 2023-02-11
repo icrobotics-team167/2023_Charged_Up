@@ -22,6 +22,7 @@ public class DriveStraight extends Action {
     private double accelerationMeters;
     private PeriodicTimer timer;
     private double startAngle;
+    private boolean initTickIsDone;
     private AHRS ahrs;
 
     public DriveStraight(double inches, double speed) {
@@ -56,6 +57,8 @@ public class DriveStraight extends Action {
 
         // speedRange = maxSpeed - minSpeed;
 
+        initTickIsDone = false;
+
         timer = new PeriodicTimer();
 
         try {
@@ -70,12 +73,16 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
-        timer.reset();
-        startAngle = ahrs.getYaw()%360;
     }
 
     // new code starts here:
     public void periodic() {
+        if (!initTickIsDone) {
+            startAngle = ahrs.getYaw()%360;
+            initTickIsDone = true;
+            timer.reset();
+        }
+
         if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) {
             state = AutoState.DONE;
             Subsystems.driveBase.stop();

@@ -50,8 +50,8 @@ public class AutoBalance extends Action {
 
     // new code starts here:
     public void periodic() {
-        double roll = ahrs.getRoll();
-        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+        double roll = ahrs.getPitch();
+        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
         double pidOutput = pidController.compute(roll, timer.get());
         SmartDashboard.putNumber("Raw PID Output", pidOutput);
         

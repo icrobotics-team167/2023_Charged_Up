@@ -134,8 +134,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(-leftSpeed);
-        leftMaster.set(-rightSpeed);
+        rightMaster.set(leftSpeed);
+        leftMaster.set(rightSpeed);
         straightDriving = false;
     }
 
