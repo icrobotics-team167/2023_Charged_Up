@@ -18,6 +18,7 @@ public class DriveStraight extends Action {
     private double rightEncoderInitialPosition;
     private double minSpeed;
     private double maxSpeed;
+    private double offset;
     // private double speedRange;
     private double accelerationMeters;
     private PeriodicTimer timer;
@@ -52,6 +53,8 @@ public class DriveStraight extends Action {
             accelerationMeters = meters / 2;
         }
 
+        offset = Units.inchesToMeters(6.25 * speed);
+
         double maxAcceleration = Math.min((speed - minSpeed) / accelerationMeters, 0.8 / Units.feetToMeters(3));
         maxSpeed = minSpeed + accelerationMeters * maxAcceleration;
 
@@ -73,6 +76,13 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
+    }
+
+    @Override
+    public void onEnable() {
+        // TODO Auto-generated method stub
+        startAngle = ahrs.getYaw()%360;
+        timer.reset();
     }
 
     // new code starts here:
@@ -99,7 +109,7 @@ public class DriveStraight extends Action {
             double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
             Subsystems.driveBase.straightDriveAtAngle(maxSpeed*(speed/Math.abs(speed)), startAngle);
             SmartDashboard.putNumber("distance Traveled", metersTraveled);
-            if (metersTraveled > meters) {
+            if (metersTraveled + offset > meters) {
                 Subsystems.driveBase.stop();
             }
         } else {

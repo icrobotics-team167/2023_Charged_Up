@@ -20,8 +20,9 @@ public class DriveForwardsUntil extends Action {
     private double speed;
     private boolean isDone = false;
     private Duration timeout;
-    private double maxRollValue;
-    private boolean timerReset;
+    private double maxPitchValue;
+    private boolean conditionMet;
+    private boolean timeoutReached;
 
     public DriveForwardsUntil(DriveForwardsCondition condition, double speed, Duration timeout) {
         super();
@@ -29,7 +30,9 @@ public class DriveForwardsUntil extends Action {
         this.timer = new PeriodicTimer();
         this.timeout = timeout;
         this.speed = speed;
-        timerReset=false;
+        this.conditionMet = false;
+        this.timeoutReached = false;
+        this.isDone = false;
         try {
             ahrs = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
@@ -40,7 +43,18 @@ public class DriveForwardsUntil extends Action {
     @Override
     public void init() {
         // Subsystems.driveBase.setBrake();
+        conditionMet = false;
+        timeoutReached = false;
+        isDone = false;
         timer.reset();
+    }
+
+    @Override
+    public void onEnable() {
+        timer.reset();
+        conditionMet = false;
+        timeoutReached = false;
+        isDone = false;
     }
 
     // new code starts here:
@@ -50,20 +64,16 @@ public class DriveForwardsUntil extends Action {
             return;
         }
 
-        if(!timerReset) {
-            timer.reset();
-            timerReset=true;
-        }
-
         SmartDashboard.putNumber("pitch", ahrs.getPitch());
-        maxRollValue=Math.max(maxRollValue, Math.abs(ahrs.getPitch()));
-        SmartDashboard.putNumber("maxRollValue", maxRollValue);
+        maxPitchValue=Math.max(maxPitchValue, Math.abs(ahrs.getPitch()));
+        SmartDashboard.putNumber("maxRollValue", maxPitchValue);
 
-        var conditionMet = this.condition.call(this.ahrs);
-        var timeoutReached = timer.hasElapsed(this.timeout.toMillis() / 1_000);
+        conditionMet = this.condition.call(this.ahrs);
+        timeoutReached = timer.hasElapsed(this.timeout.toMillis() / 1_000);
 
         SmartDashboard.putBoolean("conditionMet", conditionMet);
         SmartDashboard.putBoolean("timeoutReached", timeoutReached);
+        SmartDashboard.putNumber("timer", timer.get());
 
 
         if (conditionMet || timeoutReached) {

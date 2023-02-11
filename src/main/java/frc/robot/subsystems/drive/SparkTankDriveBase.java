@@ -247,7 +247,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 1.25 : 3.3;
         double wheelRadiusInches = 6 * Math.PI;
-        double scaler = 11.4;
+        double scaler = 10.36;
         return Units.inchesToMeters(encoderValue * wheelRadiusInches / gearRatio / scaler);
     }
 
