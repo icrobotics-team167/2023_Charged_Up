@@ -92,9 +92,7 @@ public class Robot extends TimedRobot {
         // ******************AUTO********************* */
         auto = new Routine(new Action[] {
 
-                // Center auto
-
-                new AutoBalance(),
+                new DriveStraight(100.0, 0.2),
 
         });
         teleop = new Teleop(controls);

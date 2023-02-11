@@ -4,6 +4,10 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveStraight extends Action {
 
@@ -17,6 +21,8 @@ public class DriveStraight extends Action {
     // private double speedRange;
     private double accelerationMeters;
     private PeriodicTimer timer;
+    private double startAngle;
+    private AHRS ahrs;
 
     public DriveStraight(double inches, double speed) {
         this(inches, speed, -1);
@@ -51,6 +57,12 @@ public class DriveStraight extends Action {
         // speedRange = maxSpeed - minSpeed;
 
         timer = new PeriodicTimer();
+
+        try {
+            ahrs = new AHRS(SPI.Port.kMXP);
+        } catch (RuntimeException e) {
+            DriverStation.reportError("Error initializing the navX over SPI: " + e.toString(), e.getStackTrace());
+        }
     }
 
     @Override
@@ -59,6 +71,7 @@ public class DriveStraight extends Action {
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
         timer.reset();
+        startAngle = ahrs.getYaw()%360;
     }
 
     // new code starts here:
@@ -68,33 +81,23 @@ public class DriveStraight extends Action {
             Subsystems.driveBase.stop();
         }
 
-        Subsystems.driveBase.tankDrive(-speed, -speed);
-
-        // if (speed > 0) {
-        // double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition() -
-        // leftEncoderInitialPosition;
-        // double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition()
-        // - rightEncoderInitialPosition;
-        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        // Subsystems.driveBase.straightDrive(maxSpeed, false);
-        // if (metersTraveled > meters - accelerationMeters) {
-        // Subsystems.driveBase.stop();
-        // }
-        // } else if (speed < 0) {
-        // double leftEncoderPosition =
-        // Math.abs(Subsystems.driveBase.getLeftEncoderPosition() -
-        // leftEncoderInitialPosition);
-        // double rightEncoderPosition =
-        // Math.abs(Subsystems.driveBase.getRightEncoderPosition() -
-        // rightEncoderInitialPosition);
-        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        // Subsystems.driveBase.straightDrive(-maxSpeed, false);
-        // if (metersTraveled > meters - accelerationMeters) {
-        // Subsystems.driveBase.stop();
-        // }
-        // } else {
-        // Subsystems.driveBase.stop();
-        // }
+        // Subsystems.driveBase.tankDrive(-speed, -speed);
+        SmartDashboard.putNumber("Right encoder position", Subsystems.driveBase.getRightEncoderPosition());
+        SmartDashboard.putNumber("Left encoder position", Subsystems.driveBase.getLeftEncoderPosition());
+        if (speed != 0) {
+            double leftEncoderPosition = Math.abs(Subsystems.driveBase.getLeftEncoderPosition() -
+                    leftEncoderInitialPosition);
+            double rightEncoderPosition = Math.abs(Subsystems.driveBase.getRightEncoderPosition()
+                    - rightEncoderInitialPosition);
+            double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
+            Subsystems.driveBase.straightDriveAtAngle(maxSpeed*(speed/Math.abs(speed)), startAngle);
+            SmartDashboard.putNumber("distance Traveled", metersTraveled);
+            if (metersTraveled > meters) {
+                Subsystems.driveBase.stop();
+            }
+        } else {
+            Subsystems.driveBase.stop();
+        }
     }
 
     @Override
