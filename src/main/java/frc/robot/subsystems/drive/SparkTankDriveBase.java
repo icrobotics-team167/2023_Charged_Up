@@ -122,7 +122,7 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave2.follow(rightMaster);
 
         Solenoid = new Solenoid(
-                Config.Settings.SPARK_TANK_ENABLED ? Config.Ports.SparkTank.PH : 2,
+                Config.Ports.SparkTank.PH,
                 PneumaticsModuleType.REVPH,
                 Config.Ports.SparkTank.LOW_GEAR
 

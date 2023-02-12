@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.PID;
+import frc.robot.controls.controlschemes.ControlScheme;
 
 public class AutoBalance extends Action {
 
@@ -19,15 +20,23 @@ public class AutoBalance extends Action {
     private double maxOutput;
     private boolean motorsEnabled;
     private double sensitivityThreshold;
+    private boolean teleop;
+    private ControlScheme controls;
 
     public AutoBalance() {
+        this(false,null);
+    }
+
+    public AutoBalance(boolean teleop, ControlScheme controls) {
         super();
         try {
             ahrs = new AHRS(SPI.Port.kMXP);
-            DriverStation.reportError("Not really an error, successfully loaded navX", true);
+            // DriverStation.reportError("Not really an error, successfully loaded navX", true);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
+        this.teleop = teleop;
+        this.controls = controls;
         timer = new PeriodicTimer();
     }
 
@@ -75,6 +84,9 @@ public class AutoBalance extends Action {
 
     @Override
     public boolean isDone() {
+        if (teleop && controls != null && !controls.doAutoBalance()) {
+            return true;
+        }
         return false;
     }
 

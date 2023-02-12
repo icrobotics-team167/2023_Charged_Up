@@ -3,7 +3,7 @@ package frc.robot.routines;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
-// import frc.robot.Config;
+import frc.robot.Config;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Compressor;
@@ -57,44 +57,18 @@ public class Teleop {
 
     public void periodic() {
 
-        // Arcade Tank Drive Controls
-        if (controls.doFlipityFlop()) {
-            driveBase.arcadeDrive(controls.getTankThrottle(), controls.getTankWheel());
-        } else {
-            driveBase.arcadeDrive(controls.getTankThrottle() * -1, controls.getTankWheel() * -1);
-        }
-
-        if (controls.doSwitchLowGear()) {
-            driveBase.setLowGear();
-        } else {
+        if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
+        } else if (controls.doSwitchLowGear()){
+            driveBase.setLowGear();
         }
 
-        /* Display 6-axis Processed Angle Data */
-        SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
-        SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
-        SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
-        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+        if (Config.Settings.TANK_DRIVE) {
+            driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
+        } else {
+            driveBase.arcadeDrive(controls.getArcadeThrottle(), controls.getArcadeWheel());
+        }
 
-        SmartDashboard.putNumber("IMU_Accel_X", ahrs.getWorldLinearAccelX());
-        SmartDashboard.putNumber("IMU_Accel_Y", ahrs.getWorldLinearAccelY());
-        SmartDashboard.putBoolean("IMU_IsMoving", ahrs.isMoving());
-        SmartDashboard.putBoolean("IMU_IsRotating", ahrs.isRotating());
-
-        /* Display estimates of velocity/displacement. Note that these values are */
-        /* not expected to be accurate enough for estimating robot position on a */
-        /* FIRST FRC Robotics Field, due to accelerometer noise and the compounding */
-        /* of these errors due to single (velocity) integration and especially */
-        /* double (displacement) integration. */
-
-        SmartDashboard.putNumber("Velocity_X", ahrs.getVelocityX());
-        SmartDashboard.putNumber("Velocity_Y", ahrs.getVelocityY());
-        SmartDashboard.putNumber("Displacement_X", ahrs.getDisplacementX());
-        SmartDashboard.putNumber("Displacement_Y", ahrs.getDisplacementY());
-
-        SmartDashboard.putNumber("Pressure", phCompressor.getPressure());
-        SmartDashboard.putBoolean("CompressorEnabled", phCompressor.isEnabled());
     }
 
 }

@@ -37,7 +37,7 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public double getTankThrottle() {
+    public double getArcadeThrottle() {
         double speed = primary.getLeftStickY();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
                 && Math.abs(speed) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
@@ -47,7 +47,7 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public double getTankWheel() {
+    public double getArcadeWheel() {
         double wheel = primary.getRightStickX();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
                 && Math.abs(wheel) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
@@ -57,14 +57,42 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
+    public boolean doSwitchHighGear() {
+        return primary.getRightBumper();
+    }
+
+    @Override
     public boolean doSwitchLowGear() {
         return primary.getRightTrigger();
     }
 
     @Override
-    public boolean doFlipityFlop() {
-        return primary.getLeftTrigger();
+    public boolean doAutoBalance() {
+        return primary.getYButton();
     }
-    
-    // Drive
+
+    @Override
+    public boolean doOpenClaw() {
+        return secondary.getLeftBumper();
+    }
+
+    @Override
+    public boolean doCloseClaw() {
+        return secondary.getRightBumper();
+    }
+
+    @Override
+    public double getArmSwivel() {
+        return secondary.getLeftStickX();
+    }
+
+    @Override
+    public double getArmPivot() {
+        return secondary.getLeftStickY();
+    }
+
+    @Override
+    public double getArmExtend() {
+        return secondary.getRightStickY();
+    }
 }

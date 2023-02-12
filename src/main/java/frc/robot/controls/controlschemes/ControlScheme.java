@@ -2,22 +2,38 @@ package frc.robot.controls.controlschemes;
 
 public abstract class ControlScheme {
 
-    // Drive base
+    // Driving (Primary controller)
+
+    // Tank Drive
     public abstract double getTankLeftSpeed();
 
     public abstract double getTankRightSpeed();
 
-    public abstract double getTankThrottle();
+    // Arcade Drive
+    public abstract double getArcadeThrottle();
 
-    public abstract double getTankWheel();
+    public abstract double getArcadeWheel();
 
-    // public abstract boolean doStraightDrive();
-
-    // public abstract boolean doSwitchHighGear();
-
+    // Gearing
     public abstract boolean doSwitchLowGear();
 
+    public abstract boolean doSwitchHighGear();
     // public abstract boolean doToggleGearing();
-    
-    public abstract boolean doFlipityFlop();
+
+    // Autobalance
+    public abstract boolean doAutoBalance();
+
+    // Turret (Secondary controller)
+
+    // Claw
+    public abstract boolean doOpenClaw();
+
+    public abstract boolean doCloseClaw();
+
+    // Arm controls
+    public abstract double getArmSwivel();
+
+    public abstract double getArmPivot();
+
+    public abstract double getArmExtend();
 }
