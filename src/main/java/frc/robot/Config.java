@@ -57,9 +57,10 @@ public class Config {
 
         // Spark tank motor controller ports
         public static final class SparkTank {
+            // Pneumatics Control Hub CAN Address
             public static final int PH = 2;
 
-            // Drive base CAN bus Addresses
+            // Drivebase CAN bus Addresses
             public static final int LEFT_1 = 6;
             public static final int LEFT_2 = 7;
             public static final int LEFT_3 = 8;
@@ -67,9 +68,32 @@ public class Config {
             public static final int RIGHT_2 = 4;
             public static final int RIGHT_3 = 5;
 
-            // PH Ports
+            // Pneumatic Hub Ports
+            // Drivebase PH Ports
             public static final int LOW_GEAR = 2; // shifter cylinder out = high gear
-            // public static final int SOLENOID_REVERSE = 2;
+        }
+
+        public static final class Arm {
+            // Arm CAN bus Addresses
+            // TEMPORARY VALUES
+            public static final int EXTEND_RETRACT = 7;
+            public static final int SWIVEL = 8;
+            public static final int PIVOT_1 = 9;
+            public static final int PIVOT_2 = 10;
+
+            // Pneumatic Hub Ports
+            // Arm PH Ports
+            // TEMPORARY VALUES
+            public static final int CLAW = 1;
+            
+            // Digital Limit Switches
+            // Temporary Values
+            public static final int EXTEND_RETRACT_FRONT = 0;
+            public static final int EXTEND_RETRACT_BACK = 1;
+            public static final int SWIVEL_CENTER = 2;
+            public static final int SWIVEL_ENDS = 3;
+            public static final int PIVOT_TOP = 4;
+            public static final int PIVOT_BOTTOM = 5;
         }
 
     }
