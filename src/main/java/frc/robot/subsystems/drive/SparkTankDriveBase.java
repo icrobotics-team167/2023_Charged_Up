@@ -52,6 +52,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     private Solenoid Solenoid;
     private boolean highGear;
 
+    private double speedMultiplier = 0.3;
+
     // Singleton
     private static SparkTankDriveBase instance;
 
@@ -127,14 +129,18 @@ public class SparkTankDriveBase implements TankDriveBase {
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
+        var port0 = new Solenoid(2,PneumaticsModuleType.REVPH,0);
+        var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
+        port0.set(false);
+        port2.set(false);
 
         highGear = true;
     }
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(-leftSpeed);
-        leftMaster.set(-rightSpeed);
+        rightMaster.set(-leftSpeed * speedMultiplier);
+        leftMaster.set(-rightSpeed * speedMultiplier);
         straightDriving = false;
     }
 
@@ -153,8 +159,8 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
-        rightMaster.set(leftSpeed);
-        leftMaster.set(rightSpeed);
+        rightMaster.set(leftSpeed * speedMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier);
     }
 
     @Override
@@ -168,13 +174,13 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void setHighGear() {
-        Solenoid.set(false);
+        Solenoid.set(true);
         highGear = true;
     }
 
     @Override
     public void setLowGear() {
-        Solenoid.set(true);
+        Solenoid.set(false);
         highGear = false;
     }
 

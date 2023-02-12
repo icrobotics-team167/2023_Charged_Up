@@ -15,7 +15,7 @@ import frc.robot.subsystems.drive.TankDriveBase;
 
 public class Teleop {
 
-    AHRS ahrs;
+    AHRS navx;
     private AutoBalance autoBalance;
     private Compressor phCompressor;
     private ControlScheme controls;
@@ -49,12 +49,12 @@ public class Teleop {
              * 
              * Multiple navX-model devices on a single robot are supported.
              ************************************************************************/
-            ahrs = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP);
             DriverStation.reportError("Not really an error, successfully loaded navX", true);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
-        autoBalance = null;
+        autoBalance = new AutoBalance(true, controls);
     }
 
     public void periodic() {
@@ -65,10 +65,10 @@ public class Teleop {
             driveBase.setLowGear();
         }
 
+        SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
+        SmartDashboard.putNumber("IMU_Pitch",navx.getPitch());
+
         if (controls.doAutoBalance()) {
-            if (autoBalance == null) {
-                autoBalance = new AutoBalance(true, controls);
-            }
             autoBalance.exec();
         } else {
             if (Config.Settings.TANK_DRIVE) {

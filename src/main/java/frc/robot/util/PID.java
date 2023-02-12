@@ -1,7 +1,4 @@
 package frc.robot.util;
-
-import java.util.ArrayList;
-
 public class PID {
 
     // PID tuning values
@@ -51,6 +48,7 @@ public class PID {
         double derivative = (error - lastError) * (derivativeCoefficient * totalElapsedTime/50.0);
 
         double output = proportional + integral + derivative + initialControlOutput;
+        lastError = error;
 
         return output;
     }

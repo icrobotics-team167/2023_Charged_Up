@@ -70,7 +70,7 @@ public class Config {
 
             // Pneumatic Hub Ports
             // Drivebase PH Ports
-            public static final int LOW_GEAR = 2; // shifter cylinder out = high gear
+            public static final int LOW_GEAR = 1; // shifter cylinder out = high gear
         }
 
         public static final class Arm {
@@ -84,7 +84,7 @@ public class Config {
             // Pneumatic Hub Ports
             // Arm PH Ports
             // TEMPORARY VALUES
-            public static final int CLAW = 1;
+            public static final int CLAW = 0;
             
             // Digital Limit Switches
             // Temporary Values
