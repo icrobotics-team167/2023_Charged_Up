@@ -7,12 +7,13 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.ControlType;
-// import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 // import com.revrobotics.RelativeEncoder;
 // import com.revrobotics.SparkMaxPIDController;
 // import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -36,7 +37,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private boolean straightDriving;
     private double straightDriveAngleSetpoint;
     private PIDController straightDrivePID;
-    private final double STRAIGHT_DRIVE_KP = 0.015; // 0.02 works
+    private final double STRAIGHT_DRIVE_KP = -0.015; // 0.02 works
     private final double STRAIGHT_DRIVE_KI = 0;
     private final double STRAIGHT_DRIVE_KD = 0;
     private SparkMaxPIDController leftPID;
@@ -91,8 +92,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        leftEncoder = leftMaster.getAlternateEncoder(4096);
-        rightEncoder = rightMaster.getAlternateEncoder(4096);
+        leftEncoder = leftMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        rightEncoder = rightMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
         leftMaster.setSmartCurrentLimit(80);
         leftMaster.setSecondaryCurrentLimit(60);
         rightMaster.setSmartCurrentLimit(80);
@@ -133,8 +134,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(-leftSpeed);
-        leftMaster.set(-rightSpeed);
+        rightMaster.set(leftSpeed);
+        leftMaster.set(rightSpeed);
         straightDriving = false;
     }
 
@@ -202,8 +203,19 @@ public class SparkTankDriveBase implements TankDriveBase {
         }
 
         double error = straightDrivePID.calculate(navx.getAngle());
-        leftMaster.set(MathUtil.clamp(speed - error, -1, 1));
-        rightMaster.set(MathUtil.clamp(speed + error, -1, 1));
+        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * 0.2);
+        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * 0.2);
+    }
+
+    public void straightDriveAtAngle(double speed, double angle) {
+        straightDrivePID.setSetpoint(angle);
+        SmartDashboard.putNumber("setPoint", angle);
+        double error = straightDrivePID.calculate(navx.getAngle() % 360);
+        SmartDashboard.putNumber("yaw Value: ", navx.getAngle() % 360);
+        SmartDashboard.putNumber("raw Yaw Value: ", navx.getAngle());
+        SmartDashboard.putNumber("straightDrive error: ", error);
+        leftMaster.set(MathUtil.clamp(speed - error, -speed, speed));
+        rightMaster.set(MathUtil.clamp(speed + error, -speed, speed));
     }
 
     @Override
@@ -224,24 +236,19 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public double getLeftEncoderPosition() {
-        double encoderValue = leftEncoder.getPosition();
-
-        if (highGear) {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 4.17);
-        } else {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 11.03);
-        }
+        return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
     @Override
     public double getRightEncoderPosition() {
-        double encoderValue = rightEncoder.getPosition();
+        return encoderDistanceToMeters(rightEncoder.getPosition());
+    }
 
-        if (highGear) {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 4.17);
-        } else {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 11.03);
-        }
+    public double encoderDistanceToMeters(double encoderValue) {
+        double gearRatio = highGear ? 1.25 : 3.3;
+        double wheelRadiusInches = 6 * Math.PI;
+        double scaler = 10.36;
+        return Units.inchesToMeters(encoderValue * wheelRadiusInches / gearRatio / scaler);
     }
 
     @Override

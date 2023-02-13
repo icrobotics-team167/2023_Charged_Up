@@ -50,9 +50,9 @@ public class AutoBalance extends Action {
 
     // new code starts here:
     public void periodic() {
-        double roll = ahrs.getRoll();
-        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
-        double pidOutput = pidController.compute(roll, timer.get());
+        double pitch = ahrs.getPitch();
+        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
+        double pidOutput = pidController.compute(pitch, timer.get());
         SmartDashboard.putNumber("Raw PID Output", pidOutput);
         
         if (Math.abs(pidOutput) < sensitivityThreshold) {
@@ -81,6 +81,12 @@ public class AutoBalance extends Action {
     @Override
     public void done() {
         Subsystems.driveBase.stop();
+    }
+
+    @Override
+    public void onEnable() {
+        // TODO Auto-generated method stub
+        
     }
 
 }
