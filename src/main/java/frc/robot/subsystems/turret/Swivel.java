@@ -19,6 +19,9 @@ public class Swivel {
     private double leftEncoderLimit;
     private double rightEncoderLimit;
 
+    /**
+     * Constructs a new swivel joint for the turret.
+     */
     public Swivel() {
         // Set up motor
         swivelMotor = new CANSparkMax(Config.Ports.Arm.SWIVEL, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -34,26 +37,27 @@ public class Swivel {
         position = 0.0;
     }
 
+    /**
+     * Swivels the turret.
+     * Stops the motor if speed tries to move it more than 180 degrees to prevent
+     * twisting wires.
+     * 
+     * @param speed How fast it should move. Positive speed valuess swivels right,
+     *              negative values swivels left.
+     */
     public void move(double speed) {
-        /*
-         * Swivels the turret.
-         * Takes a parameter speed for how fast it should swivel.
-         * Positive speed values swivel right, negative swivels left.
-         * Stops the motor if speed tries to move it more than 180 degrees to prevent
-         * twisting wires.
-         */
-        if (hasHitCenterLimit()) {
-            position = 0.0;
-        } else if (hasHitLimit()) {
-            if (position < 0) {
-                position = -1;
-                leftEncoderLimit = swivelEncoder.getPosition();
+        if (hasHitCenterLimit()) { // If it's at the center limit switch, (0 degrees)
+            position = 0.0; // Set position to 0
+        } else if (hasHitEndLimit()) { // If it hits the back limit switch
+            if (position < 0) { // If it's trying to go left
+                position = -1; // Then it's all the way left
+                leftEncoderLimit = swivelEncoder.getPosition(); // Calibrate encoders
             } else {
-                position = 1;
-                rightEncoderLimit = swivelEncoder.getPosition();
+                position = 1; // Otherwise it's all the way right
+                rightEncoderLimit = swivelEncoder.getPosition(); // Calibrate encoders.
             }
         }
-        if (hasHitLimit()) {
+        if (hasHitEndLimit()) {
             if (position < 0 && speed < 0) {
                 swivelMotor.stopMotor();
             } else if (position > 0 && speed > 0) {
@@ -67,32 +71,40 @@ public class Swivel {
         }
     }
 
-    public boolean hasHitLimit() {
-        /*
-         * Returns whether or not the arm has hit the center limit switch
-         */
+    /**
+     * @return Whether or not the arm has hit the center limit switch
+     */
+    public boolean hasHitEndLimit() {
         return false;
         // return !swivelEndsSwitch.get();
     }
 
+    /**
+     * @return Whether or not the arm has hit the ends limit switch
+     */
     public boolean hasHitCenterLimit() {
-        /*
-         * Returns whether or not the arm has hit the ends limit switch
-         */
+
         return false;
         // return !swivelCenterSwitch.get();
     }
 
+    /**
+     * Calculates the positon of the arm.
+     * 
+     * @return The positon of the arm. -1 is all the way left, 1 is all the way
+     *         right.
+     */
     private double calculatePostion(double encoderPos) {
         return (encoderPos - leftEncoderLimit) / rightEncoderLimit - 1;
     }
 
+    /**
+     * Returns the position of the arm.
+     * 
+     * @return The positon of the arm. -1 is all the way left, 1 is all the way
+     *         right.
+     */
     public double getPosition() {
-        /*
-         * Returns the position of the swivel.
-         * Upper bound: (All the way right) 1.0
-         * Lower bound: (All the way left) -1.0
-         */
         return position;
     }
 }

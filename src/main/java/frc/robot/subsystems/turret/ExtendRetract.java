@@ -19,16 +19,18 @@ public class ExtendRetract {
 
     private CANSparkMax extendRetractMotor;
     private RelativeEncoder extendRetractEncoder;
-    
+
     private double backEncoderLimit;
     private double frontEncoderLimit;
-    
-    private DigitalInput extendFrontSwitch;
-    private DigitalInput extendBackSwitch; 
 
+    private DigitalInput extendFrontSwitch;
+    private DigitalInput extendBackSwitch;
 
     private double position;
 
+    /**
+     * Constructs a new extension mechanism for the arm.
+     */
     public ExtendRetract() {
         // Set up motor
         extendRetractMotor = new CANSparkMax(Config.Ports.Arm.EXTEND_RETRACT, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -48,14 +50,15 @@ public class ExtendRetract {
         position = 0.0;
     }
 
+    /**
+     * Moves the motor for extending/retracting.
+     * Stops the motor if speed tries to move it past a limit switch. (Ex. trying to
+     * move forwards while the forwards limit switch is hit)
+     * 
+     * @param speed Speed value. Positive speed values extend, negative retracts.
+     */
     public void move(double speed) {
-        /*
-         * Moves the motor for extending/retracting.
-         * Takes a parameter speed for how fast it should move.
-         * Positive speed values extend, negative retracts.
-         * Stops the motor if speed tries to move it past a limit switch. (Ex. trying to
-         * move forwards while the forwards limit switch is hit)
-         */
+
         if (hasHitFrontLimit()) {
             position = 1.0;
             frontEncoderLimit = extendRetractEncoder.getPosition();
@@ -73,44 +76,46 @@ public class ExtendRetract {
         }
     }
 
+    /**
+     * @return Whether or not it has hit the front limit switch or not
+     */
     public boolean hasHitFrontLimit() {
-        /*
-         * Returns whether or not it has hit the front limit switch.
-         */
         return !extendFrontSwitch.get();
     }
 
+    /**
+     * @return Whether or not it has hit the back limit switch or not
+     */
     public boolean hasHitBackLimit() {
-        /*
-         * Returns whether or not it has hit the back limit switch.
-         */
         return !extendBackSwitch.get();
     }
 
+    /**
+     * Calculates the positon from the encoder positon.
+     * 
+     * @return The position of the arm's extension/retraction. 0.0 is all the way
+     *         in, 1.0 is all the way out
+     */
     private double calculatePostion(double encoderPos) {
-        /*
-         * Calculates the positon from the encoder positon.
-         * frontEncoderLimit is 1.0
-         * backEncoderLimit is 0.0
-         */
         return (encoderPos - backEncoderLimit) / frontEncoderLimit;
     }
 
+    /**
+     * @return The position of the arm in inches
+     */
     public double getPositionInches() {
-        /*
-         * Converts the current position to inches.
-         */
         // TEMPORARY VALUE
         double extensionLength = 48;
         return position * extensionLength;
     }
 
+    /**
+     * Gets how far the arm has extended.
+     * 
+     * @return The position of the arm. 0.0 is all the way in, 1.0 is all the way
+     *         out.
+     */
     public double getPosition() {
-        /*
-         * Gets how far the arm has extended.
-         * Upper bound: (Fully extended) 1.0
-         * Lower bound: (Fully retracted) 0.0
-         */
         return position;
     }
 

@@ -18,10 +18,23 @@ public class DriveStraight extends Action {
     private double accelerationMeters;
     private PeriodicTimer timer;
 
+    /** 
+     * Constructs a new DriveStraight auto routine.
+     * 
+     * @param inches Distance to drive in inches
+     * @param speed How fast to drive
+     */
     public DriveStraight(double inches, double speed) {
         this(inches, speed, -1);
     }
 
+    /**
+     * Constructs a new DriveStraight auto routine.
+     * 
+     * @param inches Distance to drive in inches
+     * @param speed How fast to drive
+     * @param timeoutSeconds How many seconds before it times out and gives up on trying to reach the target distance. -1 for no timeout.
+     */
     public DriveStraight(double inches, double speed, double timeoutSeconds) {
         super();
         meters = Units.inchesToMeters(inches);
@@ -69,32 +82,6 @@ public class DriveStraight extends Action {
         }
 
         Subsystems.driveBase.tankDrive(-speed, -speed);
-
-        // if (speed > 0) {
-        // double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition() -
-        // leftEncoderInitialPosition;
-        // double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition()
-        // - rightEncoderInitialPosition;
-        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        // Subsystems.driveBase.straightDrive(maxSpeed, false);
-        // if (metersTraveled > meters - accelerationMeters) {
-        // Subsystems.driveBase.stop();
-        // }
-        // } else if (speed < 0) {
-        // double leftEncoderPosition =
-        // Math.abs(Subsystems.driveBase.getLeftEncoderPosition() -
-        // leftEncoderInitialPosition);
-        // double rightEncoderPosition =
-        // Math.abs(Subsystems.driveBase.getRightEncoderPosition() -
-        // rightEncoderInitialPosition);
-        // double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-        // Subsystems.driveBase.straightDrive(-maxSpeed, false);
-        // if (metersTraveled > meters - accelerationMeters) {
-        // Subsystems.driveBase.stop();
-        // }
-        // } else {
-        // Subsystems.driveBase.stop();
-        // }
     }
 
     @Override

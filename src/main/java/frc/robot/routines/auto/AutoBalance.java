@@ -23,12 +23,25 @@ public class AutoBalance extends Action {
     private boolean teleop;
     private ControlScheme controls;
 
+    /**
+     * Constructs a new AutoBalance auto routine.
+     */
     public AutoBalance() {
         this(false, null);
     }
 
+    /**
+     * Constructs a new AutoBalance auto routine.
+     * 
+     * @param teleop   Whether or not it's being called in teleop mode (true) or
+     *                 autonomous mode (false)
+     * @param controls If in teleop, takes the ControlScheme of the primary
+     *                 controller for checking whether to stop or not.
+     */
     public AutoBalance(boolean teleop, ControlScheme controls) {
         super();
+
+        // Initialize the navX
         try {
             ahrs = new AHRS(SPI.Port.kMXP);
             // DriverStation.reportError("Not really an error, successfully loaded navX",
@@ -36,11 +49,18 @@ public class AutoBalance extends Action {
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
+
+        // Set variables
         this.teleop = teleop;
         this.controls = controls;
+
+        // Initialize timer
         timer = new PeriodicTimer();
     }
 
+    /**
+     * Initializes the instance.
+     */
     @Override
     public void init() {
         Subsystems.driveBase.setBrake();
@@ -65,7 +85,11 @@ public class AutoBalance extends Action {
         // D: 0.01
     }
 
-    // new code starts here:
+    /**
+     * Runs every robot tick.
+     * Calculates a PID from the navX pitch values, then uses that pid to try and
+     * balance the robot.
+     */
     public void periodic() {
         double pitch = ahrs.getPitch();
         if (Math.abs(pitch) < sensitivityThreshold) {
@@ -90,11 +114,19 @@ public class AutoBalance extends Action {
         // SmartDashboard.putNumber("Motor Signal", pidOutput);
     }
 
+    /**
+     * @return If the routine is done or not.
+     */
     @Override
     public boolean isDone() {
-        if (teleop && controls != null && !controls.doAutoBalance()) {
-            return true;
+        if (teleop && // If it's in teleop mode and
+                controls != null && // There is a primary controller attached and
+                !controls.doAutoBalance() // The button for running the autoBalance code has been released
+        ) {
+            return true; // Return true
         }
+        // There's no code for handling how long it should be autobalancing forduring
+        // auto as we don't expect any other auto routines to come after autoBalance
         return false;
     }
 

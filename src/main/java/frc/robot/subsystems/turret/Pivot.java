@@ -20,7 +20,7 @@ public class Pivot {
     private CANSparkMax pivotMaster;
     private CANSparkMax pivotSlave;
     private RelativeEncoder pivotEncoder;
-    
+
     private DigitalInput pivotTopSwitch;
     private DigitalInput pivotBottomSwitch;
 
@@ -28,6 +28,9 @@ public class Pivot {
     private double topEncoderLimit;
     private double bottomEncoderLimit;
 
+    /**
+     * Constructs a new pivot joint for the arm.
+     */
     public Pivot() {
         // Set up motors
         pivotMaster = new CANSparkMax(Config.Ports.Arm.PIVOT_1,
@@ -48,14 +51,15 @@ public class Pivot {
         position = 0;
     }
 
+    /**
+     * Pivots the arm.
+     * Stops the motor if speed tries to move it past a limit switch (Ex. trying to
+     * pivot up while the top limit switch is hit)
+     * 
+     * @param speed How fast it should pivot. Positive speed values pivot up,
+     *              negative values pivot down.
+     */
     public void move(double speed) {
-        /*
-         * Pivots the arm.
-         * Takes a parameter speed for how fast it should pivot.
-         * Positive speed values pivot up, negative values pivot down.
-         * Stops the motor if speed tries to move it past a limit switch (Ex. trying to
-         * pivot up while the top limit switch is hit)
-         */
         if (hasHitTopLimit()) {
             position = 1.0;
             topEncoderLimit = pivotEncoder.getPosition();
@@ -73,58 +77,43 @@ public class Pivot {
         }
     }
 
+    /**
+     * @returns Whether or not the arm has hit the top limit switch
+     */
     public boolean hasHitTopLimit() {
-        /*
-         * Returns whether or not the arm has hit the top limit switch
-         */
         return !pivotTopSwitch.get();
     }
 
+    /**
+     * @returns Whether or not the arm has hit the bottom limit switch.
+     */
     public boolean hasHitBottomLimit() {
-        /*
-         * Returns whether or not the arm has hit the bottom limit switch.
-         */
         return !pivotBottomSwitch.get();
     }
 
+    /**
+     * Calculates the position of the pivot.
+     * @param encoderPos The current position of the encoder.
+     * @return The positon of the pivot. 0 is all the way down, 1 is all the way up.
+     */
     private double calculatePostion(double encoderPos) {
-        return (encoderPos - bottomEncoderLimit) / topEncoderLimit;
         return (encoderPos - bottomEncoderLimit) / (topEncoderLimit - bottomEncoderLimit);
     }
 
+    /**
+     * @returns The position of the pivot in degrees.
+     */
     public double getPositionDegrees() {
-        /*
-         * Returns the position of the pivot in degrees.
-         */
         // TEMPORARY VALUE
         double pivotUpperBound = 45;
         double pivotLowerBound = 0;
         return position * (pivotUpperBound - pivotLowerBound) + pivotLowerBound;
     }
 
+    /**
+     * @returns The position of the pivot. 0 is all the way down, 1 is all the way up.
+     */
     public double getPosition() {
-        /*
-         * Returns the positon of the pivot.
-         * Upper bound: (All the way up) 1.0
-         * Lower bound: (All the way down) 0.0
-         */
         return position;
-    }
-
-    public void calibrate() {
-        /*
-         * Calibrates by pivoting all the way up and down to read the max and min
-         * encoder values
-         */
-        while (!hasHitTopLimit()) {
-            move(1);
-        }
-        pivotMaster.stopMotor();
-        topEncoderLimit = pivotEncoder.getPosition();
-        while (!hasHitBottomLimit()) {
-            move(-1);
-        }
-        pivotMaster.stopMotor();
-        bottomEncoderLimit = pivotEncoder.getPosition();
     }
 }
