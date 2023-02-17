@@ -71,14 +71,16 @@ public class Swivel {
         /*
          * Returns whether or not the arm has hit the center limit switch
          */
-        return !swivelEndsSwitch.get();
+        return false;
+        // return !swivelEndsSwitch.get();
     }
 
     public boolean hasHitCenterLimit() {
         /*
          * Returns whether or not the arm has hit the ends limit switch
          */
-        return !swivelCenterSwitch.get();
+        return false;
+        // return !swivelCenterSwitch.get();
     }
 
     private double calculatePostion(double encoderPos) {
@@ -92,26 +94,5 @@ public class Swivel {
          * Lower bound: (All the way left) -1.0
          */
         return position;
-    }
-
-    public void calibrate() {
-        /*
-         * Calibrates by swiveling all the way left and right to read the min and max
-         * encoder values
-         */
-        while (!hasHitLimit()) {
-            swivelMotor.set(-1);
-        }
-        swivelMotor.stopMotor();
-        leftEncoderLimit = swivelEncoder.getPosition();
-        while (!hasHitLimit()) {
-            swivelMotor.set(1);
-        }
-        swivelMotor.stopMotor();
-        rightEncoderLimit = swivelEncoder.getPosition();
-        while (!hasHitCenterLimit()) {
-            swivelMotor.set(-0.3);
-        }
-        swivelMotor.stopMotor();
     }
 }

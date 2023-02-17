@@ -12,6 +12,7 @@ import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
+import frc.robot.subsystems.turret.Swivel;
 
 public class Teleop {
 
@@ -20,6 +21,7 @@ public class Teleop {
     private Compressor phCompressor;
     private ControlScheme controls;
     private TankDriveBase driveBase;
+    private Swivel turretSwivel;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -55,6 +57,7 @@ public class Teleop {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
         autoBalance = new AutoBalance(true, controls);
+        turretSwivel = new Swivel();
     }
 
     public void periodic() {
@@ -66,7 +69,7 @@ public class Teleop {
         }
 
         SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
-        SmartDashboard.putNumber("IMU_Pitch",navx.getPitch());
+        SmartDashboard.putNumber("IMU_Pitch", navx.getPitch());
 
         if (controls.doAutoBalance()) {
             autoBalance.exec();
@@ -76,6 +79,12 @@ public class Teleop {
             } else {
                 driveBase.arcadeDrive(controls.getArcadeThrottle(), controls.getArcadeWheel());
             }
+        }
+
+        if (Math.abs(controls.getArmSwivel()) > 0.2) {
+            turretSwivel.move(controls.getArmSwivel());
+        } else {
+            turretSwivel.move(0);
         }
 
     }

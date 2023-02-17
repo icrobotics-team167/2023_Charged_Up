@@ -11,7 +11,7 @@ public class Config {
 
         // Controllers
         public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
-        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.NONE;
+        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.XB;
 
         // Dead zones
         public static final boolean TANK_DEAD_ZONE_ENABLED = true;
@@ -76,10 +76,10 @@ public class Config {
         public static final class Arm {
             // Arm CAN bus Addresses
             // TEMPORARY VALUES
-            public static final int EXTEND_RETRACT = 7;
-            public static final int SWIVEL = 8;
-            public static final int PIVOT_1 = 9;
-            public static final int PIVOT_2 = 10;
+            public static final int EXTEND_RETRACT = 12;
+            public static final int SWIVEL = 9;
+            public static final int PIVOT_1 = 10;
+            public static final int PIVOT_2 = 11;
 
             // Pneumatic Hub Ports
             // Arm PH Ports
