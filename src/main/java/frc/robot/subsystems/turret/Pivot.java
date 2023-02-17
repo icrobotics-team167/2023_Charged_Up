@@ -89,6 +89,7 @@ public class Pivot {
 
     private double calculatePostion(double encoderPos) {
         return (encoderPos - bottomEncoderLimit) / topEncoderLimit;
+        return (encoderPos - bottomEncoderLimit) / (topEncoderLimit - bottomEncoderLimit);
     }
 
     public double getPositionDegrees() {
