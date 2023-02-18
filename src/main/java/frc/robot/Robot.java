@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
 
                 // Center auto
 
-                new AutoBalance(),
+                new DriveStraight(36, 0.5),
 
         });
         teleop = new Teleop(controls);

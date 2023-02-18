@@ -65,6 +65,11 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
+    public boolean doLowerGear() {
+        return primary.getLeftTrigger();
+    }
+
+    @Override
     public boolean doAutoBalance() {
         return primary.getYButton();
     }

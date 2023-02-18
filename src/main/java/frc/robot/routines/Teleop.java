@@ -21,7 +21,7 @@ public class Teleop {
     private Compressor phCompressor;
     private ControlScheme controls;
     private TankDriveBase driveBase;
-    private Swivel turretSwivel;
+    // private Swivel turretSwivel;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -29,7 +29,7 @@ public class Teleop {
     }
 
     public void init() {
-        driveBase.setHighGear();
+        driveBase.setLowGear();
         // driveBase.setCoast();
         driveBase.resetEncoders();
 
@@ -57,11 +57,10 @@ public class Teleop {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
         autoBalance = new AutoBalance(true, controls);
-        turretSwivel = new Swivel();
+        // turretSwivel = new Swivel();
     }
 
     public void periodic() {
-
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
         } else if (controls.doSwitchLowGear()) {
@@ -71,6 +70,7 @@ public class Teleop {
         SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
         SmartDashboard.putNumber("IMU_Pitch", navx.getPitch());
 
+        driveBase.setLowerGear(controls.doLowerGear());
         if (controls.doAutoBalance()) {
             autoBalance.exec();
         } else {
@@ -81,11 +81,11 @@ public class Teleop {
             }
         }
 
-        if (Math.abs(controls.getArmSwivel()) > 0.2) {
-            turretSwivel.move(controls.getArmSwivel());
-        } else {
-            turretSwivel.move(0);
-        }
+        // if (Math.abs(controls.getArmSwivel()) > 0.2) {
+        // turretSwivel.move(controls.getArmSwivel());
+        // } else {
+        // turretSwivel.move(0);
+        // }
 
     }
 

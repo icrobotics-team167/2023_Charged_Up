@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 // import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
@@ -52,7 +53,9 @@ public class SparkTankDriveBase implements TankDriveBase {
     private Solenoid Solenoid;
     private boolean highGear;
 
-    private double speedMultiplier = 0.3;
+    private double normalSpeed = 0.3;
+    private double slowSpeed = 0.15;
+    private double speedMultiplier = normalSpeed;
 
     // Singleton
     private static SparkTankDriveBase instance;
@@ -93,8 +96,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        leftEncoder = leftMaster.getAlternateEncoder(4096);
-        rightEncoder = rightMaster.getAlternateEncoder(4096);
+        leftEncoder = leftMaster.getEncoder();
+        rightEncoder = rightMaster.getEncoder();
         leftMaster.setSmartCurrentLimit(80);
         leftMaster.setSecondaryCurrentLimit(60);
         rightMaster.setSmartCurrentLimit(80);
@@ -129,7 +132,7 @@ public class SparkTankDriveBase implements TankDriveBase {
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
-        var port0 = new Solenoid(2,PneumaticsModuleType.REVPH,0);
+        var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0);
         var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
         port0.set(false);
         port2.set(false);
@@ -139,8 +142,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(-leftSpeed * speedMultiplier);
-        leftMaster.set(-rightSpeed * speedMultiplier);
+        rightMaster.set(leftSpeed * speedMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier);
         straightDriving = false;
     }
 
@@ -185,6 +188,16 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     @Override
+    public void setLowerGear(boolean lowerGear) {
+        if (lowerGear) {
+            speedMultiplier = slowSpeed;
+        } else {
+            speedMultiplier = normalSpeed;
+        }
+        SmartDashboard.putBoolean("lowerGear", lowerGear);
+    }
+
+    @Override
     public boolean isHighGear() {
         return highGear;
     }
@@ -192,6 +205,11 @@ public class SparkTankDriveBase implements TankDriveBase {
     @Override
     public boolean isLowGear() {
         return !highGear;
+    }
+
+    @Override
+    public boolean isLowerGear() {
+        return speedMultiplier != 1;
     }
 
     @Override
@@ -230,24 +248,19 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public double getLeftEncoderPosition() {
-        double encoderValue = leftEncoder.getPosition();
-
-        if (highGear) {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 4.17);
-        } else {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 11.03);
-        }
+        return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
     @Override
     public double getRightEncoderPosition() {
-        double encoderValue = rightEncoder.getPosition();
+        return encoderDistanceToMeters(rightEncoder.getPosition());
+    }
 
-        if (highGear) {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 4.17);
-        } else {
-            return Units.inchesToMeters(encoderValue * 4 * Math.PI / 11.03);
-        }
+    public double encoderDistanceToMeters(double encoderValue) {
+        double gearRatio = highGear ? 5.1 : 13.5;
+        double wheelRadiusInches = 6 * Math.PI;
+        double scaler = 0.98;
+        return Units.inchesToMeters(encoderValue * wheelRadiusInches / gearRatio / scaler);
     }
 
     @Override
@@ -277,9 +290,10 @@ public class SparkTankDriveBase implements TankDriveBase {
     @Override
     public double metersPerSecondToRPM(double metersPerSecond) {
         if (highGear) {
-            return 4.17 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
+            return 5.1 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI); // Ask later what the hell is the
+                                                                                     // 60 and the 5 doing here
         } else {
-            return 11.03 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
+            return 13.5 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
         }
     }
 

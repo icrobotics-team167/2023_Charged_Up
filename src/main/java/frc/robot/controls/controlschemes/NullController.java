@@ -63,4 +63,10 @@ public class NullController extends ControlScheme {
     public double getArmExtend() {
         return 0;
     }
+
+    @Override
+    public boolean doLowerGear() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
