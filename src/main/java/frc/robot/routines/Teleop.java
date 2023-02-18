@@ -75,14 +75,17 @@ public class Teleop {
             autoBalance.exec();
         } else {
             if (Config.Settings.TANK_DRIVE) {
-                driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
+                driveBase.tankDrive(controls.getTankLeftSpeed(),
+                        controls.getTankRightSpeed());
             } else {
-                driveBase.arcadeDrive(controls.getArcadeThrottle(), controls.getArcadeWheel());
+                driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                        controls.getArcadeWheel());
             }
         }
 
-        if (Math.abs(controls.getArmSwivel()) > 0.2) {
+        if (Math.abs(controls.getArmSwivel()) > 0.3) {
             turretSwivel.move(controls.getArmSwivel());
+
         } else {
             turretSwivel.move(0);
         }
