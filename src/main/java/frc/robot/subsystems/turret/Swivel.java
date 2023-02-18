@@ -1,6 +1,5 @@
 package frc.robot.subsystems.turret;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
@@ -15,15 +14,34 @@ public class Swivel {
     private double initialEncoderPosition;
 
     private final double MAX_TURN_ANGLE = 60;
-    private final double MAX_TURN_SPEED = 0.5;
+    private final double MAX_TURN_SPEED = 0.2;
+
+    // Singleton
+    public static Swivel instance;
+
+    /**
+     * Allows only one instance of Swivel to exist at once.
+     * 
+     * @return An instance of Swivel. Creates a new one if it doesn't exist already.
+     */
+    public static Swivel getInstance() {
+        if (instance == null) {
+            instance = new Swivel();
+        }
+        return instance;
+    }
 
     /**
      * Constructs a new swivel joint for the turret.
      */
-    public Swivel() {
+    private Swivel() {
         // Set up motor
         swivelMotor = new CANSparkMax(Config.Ports.Arm.SWIVEL, CANSparkMaxLowLevel.MotorType.kBrushless);
+        swivelMotor.restoreFactoryDefaults();
+        swivelMotor.setInverted(false);
         swivelMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        swivelMotor.setSmartCurrentLimit(60);
+        swivelMotor.setSecondaryCurrentLimit(80);
 
         // Set up encoder
         swivelEncoder = swivelMotor.getEncoder();

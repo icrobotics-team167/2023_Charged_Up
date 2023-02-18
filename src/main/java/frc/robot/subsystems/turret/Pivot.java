@@ -3,52 +3,64 @@ package frc.robot.subsystems.turret;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
 public class Pivot {
-    /*
-     * Code for pivoting the arm.
-     * Methods:
-     * void move()
-     * boolean hasHitTopLimit()
-     * boolean hasHitBottomLimit()
-     * double getPositon()
-     */
 
     private CANSparkMax pivotMaster;
     private CANSparkMax pivotSlave;
     private RelativeEncoder pivotEncoder;
 
-    private DigitalInput pivotTopSwitch;
-    private DigitalInput pivotBottomSwitch;
+    private double initialEncoderPosition;
 
-    private double position;
-    private double topEncoderLimit;
-    private double bottomEncoderLimit;
+    private static final double MAX_TURN_SPEED = 0.2;
+    private static final double INITIAL_PIVOT_ANGLE = 45;
+    private static final double MAX_PIVOT_ANGLE = 60;
+    private static final double MIN_PIVOT_ANGLE = 0;
+
+    // Singleton
+    public static Pivot instance;
+
+    /**
+     * Allows only one instance of Pivot to exist at once.
+     * 
+     * @return An instance of Pivot. Creates a new one if it doesn't exist already.
+     */
+    public static Pivot getInstance() {
+        if (instance == null) {
+            instance = new Pivot();
+        }
+        return instance;
+    }
 
     /**
      * Constructs a new pivot joint for the arm.
+     * Assumes the arm is at a 45 degree angle on code boot.
      */
-    public Pivot() {
+    private Pivot() {
         // Set up motors
         pivotMaster = new CANSparkMax(Config.Ports.Arm.PIVOT_1,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
         pivotSlave = new CANSparkMax(Config.Ports.Arm.PIVOT_2,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
 
+        pivotMaster.restoreFactoryDefaults();
+        pivotSlave.restoreFactoryDefaults();
         pivotSlave.follow(pivotMaster, true);
+        pivotMaster.setInverted(false);
+        pivotSlave.setInverted(true);
+        pivotMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        pivotSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        pivotMaster.setSmartCurrentLimit(40);
+        pivotMaster.setSecondaryCurrentLimit(60);
+        pivotSlave.setSmartCurrentLimit(40);
+        pivotSlave.setSecondaryCurrentLimit(60);
 
         // Set up encoders
         pivotEncoder = pivotMaster.getEncoder();
 
-        // Set up limit switches
-        pivotTopSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_TOP);
-        pivotBottomSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_BOTTOM);
-
-        // Set up initial position (Assuming it's all the way down when powered on)
-        position = 0;
+        initialEncoderPosition = pivotEncoder.getPosition();
     }
 
     /**
@@ -60,60 +72,45 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
-        if (hasHitTopLimit()) {
-            position = 1.0;
-            topEncoderLimit = pivotEncoder.getPosition();
-        } else if (hasHitBottomLimit()) {
-            position = 0.0;
-            bottomEncoderLimit = pivotEncoder.getPosition();
-        }
-        if (hasHitTopLimit() && speed > 0) {
-            pivotMaster.stopMotor();
-        } else if (hasHitBottomLimit() && speed < 0) {
-            pivotMaster.stopMotor();
+        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
+        SmartDashboard.putNumber("Swivel.speed", speed);
+        double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
+        // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
+        if (speed > 0 && !tooFarUp()) {
+            pivotMaster.set(-motorOutput);
+        } else if (speed < 0 && !tooFarDown()) {
+            pivotMaster.set(motorOutput);
         } else {
-            pivotMaster.set(speed);
-            position = calculatePostion(pivotEncoder.getPosition());
+            pivotMaster.stopMotor();
         }
     }
 
     /**
-     * @returns Whether or not the arm has hit the top limit switch
+     * Returns if the pivot is too far up
+     * 
+     * @return Whether or not the pivot's angle is greater than or equal to 45
+     *         degrees
      */
-    public boolean hasHitTopLimit() {
-        return !pivotTopSwitch.get();
+    private boolean tooFarUp() {
+        SmartDashboard.putBoolean("Pivot.tooFarUp", getPositionDegrees() >= MAX_PIVOT_ANGLE);
+        return getPositionDegrees() >= MAX_PIVOT_ANGLE;
     }
 
     /**
-     * @returns Whether or not the arm has hit the bottom limit switch.
+     * Returns if the pivot is too far down
+     * 
+     * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
-    public boolean hasHitBottomLimit() {
-        return !pivotBottomSwitch.get();
-    }
-
-    /**
-     * Calculates the position of the pivot.
-     * @param encoderPos The current position of the encoder.
-     * @return The positon of the pivot. 0 is all the way down, 1 is all the way up.
-     */
-    private double calculatePostion(double encoderPos) {
-        return (encoderPos - bottomEncoderLimit) / (topEncoderLimit - bottomEncoderLimit);
+    private boolean tooFarDown() {
+        SmartDashboard.putBoolean("Pivot.tooFarDown", getPositionDegrees() <= MIN_PIVOT_ANGLE);
+        return getPositionDegrees() <= MIN_PIVOT_ANGLE;
     }
 
     /**
      * @returns The position of the pivot in degrees.
      */
     public double getPositionDegrees() {
-        // TEMPORARY VALUE
-        double pivotUpperBound = 45;
-        double pivotLowerBound = 0;
-        return position * (pivotUpperBound - pivotLowerBound) + pivotLowerBound;
-    }
-
-    /**
-     * @returns The position of the pivot. 0 is all the way down, 1 is all the way up.
-     */
-    public double getPosition() {
-        return position;
+        double scalar = -0.9;
+        return (pivotEncoder.getPosition() - initialEncoderPosition) * scalar + INITIAL_PIVOT_ANGLE;
     }
 }

@@ -52,11 +52,16 @@ public class SparkTankDriveBase implements TankDriveBase {
     private Solenoid Solenoid;
     private boolean highGear;
 
-    private double speedMultiplier = 0.3;
+    private double speedMultiplier = 0.2;
 
     // Singleton
     private static SparkTankDriveBase instance;
 
+    /**
+     * Allows only one instance of SparkTankDriveBase to exist at once.
+     * 
+     * @return An instance of SparkTankDriveBase. Creates a new one if it doesn't exist already.
+     */
     public static SparkTankDriveBase getInstance() {
         if (instance == null) {
             instance = new SparkTankDriveBase();
@@ -95,10 +100,10 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         leftEncoder = leftMaster.getAlternateEncoder(4096);
         rightEncoder = rightMaster.getAlternateEncoder(4096);
-        leftMaster.setSmartCurrentLimit(80);
-        leftMaster.setSecondaryCurrentLimit(60);
-        rightMaster.setSmartCurrentLimit(80);
-        rightMaster.setSecondaryCurrentLimit(60);
+        leftMaster.setSmartCurrentLimit(60);
+        leftMaster.setSecondaryCurrentLimit(80);
+        rightMaster.setSmartCurrentLimit(60);
+        rightMaster.setSecondaryCurrentLimit(80);
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
         rightMaster.setOpenLoopRampRate(0);

@@ -20,7 +20,7 @@ public class DoubleController extends ControlScheme {
     public double getTankLeftSpeed() {
         double speed = primary.getLeftStickY();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
-                && Math.abs(speed) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
+                && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
         return speed;
@@ -30,7 +30,7 @@ public class DoubleController extends ControlScheme {
     public double getTankRightSpeed() {
         double speed = primary.getRightStickY();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
-                && Math.abs(speed) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
+                && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
         return speed;
@@ -40,7 +40,7 @@ public class DoubleController extends ControlScheme {
     public double getArcadeThrottle() {
         double speed = primary.getLeftStickY();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
-                && Math.abs(speed) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
+                && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
         return speed;
@@ -50,7 +50,7 @@ public class DoubleController extends ControlScheme {
     public double getArcadeWheel() {
         double wheel = primary.getRightStickX();
         if (Config.Settings.TANK_DEAD_ZONE_ENABLED
-                && Math.abs(wheel) < Math.abs(Config.Tolerances.TANK_DEAD_ZONE_SIZE)) {
+                && Math.abs(wheel) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             wheel = 0;
         }
         return wheel;
