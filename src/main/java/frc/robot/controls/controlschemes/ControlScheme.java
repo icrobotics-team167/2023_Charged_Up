@@ -18,7 +18,8 @@ public abstract class ControlScheme {
     public abstract boolean doSwitchLowGear();
 
     public abstract boolean doSwitchHighGear();
-    // public abstract boolean doToggleGearing();
+    
+    public abstract boolean doLowerGear();
 
     // Autobalance
     public abstract boolean doAutoBalance();

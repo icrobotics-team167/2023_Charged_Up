@@ -16,16 +16,18 @@ public interface TankDriveBase {
 
     void setLowGear();
 
+    void setLowerGear(boolean lowerGear);
+
     boolean isHighGear();
 
     boolean isLowGear();
+
+    boolean isLowerGear();
 
     // Auto
     void straightDrive(double speed);
 
     void straightDrive(double speed, boolean newAngle);
-
-    void straightDriveAtAngle(double speed, double angle);
 
     void stop();
 

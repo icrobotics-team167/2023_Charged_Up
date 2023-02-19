@@ -1,27 +1,23 @@
 package frc.robot.subsystems.drive;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-// import com.revrobotics.SparkMaxAlternateEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.SparkMaxRelativeEncoder;
-// import com.revrobotics.RelativeEncoder;
-// import com.revrobotics.SparkMaxPIDController;
-// import com.revrobotics.SparkMaxRelativeEncoder;
-
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
+import frc.robot.util.MovingAverage;;
 
 public class SparkTankDriveBase implements TankDriveBase {
 
@@ -52,8 +48,14 @@ public class SparkTankDriveBase implements TankDriveBase {
     private final double RIGHT_KF = 0.000232; // with slower paths?: 0.00075
     private Solenoid Solenoid;
     private boolean highGear;
+    private MovingAverage voltageFilter;
 
-    private double speedMultiplier = 0.2;
+    private double normalSpeed = 1;
+    private double slowSpeed = 0.5;
+    private double speedMultiplier = normalSpeed;
+
+    private final int SMART_CURRENT_LIMIT = 60;
+    private final int SECONDARY_CURRENT_LIMIT = 80;
 
     // Singleton
     private static SparkTankDriveBase instance;
@@ -88,11 +90,7 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftMaster.restoreFactoryDefaults();
         rightMaster.restoreFactoryDefaults();
         leftMaster.setInverted(true);
-        leftSlave1.setInverted(true);
-        leftSlave2.setInverted(true);
         rightMaster.setInverted(false);
-        rightSlave1.setInverted(false);
-        rightSlave2.setInverted(false);
         leftMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -103,19 +101,18 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftEncoder = leftMaster.getEncoder();
         rightEncoder = rightMaster.getEncoder();
 
-        leftMaster.setSmartCurrentLimit(60);
-        leftMaster.setSecondaryCurrentLimit(80);
-        leftSlave1.setSmartCurrentLimit(60);
-        leftSlave1.setSecondaryCurrentLimit(80);
-        leftSlave2.setSmartCurrentLimit(60);
-        leftSlave2.setSecondaryCurrentLimit(80);
-
-        rightMaster.setSmartCurrentLimit(60);
-        rightMaster.setSecondaryCurrentLimit(80);
-        rightSlave1.setSmartCurrentLimit(60);
-        rightSlave1.setSecondaryCurrentLimit(80);
-        rightSlave2.setSmartCurrentLimit(60);
-        rightSlave2.setSecondaryCurrentLimit(80);
+        leftMaster.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftMaster.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        leftSlave1.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftSlave1.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        leftSlave2.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftSlave2.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightMaster.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightMaster.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightSlave1.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightSlave1.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightSlave2.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightSlave2.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
 
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
@@ -144,10 +141,10 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightPID.setD(RIGHT_KD);
         rightPID.setFF(RIGHT_KF);
 
-        leftSlave1.follow(leftMaster);
-        leftSlave2.follow(leftMaster);
-        rightSlave1.follow(rightMaster);
-        rightSlave2.follow(rightMaster);
+        leftSlave1.follow(leftMaster, false);
+        leftSlave2.follow(leftMaster, false);
+        rightSlave1.follow(rightMaster, false);
+        rightSlave2.follow(rightMaster, false);
 
         Solenoid = new Solenoid(
                 Config.Ports.SparkTank.PH,
@@ -161,17 +158,23 @@ public class SparkTankDriveBase implements TankDriveBase {
         port2.set(false);
 
         highGear = true;
+
+        voltageFilter = new MovingAverage(25, true);
     }
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(-leftSpeed * speedMultiplier);
-        leftMaster.set(-rightSpeed * speedMultiplier);
+        double voltageMultiplier = adjustVoltage();
+
+        rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
         straightDriving = false;
     }
 
     @Override
     public void arcadeDrive(double throttle, double wheel) {
+        double voltageMultiplier = adjustVoltage();
+
         double Lval = throttle - wheel;
         double Rval = throttle + wheel;
 
@@ -185,8 +188,8 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
-        rightMaster.set(leftSpeed * speedMultiplier);
-        leftMaster.set(rightSpeed * speedMultiplier);
+        rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
 
     @Override
@@ -211,6 +214,16 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     @Override
+    public void setLowerGear(boolean lowerGear) {
+        if (lowerGear) {
+            speedMultiplier = slowSpeed;
+        } else {
+            speedMultiplier = normalSpeed;
+        }
+        SmartDashboard.putBoolean("lowerGear", lowerGear);
+    }
+
+    @Override
     public boolean isHighGear() {
         return highGear;
     }
@@ -221,12 +234,19 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     @Override
+    public boolean isLowerGear() {
+        return speedMultiplier != 1;
+    }
+
+    @Override
     public void straightDrive(double speed) {
         straightDrive(speed, true);
     }
 
     @Override
     public void straightDrive(double speed, boolean newAngle) {
+        double voltageMultiplier = adjustVoltage();
+
         if (!straightDriving) {
             straightDriving = true;
             straightDriveAngleSetpoint = newAngle ? navx.getAngle() : straightDriveAngleSetpoint;
@@ -234,19 +254,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         }
 
         double error = straightDrivePID.calculate(navx.getAngle());
-        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * 0.2);
-        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * 0.2);
-    }
-
-    public void straightDriveAtAngle(double speed, double angle) {
-        straightDrivePID.setSetpoint(angle);
-        SmartDashboard.putNumber("setPoint", angle);
-        double error = straightDrivePID.calculate(navx.getAngle() % 360);
-        SmartDashboard.putNumber("yaw Value: ", navx.getAngle() % 360);
-        SmartDashboard.putNumber("raw Yaw Value: ", navx.getAngle());
-        SmartDashboard.putNumber("straightDrive error: ", error);
-        leftMaster.set(MathUtil.clamp(speed - error, -speed, speed));
-        rightMaster.set(MathUtil.clamp(speed + error, -speed, speed));
+        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * voltageMultiplier);
+        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * voltageMultiplier);
     }
 
     @Override
@@ -276,9 +285,9 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     public double encoderDistanceToMeters(double encoderValue) {
-        double gearRatio = highGear ? 1.25 : 3.3;
+        double gearRatio = highGear ? 5.1 : 13.5;
         double wheelRadiusInches = 6 * Math.PI;
-        double scaler = 10.36;
+        double scaler = 0.98;
         return Units.inchesToMeters(encoderValue * wheelRadiusInches / gearRatio / scaler);
     }
 
@@ -309,9 +318,10 @@ public class SparkTankDriveBase implements TankDriveBase {
     @Override
     public double metersPerSecondToRPM(double metersPerSecond) {
         if (highGear) {
-            return 4.17 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
+            return 5.1 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI); // Ask later what the hell is the
+                                                                                     // 60 and the 5 doing here
         } else {
-            return 11.03 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
+            return 13.5 * 60 * Units.metersToInches(metersPerSecond) / (5 * Math.PI);
         }
     }
 
@@ -333,6 +343,41 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    }
+
+    /**
+     * Returns a multiplier for drive motor speeds depending on the battery voltage.
+     * 
+     * @return A speed multiplier, from 0 to 1 (0% to 100% speed)
+     */
+    private double adjustVoltage() {
+        final double MIN_VOLTAGE = 10; // Minimum voltage where if it falls below this, motors completely cut out
+        final double NOMINAL_VOLTAGE = 12; // Nominal voltage where the motors can run full speed
+
+        double output;
+
+        double voltage = RobotController.getBatteryVoltage();
+        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
+
+        // Moving average filter
+        voltageFilter.add(voltage);
+        double filteredVoltage = voltageFilter.get();
+
+        if (filteredVoltage < 10) {
+            output = 0;
+        } else if (filteredVoltage >= 12) {
+            output = 1;
+        } else {
+            output = (filteredVoltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
+                    - (MIN_VOLTAGE / (NOMINAL_VOLTAGE - MIN_VOLTAGE));
+            // a = MIN_VOLTAGE
+            // b = NOMINAL_VOLTAGE
+            // y = output
+            // x = voltage
+            // y = x/(b-a) - (a/(b-a))
+        }
+        SmartDashboard.putNumber("SparkTankDriveBase.voltageMultiplier", output);
+        return output;
     }
 
 }

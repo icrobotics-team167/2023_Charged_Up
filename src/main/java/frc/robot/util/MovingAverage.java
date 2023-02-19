@@ -40,4 +40,7 @@ public class MovingAverage {
         return sum / count;
     }
 
+    public void clear() {
+        inputs.clear();
+    }
 }
