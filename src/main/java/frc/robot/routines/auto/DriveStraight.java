@@ -9,6 +9,10 @@ import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PID;
 import frc.robot.util.PeriodicTimer;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveStraight extends Action {
 
@@ -17,7 +21,11 @@ public class DriveStraight extends Action {
     private double timeoutSeconds;
     private double leftEncoderInitialPosition;
     private double rightEncoderInitialPosition;
+    
     private PeriodicTimer timer;
+    private double startAngle;
+    private boolean initTickIsDone;
+    private AHRS ahrs;
 
     private PID pidController;
     private double P = 0.015;
@@ -67,6 +75,12 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
+    }
+
+    @Override
+    public void onEnable() {
+        // TODO Auto-generated method stub
+        startAngle = ahrs.getYaw()%360;
         timer.reset();
         startAngle = navx.getYaw();
         pidController = new PID(P, I, D, timer.get(), startAngle);
@@ -74,6 +88,12 @@ public class DriveStraight extends Action {
 
     // new code starts here:
     public void periodic() {
+        if (!initTickIsDone) {
+            startAngle = ahrs.getYaw()%360;
+            initTickIsDone = true;
+            timer.reset();
+        }
+
         if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) {
             state = AutoState.DONE;
             Subsystems.driveBase.stop();

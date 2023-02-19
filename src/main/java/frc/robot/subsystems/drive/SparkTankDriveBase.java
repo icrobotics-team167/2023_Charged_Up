@@ -33,7 +33,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private boolean straightDriving;
     private double straightDriveAngleSetpoint;
     private PIDController straightDrivePID;
-    private final double STRAIGHT_DRIVE_KP = 0.015; // 0.02 works
+    private final double STRAIGHT_DRIVE_KP = -0.015; // 0.02 works
     private final double STRAIGHT_DRIVE_KI = 0;
     private final double STRAIGHT_DRIVE_KD = 0;
     private SparkMaxPIDController leftPID;
@@ -60,6 +60,12 @@ public class SparkTankDriveBase implements TankDriveBase {
     // Singleton
     private static SparkTankDriveBase instance;
 
+    /**
+     * Allows only one instance of SparkTankDriveBase to exist at once.
+     * 
+     * @return An instance of SparkTankDriveBase. Creates a new one if it doesn't
+     *         exist already.
+     */
     public static SparkTankDriveBase getInstance() {
         if (instance == null) {
             instance = new SparkTankDriveBase();
@@ -110,8 +116,16 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
+        leftSlave1.setOpenLoopRampRate(0);
+        leftSlave1.setClosedLoopRampRate(0);
+        leftSlave2.setOpenLoopRampRate(0);
+        leftSlave2.setClosedLoopRampRate(0);
         rightMaster.setOpenLoopRampRate(0);
         rightMaster.setClosedLoopRampRate(0);
+        rightSlave1.setOpenLoopRampRate(0);
+        rightSlave1.setClosedLoopRampRate(0);
+        rightSlave2.setOpenLoopRampRate(0);
+        rightSlave2.setClosedLoopRampRate(0);
 
         straightDrivePID = new PIDController(STRAIGHT_DRIVE_KP, STRAIGHT_DRIVE_KI, STRAIGHT_DRIVE_KD);
         straightDrivePID.setTolerance(0.4);
