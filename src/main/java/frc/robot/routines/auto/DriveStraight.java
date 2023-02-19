@@ -33,7 +33,6 @@ public class DriveStraight extends Action {
     private double D = 0.0;
 
     private AHRS navx;
-    private double startAngle;
 
     /**
      * Constructs a new DriveStraight auto routine.
