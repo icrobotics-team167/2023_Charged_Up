@@ -48,10 +48,14 @@ public class SparkTankDriveBase implements TankDriveBase {
     private final double RIGHT_KF = 0.000232; // with slower paths?: 0.00075
     private Solenoid Solenoid;
     private boolean highGear;
+    private MovingAverage voltageFilter;
 
     private double normalSpeed = 1;
     private double slowSpeed = 0.5;
     private double speedMultiplier = normalSpeed;
+
+    private final int SMART_CURRENT_LIMIT = 60;
+    private final int SECONDARY_CURRENT_LIMIT = 80;
 
     // Singleton
     private static SparkTankDriveBase instance;
@@ -91,18 +95,18 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftEncoder = leftMaster.getEncoder();
         rightEncoder = rightMaster.getEncoder();
 
-        leftMaster.setSmartCurrentLimit(20);
-        leftMaster.setSecondaryCurrentLimit(35);
-        leftSlave1.setSmartCurrentLimit(20);
-        leftSlave1.setSecondaryCurrentLimit(35);
-        leftSlave2.setSmartCurrentLimit(20);
-        leftSlave2.setSecondaryCurrentLimit(35);
-        rightMaster.setSmartCurrentLimit(20);
-        rightMaster.setSecondaryCurrentLimit(35);
-        rightSlave1.setSmartCurrentLimit(20);
-        rightSlave1.setSecondaryCurrentLimit(35);
-        rightSlave2.setSmartCurrentLimit(20);
-        rightSlave2.setSecondaryCurrentLimit(35);
+        leftMaster.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftMaster.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        leftSlave1.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftSlave1.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        leftSlave2.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        leftSlave2.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightMaster.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightMaster.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightSlave1.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightSlave1.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
+        rightSlave2.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
+        rightSlave2.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
 
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
