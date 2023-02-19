@@ -6,6 +6,11 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
+/**
+ * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both sides.
+ * 
+ * 
+ */
 public class Swivel {
 
     private CANSparkMax swivelMotor;
@@ -56,7 +61,7 @@ public class Swivel {
      * Stops the motor if speed tries to move it more than 180 degrees to prevent
      * twisting wires.
      * 
-     * @param speed How fast it should move. Positive speed valuess swivels
+     * @param speed How fast it should move. Positive speed values swivels
      *              clockwise,
      *              negative values swivels counterclockwise.
      */

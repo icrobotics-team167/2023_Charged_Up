@@ -6,6 +6,9 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
+/**
+ * Tilts the arm up and down
+ */
 public class Pivot {
 
     private CANSparkMax pivotMaster;
@@ -18,6 +21,7 @@ public class Pivot {
     private static final double INITIAL_PIVOT_ANGLE = 45;
     private static final double MAX_PIVOT_ANGLE = 60;
     private static final double MIN_PIVOT_ANGLE = 0;
+    private static final boolean OVERRIDE_ANGLE_LIMITS = true;
 
     // Singleton
     public static Pivot instance;
@@ -93,6 +97,9 @@ public class Pivot {
      */
     private boolean tooFarUp() {
         SmartDashboard.putBoolean("Pivot.tooFarUp", getPositionDegrees() >= MAX_PIVOT_ANGLE);
+        if (OVERRIDE_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() >= MAX_PIVOT_ANGLE;
     }
 
@@ -103,6 +110,9 @@ public class Pivot {
      */
     private boolean tooFarDown() {
         SmartDashboard.putBoolean("Pivot.tooFarDown", getPositionDegrees() <= MIN_PIVOT_ANGLE);
+        if (OVERRIDE_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() <= MIN_PIVOT_ANGLE;
     }
 
