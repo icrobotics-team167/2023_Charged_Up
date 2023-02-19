@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class PID {
 
     // PID tuning values
@@ -16,13 +18,15 @@ public class PID {
 
     private double initialControlOutput;
 
-    private double initTime;
     private double lastTime;
     private double lastError;
 
     private double errorSum;
 
     private double target = 0.0;
+
+    private double minDerivative;
+    private double maxDerivative;
 
     /**
      * Constructs a new PID controller instance.
@@ -70,26 +74,33 @@ public class PID {
         this.derivativeCoefficient = derivativeCoefficient;
         initialControlOutput = initControlOut;
         lastTime = time;
-        initTime = time;
         lastError = 0.0;
         errorSum = 0.0;
         this.target = target;
     }
 
     public double compute(double currentValue, double currentTime) {
-        double error = target - currentValue;
-        double totalElapsedTime = currentTime - initTime;
+        double currentError = target - currentValue;
+        double deltaError = lastError - currentError;
+        double deltaTime = currentTime - lastTime;
 
         // Adds current error to errorSum for integral calculations
-        errorSum += error;
+        errorSum += currentError;
 
         // Calculate the values for the proportional, the integral, and the deriative
-        double proportional = error * proportionalCoefficient;
-        double integral = errorSum * (integralCoeficcient * 50.0 / totalElapsedTime);
-        double derivative = (error - lastError) * (derivativeCoefficient * totalElapsedTime / 50.0);
+        double proportional = currentError * proportionalCoefficient;
+        double integral = integralCoeficcient * errorSum;
+        double derivative = derivativeCoefficient * (deltaError / deltaTime);
+
+        minDerivative = Math.min(minDerivative, derivative);
+        maxDerivative = Math.max(maxDerivative, derivative);
+
+        SmartDashboard.putNumber("PID.minDerivative", minDerivative);
+        SmartDashboard.putNumber("PID.maxDerivative", maxDerivative);
 
         double output = proportional + integral + derivative + initialControlOutput;
-        lastError = error;
+        lastError = currentError;
+        lastTime = currentTime;
 
         return output;
     }

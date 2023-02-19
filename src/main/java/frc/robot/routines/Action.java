@@ -4,7 +4,11 @@ import frc.robot.routines.auto.AutoState;
 
 public abstract class Action {
 
+    private boolean isEnabled;
+
     public abstract void init();
+
+    public abstract void onEnable();
 
     public abstract void periodic();
 
@@ -19,6 +23,12 @@ public abstract class Action {
     }
 
     public void exec() {
+        if (edu.wpi.first.wpilibj.RobotState.isEnabled()&&!isEnabled) {
+            onEnable();
+            isEnabled = true;
+        } else if (edu.wpi.first.wpilibj.RobotState.isDisabled()) {
+            isEnabled = false;
+        }
         if (state == null) {
             return;
         }

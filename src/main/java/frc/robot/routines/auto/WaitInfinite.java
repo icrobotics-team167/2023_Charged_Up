@@ -24,4 +24,10 @@ public class WaitInfinite extends Action {
 
     }
 
+    @Override
+    public void onEnable() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

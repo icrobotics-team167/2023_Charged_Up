@@ -3,51 +3,48 @@ package frc.robot.subsystems.turret;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
 public class ExtendRetract {
-    /*
-     * Code for extending/retracting the arm.
-     * Methods:
-     * void move()
-     * boolean hasHitFrontLimit()
-     * boolean hasHitBackLimit()
-     * double getPosition()
-     */
 
     private CANSparkMax extendRetractMotor;
     private RelativeEncoder extendRetractEncoder;
 
-    private double backEncoderLimit;
-    private double frontEncoderLimit;
+    private double initialEncoderPosition;
 
-    private DigitalInput extendFrontSwitch;
-    private DigitalInput extendBackSwitch;
+    private static final double MAX_EXTEND_SPEED = 0.2;
 
-    private double position;
+    // Singleton
+    public static ExtendRetract instance;
+
+    /**
+     * Allows only one instance of ExtendRetract to exist at once.
+     * 
+     * @return An instance of ExtendRetract. Creates a new one if it doesn't exist already.
+     */
+    public static ExtendRetract getInstance() {
+        if (instance == null) {
+            instance = new ExtendRetract();
+        }
+        return instance;
+    }
 
     /**
      * Constructs a new extension mechanism for the arm.
+     * Assumes arm is all the way retracted on code boot.
      */
-    public ExtendRetract() {
+    private ExtendRetract() {
         // Set up motor
         extendRetractMotor = new CANSparkMax(Config.Ports.Arm.EXTEND_RETRACT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         extendRetractMotor.restoreFactoryDefaults();
         extendRetractMotor.setInverted(false);
         extendRetractMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        extendRetractMotor.setSmartCurrentLimit(40);
+        extendRetractMotor.setSecondaryCurrentLimit(60);
 
         // Set up encoder
         extendRetractEncoder = extendRetractMotor.getEncoder();
-
-        // Set up limit switches
-        extendFrontSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_FRONT);
-        extendBackSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_BACK);
-
-        // Set up position (Assuming it's all the way retracted when powered on)
-        position = 0.0;
     }
 
     /**
@@ -58,81 +55,26 @@ public class ExtendRetract {
      * @param speed Speed value. Positive speed values extend, negative retracts.
      */
     public void move(double speed) {
-
-        if (hasHitFrontLimit()) {
-            position = 1.0;
-            frontEncoderLimit = extendRetractEncoder.getPosition();
-        } else if (hasHitBackLimit()) {
-            position = 0.0;
-            backEncoderLimit = extendRetractEncoder.getPosition();
-        }
-        if (hasHitFrontLimit() && speed > 0) {
-            extendRetractMotor.stopMotor();
-        } else if (hasHitBackLimit() && speed < 0) {
-            extendRetractMotor.stopMotor();
+        double motorOutput = MAX_EXTEND_SPEED * Math.abs(speed);
+        if (speed > 0 && !tooFarOut()) {
+            extendRetractMotor.set(-motorOutput);
+        } else if (speed < 0 && !tooFarIn()) {
+            extendRetractMotor.set(motorOutput);
         } else {
-            extendRetractMotor.set(speed);
-            position = calculatePostion(extendRetractEncoder.getPosition());
+            extendRetractMotor.stopMotor();
         }
     }
 
-    /**
-     * @return Whether or not it has hit the front limit switch or not
-     */
-    public boolean hasHitFrontLimit() {
-        return !extendFrontSwitch.get();
+    private boolean tooFarIn() {
+        return false;
     }
 
-    /**
-     * @return Whether or not it has hit the back limit switch or not
-     */
-    public boolean hasHitBackLimit() {
-        return !extendBackSwitch.get();
+    private boolean tooFarOut() {
+        return false;
     }
 
-    /**
-     * Calculates the positon from the encoder positon.
-     * 
-     * @return The position of the arm's extension/retraction. 0.0 is all the way
-     *         in, 1.0 is all the way out
-     */
-    private double calculatePostion(double encoderPos) {
-        return (encoderPos - backEncoderLimit) / frontEncoderLimit;
-    }
-
-    /**
-     * @return The position of the arm in inches
-     */
-    public double getPositionInches() {
-        // TEMPORARY VALUE
-        double extensionLength = 48;
-        return position * extensionLength;
-    }
-
-    /**
-     * Gets how far the arm has extended.
-     * 
-     * @return The position of the arm. 0.0 is all the way in, 1.0 is all the way
-     *         out.
-     */
-    public double getPosition() {
-        return position;
-    }
-
-    public void calibrate() {
-        /*
-         * Calibrates by extending and retracting all the way to read the max and min
-         * encoder values
-         */
-        while (!hasHitFrontLimit()) {
-            move(1);
-        }
-        extendRetractMotor.stopMotor();
-        frontEncoderLimit = extendRetractEncoder.getPosition();
-        while (!hasHitBackLimit()) {
-            move(-1);
-        }
-        extendRetractMotor.stopMotor();
-        backEncoderLimit = extendRetractEncoder.getPosition();
+    public double getPositionInches(){
+        double scalar = 1;
+        return (extendRetractEncoder.getPosition() - initialEncoderPosition) * scalar;
     }
 }

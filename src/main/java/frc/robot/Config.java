@@ -33,8 +33,10 @@ public class Config {
         // only)
         public static final double TRIGGER_PRESSED_THRESHOLD = 0.2;
 
-        // Tank drive dead zone size
-        public static final double TANK_DEAD_ZONE_SIZE = 0.1;
+        // Primary controller deadzone size
+        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.1;
+
+        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.3;
 
         // Intake manual speed dead zone size
         public static final double INTAKE_DEAD_ZONE_SIZE = 0.2;
