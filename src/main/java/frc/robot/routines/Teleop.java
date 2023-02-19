@@ -3,26 +3,36 @@ package frc.robot.routines;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
-// import frc.robot.Config;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
+import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
+import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.turret.ExtendRetract;
+import frc.robot.subsystems.turret.Pivot;
+import frc.robot.subsystems.turret.Swivel;
 
 public class Teleop {
 
+    private AHRS navx;
+    private AutoBalance autoBalance;
+    private Compressor phCompressor;
     private ControlScheme controls;
     private TankDriveBase driveBase;
-    private Compressor phCompressor;
-    AHRS ahrs;
+    private ExtendRetract turretExtendRetract;
+    private Pivot turretPivot;
+    private Swivel turretSwivel;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
+        turretExtendRetract = ExtendRetract.getInstance();
+        turretPivot = Pivot.getInstance();
+        turretSwivel = Swivel.getInstance();
     }
 
     public void init() {
@@ -48,53 +58,56 @@ public class Teleop {
              * 
              * Multiple navX-model devices on a single robot are supported.
              ************************************************************************/
-            ahrs = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP);
             DriverStation.reportError("Not really an error, successfully loaded navX", true);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
+        autoBalance = new AutoBalance(true, controls);
     }
 
     public void periodic() {
 
-        // Arcade Tank Drive Controls
-        if (controls.doFlipityFlop()) {
-            driveBase.arcadeDrive(controls.getTankThrottle(), controls.getTankWheel());
-        } else {
-            driveBase.arcadeDrive(controls.getTankThrottle() * -1, controls.getTankWheel() * -1);
-        }
-
-        if (controls.doSwitchLowGear()) {
-            driveBase.setLowGear();
-        } else {
+        if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
+        } else if (controls.doSwitchLowGear()) {
+            driveBase.setLowGear();
         }
 
-        /* Display 6-axis Processed Angle Data */
-        SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
-        SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
-        SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
-        // SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
+        SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
+        SmartDashboard.putNumber("IMU_Pitch", navx.getPitch());
 
-        SmartDashboard.putNumber("IMU_Accel_X", ahrs.getWorldLinearAccelX());
-        SmartDashboard.putNumber("IMU_Accel_Y", ahrs.getWorldLinearAccelY());
-        SmartDashboard.putBoolean("IMU_IsMoving", ahrs.isMoving());
-        SmartDashboard.putBoolean("IMU_IsRotating", ahrs.isRotating());
+        if (controls.doAutoBalance()) {
+            autoBalance.exec();
+        } else {
+            if (Config.Settings.TANK_DRIVE) {
+                driveBase.tankDrive(controls.getTankLeftSpeed(),
+                        controls.getTankRightSpeed());
+            } else {
+                driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                        controls.getArcadeWheel());
+            }
+        }
 
-        /* Display estimates of velocity/displacement. Note that these values are */
-        /* not expected to be accurate enough for estimating robot position on a */
-        /* FIRST FRC Robotics Field, due to accelerometer noise and the compounding */
-        /* of these errors due to single (velocity) integration and especially */
-        /* double (displacement) integration. */
+        if (Math.abs(controls.getArmExtend()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
+            turretExtendRetract.move(controls.getArmExtend());
+        } else {
+            turretExtendRetract.move(0);
+        }
+        if (Math.abs(controls.getArmPivot()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
+            turretPivot.move(controls.getArmPivot());
+        } else {
+            turretPivot.move(0);
+        }
+        if (Math.abs(controls.getArmSwivel()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
+            turretSwivel.move(controls.getArmSwivel());
+        } else {
+            turretSwivel.move(0);
+        }
+        // SmartDashboard.putNumber("turretExtendRetract.posInch", turretExtendRetract.getPositionInches());
+        SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
+        SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
 
-        SmartDashboard.putNumber("Velocity_X", ahrs.getVelocityX());
-        SmartDashboard.putNumber("Velocity_Y", ahrs.getVelocityY());
-        SmartDashboard.putNumber("Displacement_X", ahrs.getDisplacementX());
-        SmartDashboard.putNumber("Displacement_Y", ahrs.getDisplacementY());
-
-        SmartDashboard.putNumber("Pressure", phCompressor.getPressure());
-        SmartDashboard.putBoolean("CompressorEnabled", phCompressor.isEnabled());
     }
 
 }

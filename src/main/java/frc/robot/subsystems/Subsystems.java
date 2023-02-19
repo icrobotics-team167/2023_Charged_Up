@@ -9,10 +9,7 @@ public class Subsystems {
     public static final TankDriveBase driveBase;
 
     static {
-        if (Config.Settings.SPARK_TANK_ENABLED) {
-            driveBase = SparkTankDriveBase.getInstance();
-        } else {
-        }
+        driveBase = SparkTankDriveBase.getInstance();
     }
 
     public static void setInitialStates() {

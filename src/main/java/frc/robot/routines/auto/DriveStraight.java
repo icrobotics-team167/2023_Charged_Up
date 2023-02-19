@@ -26,10 +26,23 @@ public class DriveStraight extends Action {
     private boolean initTickIsDone;
     private AHRS ahrs;
 
+    /** 
+     * Constructs a new DriveStraight auto routine.
+     * 
+     * @param inches Distance to drive in inches
+     * @param speed How fast to drive
+     */
     public DriveStraight(double inches, double speed) {
         this(inches, speed, -1);
     }
 
+    /**
+     * Constructs a new DriveStraight auto routine.
+     * 
+     * @param inches Distance to drive in inches
+     * @param speed How fast to drive
+     * @param timeoutSeconds How many seconds before it times out and gives up on trying to reach the target distance. -1 for no timeout.
+     */
     public DriveStraight(double inches, double speed, double timeoutSeconds) {
         super();
         meters = Units.inchesToMeters(inches);
@@ -98,23 +111,7 @@ public class DriveStraight extends Action {
             Subsystems.driveBase.stop();
         }
 
-        // Subsystems.driveBase.tankDrive(-speed, -speed);
-        SmartDashboard.putNumber("Right encoder position", Subsystems.driveBase.getRightEncoderPosition());
-        SmartDashboard.putNumber("Left encoder position", Subsystems.driveBase.getLeftEncoderPosition());
-        if (speed != 0) {
-            double leftEncoderPosition = Math.abs(Subsystems.driveBase.getLeftEncoderPosition() -
-                    leftEncoderInitialPosition);
-            double rightEncoderPosition = Math.abs(Subsystems.driveBase.getRightEncoderPosition()
-                    - rightEncoderInitialPosition);
-            double metersTraveled = Math.max(leftEncoderPosition, rightEncoderPosition);
-            Subsystems.driveBase.straightDriveAtAngle(maxSpeed*(speed/Math.abs(speed)), startAngle);
-            SmartDashboard.putNumber("distance Traveled", metersTraveled);
-            if (metersTraveled + offset > meters) {
-                Subsystems.driveBase.stop();
-            }
-        } else {
-            Subsystems.driveBase.stop();
-        }
+        Subsystems.driveBase.tankDrive(-speed, -speed);
     }
 
     @Override

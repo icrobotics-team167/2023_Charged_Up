@@ -3,7 +3,7 @@ package frc.robot.controls.controlschemes;
 public class NullController extends ControlScheme {
 
     // Drive
-    
+
     @Override
     public double getTankLeftSpeed() {
         return 0;
@@ -15,13 +15,18 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public double getTankThrottle() {
+    public double getArcadeThrottle() {
         return 0;
     }
 
     @Override
-    public double getTankWheel() {
+    public double getArcadeWheel() {
         return 0;
+    }
+
+    @Override
+    public boolean doSwitchHighGear() {
+        return false;
     }
 
     @Override
@@ -30,9 +35,32 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doFlipityFlop() {
+    public boolean doAutoBalance() {
         return false;
     }
 
-    // Drive
+    @Override
+    public boolean doOpenClaw() {
+        return false;
+    }
+
+    @Override
+    public boolean doCloseClaw() {
+        return false;
+    }
+
+    @Override
+    public double getArmSwivel() {
+        return 0;
+    }
+
+    @Override
+    public double getArmPivot() {
+        return 0;
+    }
+
+    @Override
+    public double getArmExtend() {
+        return 0;
+    }
 }

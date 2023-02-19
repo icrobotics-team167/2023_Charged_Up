@@ -53,9 +53,17 @@ public class SparkTankDriveBase implements TankDriveBase {
     private Solenoid Solenoid;
     private boolean highGear;
 
+    private double speedMultiplier = 0.2;
+
     // Singleton
     private static SparkTankDriveBase instance;
 
+    /**
+     * Allows only one instance of SparkTankDriveBase to exist at once.
+     * 
+     * @return An instance of SparkTankDriveBase. Creates a new one if it doesn't
+     *         exist already.
+     */
     public static SparkTankDriveBase getInstance() {
         if (instance == null) {
             instance = new SparkTankDriveBase();
@@ -92,16 +100,35 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        leftEncoder = leftMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-        rightEncoder = rightMaster.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-        leftMaster.setSmartCurrentLimit(80);
-        leftMaster.setSecondaryCurrentLimit(60);
-        rightMaster.setSmartCurrentLimit(80);
-        rightMaster.setSecondaryCurrentLimit(60);
+        leftEncoder = leftMaster.getEncoder();
+        rightEncoder = rightMaster.getEncoder();
+
+        leftMaster.setSmartCurrentLimit(60);
+        leftMaster.setSecondaryCurrentLimit(80);
+        leftSlave1.setSmartCurrentLimit(60);
+        leftSlave1.setSecondaryCurrentLimit(80);
+        leftSlave2.setSmartCurrentLimit(60);
+        leftSlave2.setSecondaryCurrentLimit(80);
+
+        rightMaster.setSmartCurrentLimit(60);
+        rightMaster.setSecondaryCurrentLimit(80);
+        rightSlave1.setSmartCurrentLimit(60);
+        rightSlave1.setSecondaryCurrentLimit(80);
+        rightSlave2.setSmartCurrentLimit(60);
+        rightSlave2.setSecondaryCurrentLimit(80);
+
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
+        leftSlave1.setOpenLoopRampRate(0);
+        leftSlave1.setClosedLoopRampRate(0);
+        leftSlave2.setOpenLoopRampRate(0);
+        leftSlave2.setClosedLoopRampRate(0);
         rightMaster.setOpenLoopRampRate(0);
         rightMaster.setClosedLoopRampRate(0);
+        rightSlave1.setOpenLoopRampRate(0);
+        rightSlave1.setClosedLoopRampRate(0);
+        rightSlave2.setOpenLoopRampRate(0);
+        rightSlave2.setClosedLoopRampRate(0);
 
         straightDrivePID = new PIDController(STRAIGHT_DRIVE_KP, STRAIGHT_DRIVE_KI, STRAIGHT_DRIVE_KD);
         straightDrivePID.setTolerance(0.4);
@@ -123,19 +150,23 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave2.follow(rightMaster);
 
         Solenoid = new Solenoid(
-                Config.Settings.SPARK_TANK_ENABLED ? Config.Ports.SparkTank.PH : 2,
+                Config.Ports.SparkTank.PH,
                 PneumaticsModuleType.REVPH,
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
+        var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0);
+        var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
+        port0.set(false);
+        port2.set(false);
 
         highGear = true;
     }
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(leftSpeed);
-        leftMaster.set(rightSpeed);
+        rightMaster.set(-leftSpeed * speedMultiplier);
+        leftMaster.set(-rightSpeed * speedMultiplier);
         straightDriving = false;
     }
 
@@ -154,8 +185,8 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
-        rightMaster.set(leftSpeed);
-        leftMaster.set(rightSpeed);
+        rightMaster.set(leftSpeed * speedMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier);
     }
 
     @Override
@@ -169,13 +200,13 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void setHighGear() {
-        Solenoid.set(false);
+        Solenoid.set(true);
         highGear = true;
     }
 
     @Override
     public void setLowGear() {
-        Solenoid.set(true);
+        Solenoid.set(false);
         highGear = false;
     }
 
