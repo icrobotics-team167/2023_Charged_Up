@@ -79,11 +79,7 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftMaster.restoreFactoryDefaults();
         rightMaster.restoreFactoryDefaults();
         leftMaster.setInverted(true);
-        leftSlave1.setInverted(true);
-        leftSlave2.setInverted(true);
         rightMaster.setInverted(false);
-        rightSlave1.setInverted(false);
-        rightSlave2.setInverted(false);
         leftMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -93,10 +89,20 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         leftEncoder = leftMaster.getEncoder();
         rightEncoder = rightMaster.getEncoder();
-        leftMaster.setSmartCurrentLimit(80);
-        leftMaster.setSecondaryCurrentLimit(60);
-        rightMaster.setSmartCurrentLimit(80);
-        rightMaster.setSecondaryCurrentLimit(60);
+
+        leftMaster.setSmartCurrentLimit(20);
+        leftMaster.setSecondaryCurrentLimit(35);
+        leftSlave1.setSmartCurrentLimit(20);
+        leftSlave1.setSecondaryCurrentLimit(35);
+        leftSlave2.setSmartCurrentLimit(20);
+        leftSlave2.setSecondaryCurrentLimit(35);
+        rightMaster.setSmartCurrentLimit(20);
+        rightMaster.setSecondaryCurrentLimit(35);
+        rightSlave1.setSmartCurrentLimit(20);
+        rightSlave1.setSecondaryCurrentLimit(35);
+        rightSlave2.setSmartCurrentLimit(20);
+        rightSlave2.setSecondaryCurrentLimit(35);
+
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
         rightMaster.setOpenLoopRampRate(0);
@@ -116,10 +122,10 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightPID.setD(RIGHT_KD);
         rightPID.setFF(RIGHT_KF);
 
-        leftSlave1.follow(leftMaster);
-        leftSlave2.follow(leftMaster);
-        rightSlave1.follow(rightMaster);
-        rightSlave2.follow(rightMaster);
+        leftSlave1.follow(leftMaster, false);
+        leftSlave2.follow(leftMaster, false);
+        rightSlave1.follow(rightMaster, false);
+        rightSlave2.follow(rightMaster, false);
 
         Solenoid = new Solenoid(
                 Config.Ports.SparkTank.PH,
