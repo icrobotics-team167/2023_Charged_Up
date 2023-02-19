@@ -60,7 +60,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     /**
      * Allows only one instance of SparkTankDriveBase to exist at once.
      * 
-     * @return An instance of SparkTankDriveBase. Creates a new one if it doesn't exist already.
+     * @return An instance of SparkTankDriveBase. Creates a new one if it doesn't
+     *         exist already.
      */
     public static SparkTankDriveBase getInstance() {
         if (instance == null) {
@@ -98,16 +99,35 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        leftEncoder = leftMaster.getAlternateEncoder(4096);
-        rightEncoder = rightMaster.getAlternateEncoder(4096);
+        leftEncoder = leftMaster.getEncoder();
+        rightEncoder = rightMaster.getEncoder();
+
         leftMaster.setSmartCurrentLimit(60);
         leftMaster.setSecondaryCurrentLimit(80);
+        leftSlave1.setSmartCurrentLimit(60);
+        leftSlave1.setSecondaryCurrentLimit(80);
+        leftSlave2.setSmartCurrentLimit(60);
+        leftSlave2.setSecondaryCurrentLimit(80);
+
         rightMaster.setSmartCurrentLimit(60);
         rightMaster.setSecondaryCurrentLimit(80);
+        rightSlave1.setSmartCurrentLimit(60);
+        rightSlave1.setSecondaryCurrentLimit(80);
+        rightSlave2.setSmartCurrentLimit(60);
+        rightSlave2.setSecondaryCurrentLimit(80);
+
         leftMaster.setOpenLoopRampRate(0);
         leftMaster.setClosedLoopRampRate(0);
+        leftSlave1.setOpenLoopRampRate(0);
+        leftSlave1.setClosedLoopRampRate(0);
+        leftSlave2.setOpenLoopRampRate(0);
+        leftSlave2.setClosedLoopRampRate(0);
         rightMaster.setOpenLoopRampRate(0);
         rightMaster.setClosedLoopRampRate(0);
+        rightSlave1.setOpenLoopRampRate(0);
+        rightSlave1.setClosedLoopRampRate(0);
+        rightSlave2.setOpenLoopRampRate(0);
+        rightSlave2.setClosedLoopRampRate(0);
 
         straightDrivePID = new PIDController(STRAIGHT_DRIVE_KP, STRAIGHT_DRIVE_KI, STRAIGHT_DRIVE_KD);
         straightDrivePID.setTolerance(0.4);
@@ -134,7 +154,7 @@ public class SparkTankDriveBase implements TankDriveBase {
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
-        var port0 = new Solenoid(2,PneumaticsModuleType.REVPH,0);
+        var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0);
         var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
         port0.set(false);
         port2.set(false);
