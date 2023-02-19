@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
+import frc.robot.util.MovingAverage;;
 
 public class SparkTankDriveBase implements TankDriveBase {
 
@@ -139,6 +140,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         port2.set(false);
 
         highGear = true;
+
+        voltageFilter = new MovingAverage(25, true);
     }
 
     @Override
@@ -333,16 +336,22 @@ public class SparkTankDriveBase implements TankDriveBase {
         final double MIN_VOLTAGE = 10; // Minimum voltage where if it falls below this, motors completely cut out
         final double NOMINAL_VOLTAGE = 12; // Nominal voltage where the motors can run full speed
 
-        double voltage = RobotController.getBatteryVoltage();
-        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
         double output;
 
-        if (voltage < 10) {
+        double voltage = RobotController.getBatteryVoltage();
+        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
+
+        // Moving average filter
+        voltageFilter.add(voltage);
+        double filteredVoltage = voltageFilter.get();
+
+        if (filteredVoltage < 10) {
             output = 0;
-        } else if (voltage >= 12) {
+        } else if (filteredVoltage >= 12) {
             output = 1;
         } else {
-            output = (voltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE)) - (MIN_VOLTAGE / (NOMINAL_VOLTAGE - MIN_VOLTAGE));
+            output = (filteredVoltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
+                    - (MIN_VOLTAGE / (NOMINAL_VOLTAGE - MIN_VOLTAGE));
             // a = MIN_VOLTAGE
             // b = NOMINAL_VOLTAGE
             // y = output
