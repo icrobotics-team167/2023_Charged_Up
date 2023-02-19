@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -142,13 +143,17 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        rightMaster.set(leftSpeed * speedMultiplier);
-        leftMaster.set(rightSpeed * speedMultiplier);
+        double voltageMultiplier = adjustVoltage();
+
+        rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
         straightDriving = false;
     }
 
     @Override
     public void arcadeDrive(double throttle, double wheel) {
+        double voltageMultiplier = adjustVoltage();
+
         double Lval = throttle - wheel;
         double Rval = throttle + wheel;
 
@@ -162,8 +167,8 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
-        rightMaster.set(leftSpeed * speedMultiplier);
-        leftMaster.set(rightSpeed * speedMultiplier);
+        rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
+        leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
 
     @Override
@@ -219,6 +224,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     @Override
     public void straightDrive(double speed, boolean newAngle) {
+        double voltageMultiplier = adjustVoltage();
+
         if (!straightDriving) {
             straightDriving = true;
             straightDriveAngleSetpoint = newAngle ? navx.getAngle() : straightDriveAngleSetpoint;
@@ -226,8 +233,8 @@ public class SparkTankDriveBase implements TankDriveBase {
         }
 
         double error = straightDrivePID.calculate(navx.getAngle());
-        leftMaster.set(MathUtil.clamp(speed - error, -1, 1));
-        rightMaster.set(MathUtil.clamp(speed + error, -1, 1));
+        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * voltageMultiplier);
+        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * voltageMultiplier);
     }
 
     @Override
@@ -315,6 +322,35 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    }
+
+    /**
+     * Returns a multiplier for drive motor speeds depending on the battery voltage.
+     * 
+     * @return A speed multiplier, from 0 to 1 (0% to 100% speed)
+     */
+    private double adjustVoltage() {
+        final double MIN_VOLTAGE = 10; // Minimum voltage where if it falls below this, motors completely cut out
+        final double NOMINAL_VOLTAGE = 12; // Nominal voltage where the motors can run full speed
+
+        double voltage = RobotController.getBatteryVoltage();
+        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
+        double output;
+
+        if (voltage < 10) {
+            output = 0;
+        } else if (voltage >= 12) {
+            output = 1;
+        } else {
+            output = (voltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE)) - (MIN_VOLTAGE / (NOMINAL_VOLTAGE - MIN_VOLTAGE));
+            // a = MIN_VOLTAGE
+            // b = NOMINAL_VOLTAGE
+            // y = output
+            // x = voltage
+            // y = x/(b-a) - (a/(b-a))
+        }
+        SmartDashboard.putNumber("SparkTankDriveBase.voltageMultiplier", output);
+        return output;
     }
 
 }
