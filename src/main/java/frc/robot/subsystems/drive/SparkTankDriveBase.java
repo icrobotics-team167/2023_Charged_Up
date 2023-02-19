@@ -48,8 +48,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     private Solenoid Solenoid;
     private boolean highGear;
 
-    private double normalSpeed = 0.3;
-    private double slowSpeed = 0.15;
+    private double normalSpeed = 1;
+    private double slowSpeed = 0.5;
     private double speedMultiplier = normalSpeed;
 
     // Singleton

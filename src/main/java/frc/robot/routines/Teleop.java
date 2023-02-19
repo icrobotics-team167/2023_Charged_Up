@@ -81,12 +81,6 @@ public class Teleop {
             }
         }
 
-        // if (Math.abs(controls.getArmSwivel()) > 0.2) {
-        // turretSwivel.move(controls.getArmSwivel());
-        // } else {
-        // turretSwivel.move(0);
-        // }
-
     }
 
 }
