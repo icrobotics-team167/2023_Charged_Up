@@ -1,10 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.cscore.UsbCamera;
-
-import java.time.Duration;
-
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,13 +12,8 @@ import frc.robot.controls.controlschemes.DoubleController;
 import frc.robot.controls.controlschemes.NullController;
 import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
-import frc.robot.routines.Routine;
 import frc.robot.routines.Teleop;
-import frc.robot.routines.auto.AutoBalance;
-import frc.robot.routines.auto.AutoRoutines;
-import frc.robot.routines.auto.DriveForwardsUntil;
-import frc.robot.routines.auto.DriveStraight;
-import frc.robot.routines.auto.Wait;
+import frc.robot.routines.auto.*;
 import frc.robot.subsystems.Subsystems;
 
 public class Robot extends TimedRobot {
@@ -82,12 +72,6 @@ public class Robot extends TimedRobot {
             // primary controller isn't
             controls = new NullController();
         }
-
-        new Thread(() -> {
-            UsbCamera camera = CameraServer.startAutomaticCapture();
-            // camera.setFPS(30);
-            // camera.setRessssa1olution(320, 240);
-        }).start();
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
