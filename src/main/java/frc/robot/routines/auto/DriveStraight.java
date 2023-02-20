@@ -21,7 +21,7 @@ public class DriveStraight extends Action {
     private double timeoutSeconds;
     private double leftEncoderInitialPosition;
     private double rightEncoderInitialPosition;
-    
+
     private PeriodicTimer timer;
     private double startAngle;
     private boolean initTickIsDone;
@@ -76,19 +76,10 @@ public class DriveStraight extends Action {
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
     }
 
-    @Override
-    public void onEnable() {
-        // TODO Auto-generated method stub
-        startAngle = ahrs.getYaw()%360;
-        timer.reset();
-        startAngle = navx.getYaw();
-        pidController = new PID(P, I, D, timer.get(), startAngle);
-    }
-
     // new code starts here:
     public void periodic() {
         if (!initTickIsDone) {
-            startAngle = ahrs.getYaw()%360;
+            startAngle = ahrs.getYaw() % 360;
             initTickIsDone = true;
             timer.reset();
         }

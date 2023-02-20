@@ -121,10 +121,4 @@ public class SmartDriveStraight extends Action {
         Subsystems.driveBase.stop();
     }
 
-    @Override
-    public void onEnable() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
