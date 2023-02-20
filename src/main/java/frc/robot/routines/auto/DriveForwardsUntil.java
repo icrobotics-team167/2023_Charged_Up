@@ -49,14 +49,6 @@ public class DriveForwardsUntil extends Action {
         timer.reset();
     }
 
-    @Override
-    public void onEnable() {
-        timer.reset();
-        conditionMet = false;
-        timeoutReached = false;
-        isDone = false;
-    }
-
     // new code starts here:
     public void periodic() {
         SmartDashboard.putBoolean("isCalibrating", ahrs.isCalibrating());
@@ -65,7 +57,7 @@ public class DriveForwardsUntil extends Action {
         }
 
         SmartDashboard.putNumber("pitch", ahrs.getPitch());
-        maxPitchValue=Math.max(maxPitchValue, Math.abs(ahrs.getPitch()));
+        maxPitchValue = Math.max(maxPitchValue, Math.abs(ahrs.getPitch()));
         SmartDashboard.putNumber("maxRollValue", maxPitchValue);
 
         conditionMet = this.condition.call(this.ahrs);
@@ -74,7 +66,6 @@ public class DriveForwardsUntil extends Action {
         SmartDashboard.putBoolean("conditionMet", conditionMet);
         SmartDashboard.putBoolean("timeoutReached", timeoutReached);
         SmartDashboard.putNumber("timer", timer.get());
-
 
         if (conditionMet || timeoutReached) {
             this.isDone = true;

@@ -102,10 +102,4 @@ public class SmartPointTurn extends Action {
         Subsystems.driveBase.stop();
     }
 
-    @Override
-    public void onEnable() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

@@ -22,10 +22,4 @@ public class NullAction extends Action {
     public void done() {
     }
 
-    @Override
-    public void onEnable() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
