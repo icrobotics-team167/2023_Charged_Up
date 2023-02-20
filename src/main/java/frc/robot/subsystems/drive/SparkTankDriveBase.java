@@ -20,7 +20,6 @@ import frc.robot.Config;
 import frc.robot.util.MovingAverage;;
 
 public class SparkTankDriveBase implements TankDriveBase {
-
     private AHRS navx;
     private CANSparkMax leftMaster;
     private CANSparkMax leftSlave1;
@@ -56,6 +55,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     private final int SMART_CURRENT_LIMIT = 60;
     private final int SECONDARY_CURRENT_LIMIT = 80;
+
+    private final double WHEEL_DIAMETER = 6;
 
     // Singleton
     private static SparkTankDriveBase instance;
@@ -286,9 +287,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 5.1 : 13.5;
-        double wheelRadiusInches = 6 * Math.PI;
-        double scaler = 0.98;
-        return Units.inchesToMeters(encoderValue * wheelRadiusInches / gearRatio / scaler);
+        double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI;
+        double scalar = 0.98;
+        return Units.inchesToMeters(encoderValue * wheelCircumferenceInches / gearRatio / scalar);
     }
 
     @Override
@@ -346,7 +347,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     /**
-     * Returns a multiplier for drive motor speeds depending on the battery voltage.
+     * Returns a multiplier for drive motor speeds depending on the battery voltage,
+     * to prevent brownouts.
      * 
      * @return A speed multiplier, from 0 to 1 (0% to 100% speed)
      */
@@ -357,11 +359,12 @@ public class SparkTankDriveBase implements TankDriveBase {
         double output;
 
         double voltage = RobotController.getBatteryVoltage();
-        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
 
         // Moving average filter
         voltageFilter.add(voltage);
         double filteredVoltage = voltageFilter.get();
+
+        SmartDashboard.putNumber("SparkTankDriveBase.voltage", filteredVoltage);
 
         if (filteredVoltage < 10) {
             output = 0;
