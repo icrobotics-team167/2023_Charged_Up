@@ -71,6 +71,7 @@ public class DriveStraight extends Action {
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
         startAngle = navx.getYaw() % 360;
         timer.reset();
+        pidController = new PID(P, I, D, timer.get(), startAngle);
     }
 
     // new code starts here:
