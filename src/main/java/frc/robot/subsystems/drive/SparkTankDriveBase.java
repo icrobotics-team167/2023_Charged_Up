@@ -366,9 +366,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         SmartDashboard.putNumber("SparkTankDriveBase.voltage", filteredVoltage);
 
-        if (filteredVoltage < 10) {
+        if (filteredVoltage < MIN_VOLTAGE) {
             output = 0;
-        } else if (filteredVoltage >= 12) {
+        } else if (filteredVoltage >= NOMINAL_VOLTAGE) {
             output = 1;
         } else {
             output = (filteredVoltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
