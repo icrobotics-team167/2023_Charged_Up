@@ -15,7 +15,7 @@ public class AutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS ahrs;
+    private AHRS navx;
     private PID pidController;
     private boolean teleop;
     private ControlScheme controls;
@@ -49,7 +49,7 @@ public class AutoBalance extends Action {
 
         // Initialize the navX
         try {
-            ahrs = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP);
             // DriverStation.reportError("Not really an error, successfully loaded navX",
             // true);
         } catch (RuntimeException ex) {
@@ -92,7 +92,7 @@ public class AutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
-        double pitch = ahrs.getPitch();
+        double pitch = navx.getPitch();
         if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
             pitch = 0.0;
         }

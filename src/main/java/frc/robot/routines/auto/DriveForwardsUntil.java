@@ -12,7 +12,7 @@ import java.time.Duration;
 public class DriveForwardsUntil extends Action {
 
     private PeriodicTimer timer;
-    private AHRS ahrs;
+    private AHRS navx;
 
     private DriveForwardsCondition condition;
     private double speed;
@@ -32,7 +32,7 @@ public class DriveForwardsUntil extends Action {
         this.timeoutReached = false;
         this.isDone = false;
         try {
-            ahrs = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
@@ -49,16 +49,16 @@ public class DriveForwardsUntil extends Action {
 
     // new code starts here:
     public void periodic() {
-        SmartDashboard.putBoolean("isCalibrating", ahrs.isCalibrating());
-        if (ahrs.isCalibrating()) {
+        SmartDashboard.putBoolean("isCalibrating", navx.isCalibrating());
+        if (navx.isCalibrating()) {
             return;
         }
 
-        SmartDashboard.putNumber("pitch", ahrs.getPitch());
-        maxPitchValue = Math.max(maxPitchValue, Math.abs(ahrs.getPitch()));
+        SmartDashboard.putNumber("pitch", navx.getPitch());
+        maxPitchValue = Math.max(maxPitchValue, Math.abs(navx.getPitch()));
         SmartDashboard.putNumber("maxRollValue", maxPitchValue);
 
-        conditionMet = this.condition.call(this.ahrs);
+        conditionMet = this.condition.call(this.navx);
         timeoutReached = timer.hasElapsed(this.timeout.toMillis() / 1_000);
 
         SmartDashboard.putBoolean("conditionMet", conditionMet);

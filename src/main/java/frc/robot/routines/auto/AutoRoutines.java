@@ -22,7 +22,7 @@ public enum AutoRoutines {
     })),
     BALANCE("Balance", new Routine(new Action[] {
             new DriveForwardsUntil(
-                    ahrs -> ahrs.getPitch() >= 5,
+                    navx -> navx.getPitch() >= 5,
                     0.3,
                     Duration.ofMillis(3500)),
             new AutoBalance(),
