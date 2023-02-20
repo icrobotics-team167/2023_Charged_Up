@@ -1,26 +1,17 @@
 package frc.robot.subsystems.drive;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
 import frc.robot.util.MovingAverage;
 
 public class SparkTankDriveBase implements TankDriveBase {
-    private AHRS navx;
     private CANSparkMax leftMaster;
     private CANSparkMax leftSlave1;
     private CANSparkMax leftSlave2;
@@ -29,22 +20,6 @@ public class SparkTankDriveBase implements TankDriveBase {
     private CANSparkMax rightSlave2;
     private RelativeEncoder leftEncoder;
     private RelativeEncoder rightEncoder;
-    private boolean straightDriving;
-    private double straightDriveAngleSetpoint;
-    private PIDController straightDrivePID;
-    private final double STRAIGHT_DRIVE_KP = -0.015; // 0.02 works
-    private final double STRAIGHT_DRIVE_KI = 0;
-    private final double STRAIGHT_DRIVE_KD = 0;
-    private SparkMaxPIDController leftPID;
-    private final double LEFT_KP = 0.002; // last tried: 0.0001
-    private final double LEFT_KI = 0;
-    private final double LEFT_KD = 0;
-    private final double LEFT_KF = 0.000268; // with slower paths?: 0.00075
-    private SparkMaxPIDController rightPID;
-    private final double RIGHT_KP = 0.0015; // last tried: 0.0001
-    private final double RIGHT_KI = 0;
-    private final double RIGHT_KD = 0;
-    private final double RIGHT_KF = 0.000232; // with slower paths?: 0.00075
     private Solenoid Solenoid;
     private boolean highGear;
     private MovingAverage voltageFilter;
@@ -75,12 +50,6 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     private SparkTankDriveBase() {
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-        } catch (RuntimeException e) {
-            DriverStation.reportError("Error initializing the navX over SPI: " + e.toString(), e.getStackTrace());
-        }
-
         // Initialize drive motors
         leftMaster = new CANSparkMax(Config.Ports.SparkTank.LEFT_1, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftSlave1 = new CANSparkMax(Config.Ports.SparkTank.LEFT_2, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -145,12 +114,7 @@ public class SparkTankDriveBase implements TankDriveBase {
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
-        var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0);
-        var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
-        port0.set(false);
-        port2.set(false);
 
-        highGear = true;
         // Make sure the other 2 solenoid ports don't do anything
         // TODO: Remove this when we actually do something with these ports
 
@@ -179,7 +143,6 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
-        straightDriving = false;
     }
 
     /**
@@ -280,43 +243,12 @@ public class SparkTankDriveBase implements TankDriveBase {
         return speedMultiplier != 1;
     }
 
-    @Override
-    public void straightDrive(double speed) {
-        straightDrive(speed, true);
-    }
-
-    @Override
-    public void straightDrive(double speed, boolean newAngle) {
-        double voltageMultiplier = adjustVoltage();
-
-        if (!straightDriving) {
-            straightDriving = true;
-            straightDriveAngleSetpoint = newAngle ? navx.getAngle() : straightDriveAngleSetpoint;
-            straightDrivePID.setSetpoint(straightDriveAngleSetpoint);
-        }
-
-        double error = straightDrivePID.calculate(navx.getAngle());
-        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * voltageMultiplier);
-        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * voltageMultiplier);
-    }
-
     /**
      * Stops the drivetrain.
      */
     @Override
     public void stop() {
         tankDrive(0, 0);
-    }
-
-    @Override
-    public void pointTurn(double speed) {
-        leftMaster.set(speed);
-        rightMaster.set(-speed);
-    }
-
-    @Override
-    public double getAngle() {
-        return navx.getAngle();
     }
 
     @Override
@@ -340,24 +272,6 @@ public class SparkTankDriveBase implements TankDriveBase {
     public void resetEncoders() {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
-    }
-
-    @Override
-    public void setReferences(double leftMetersPerSecond, double rightMetersPerSecond) {
-        double leftSpeed = metersPerSecondToRPM(leftMetersPerSecond);
-        leftPID.setReference(leftSpeed, ControlType.kVelocity);
-        System.out.println("Left RPM: " + leftSpeed);
-
-        double rightSpeed = metersPerSecondToRPM(rightMetersPerSecond);
-        rightPID.setReference(rightSpeed, ControlType.kVelocity);
-        System.out.println("Right RPM: " + rightSpeed);
-
-        straightDriving = false;
-    }
-
-    @Override
-    public Rotation2d getGyroHeading() {
-        return Rotation2d.fromDegrees(-navx.getRate());
     }
 
     @Override

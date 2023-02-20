@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -19,7 +18,6 @@ import frc.robot.subsystems.Subsystems;
 public class Robot extends TimedRobot {
 
     private SendableChooser<AutoRoutines> autoChooser = new SendableChooser<>();
-    private DriverStation driverStation;
     private ControlScheme controls;
     private Action auto;
     private Teleop teleop;
