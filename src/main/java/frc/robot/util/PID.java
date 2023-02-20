@@ -79,6 +79,14 @@ public class PID {
         this.target = target;
     }
 
+    /**
+     * Computes a PID output, using the current input value and the current time.
+     * 
+     * @param currentValue The current input value. Used to calculate error from the
+     *                     target and delta error.
+     * @param currentTime  The current time. Used to calculate delta time.
+     * @return
+     */
     public double compute(double currentValue, double currentTime) {
         double currentError = target - currentValue;
         double deltaError = lastError - currentError;
@@ -105,12 +113,22 @@ public class PID {
         return output;
     }
 
-    public void setPID(double p, double i, double d) {
-        proportionalCoefficient = p;
-        integralCoeficcient = i;
-        derivativeCoefficient = d;
+    /**
+     * Sets new PID control parameters.
+     * 
+     * @param proportional The new proportional coefficient.
+     * @param integral     The new integral coefficient.
+     * @param derivative   The new derivative coefficient.
+     */
+    public void setPID(double proportional, double integral, double derivative) {
+        proportionalCoefficient = proportional;
+        integralCoeficcient = integral;
+        derivativeCoefficient = derivative;
     }
 
+    /**
+     * Resets the integral sum.
+     */
     public void resetIntegralSum() {
         errorSum = 0.0;
     }
