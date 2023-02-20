@@ -347,14 +347,16 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     /**
-     * Returns a multiplier for drive motor speeds depending on the battery voltage,
+     * Returns a multiplier for drive motor speeds depending on the battery voltage
      * to prevent brownouts.
      * 
      * @return A speed multiplier, from 0 to 1 (0% to 100% speed)
      */
     private double adjustVoltage() {
-        final double MIN_VOLTAGE = 10; // Minimum voltage where if it falls below this, motors completely cut out
+        final double MIN_VOLTAGE = 10; // Minimum voltage where if it falls below this, motor speeds are multiplied by
+                                       // MIN_MULTIPLIER
         final double NOMINAL_VOLTAGE = 12; // Nominal voltage where the motors can run full speed
+        final double MIN_MULTIPLIER = 0.25; // Minimum multiplier for when the voltage falls below MIN_VOLTAGE
 
         double output;
 
@@ -366,18 +368,19 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         SmartDashboard.putNumber("SparkTankDriveBase.voltage", filteredVoltage);
 
-        if (filteredVoltage < 10) {
+        if (filteredVoltage < MIN_VOLTAGE) {
             output = 0;
-        } else if (filteredVoltage >= 12) {
+        } else if (filteredVoltage >= NOMINAL_VOLTAGE) {
             output = 1;
         } else {
-            output = (filteredVoltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
-                    - (MIN_VOLTAGE / (NOMINAL_VOLTAGE - MIN_VOLTAGE));
+            output = ((filteredVoltage * (1 - MIN_MULTIPLIER)) / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
+                    - ((MIN_VOLTAGE * (1 - MIN_MULTIPLIER)) / (NOMINAL_VOLTAGE - MIN_VOLTAGE)) + MIN_VOLTAGE;
             // a = MIN_VOLTAGE
             // b = NOMINAL_VOLTAGE
+            // c = MIN_MULTIPLIER
             // y = output
             // x = voltage
-            // y = x/(b-a) - (a/(b-a))
+            // y = (x(1-c))/(b-a) - (a(1-c)/(b-a)) + c
         }
         SmartDashboard.putNumber("SparkTankDriveBase.voltageMultiplier", output);
         return output;
