@@ -20,14 +20,6 @@ public class PeriodicTimer {
         return get() >= seconds;
     }
 
-    public boolean hasElapsedOnce(double seconds) {
-        if (!hasElapsedOnceFlag && hasElapsed(seconds)) {
-            hasElapsedOnceFlag = true;
-            return true;
-        }
-        return false;
-    }
-
     public double get() {
         return Timer.getFPGATimestamp() - startTime;
     }
