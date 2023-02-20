@@ -37,7 +37,7 @@ public class AutoBalance extends Action {
     }
 
     /**
-     * Constructs a new AutoBalance auto routine.
+     * Constructs a new AutoBalance routine.
      * 
      * @param teleop   Whether or not it's being called in teleop mode (true) or
      *                 autonomous mode (false)

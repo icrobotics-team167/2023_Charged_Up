@@ -20,7 +20,7 @@ import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
 import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.AutoBalance;
-import frc.robot.routines.auto.AutoRoutine;
+import frc.robot.routines.auto.AutoRoutines;
 import frc.robot.routines.auto.DriveForwardsUntil;
 import frc.robot.routines.auto.DriveStraight;
 import frc.robot.routines.auto.Wait;
@@ -28,7 +28,7 @@ import frc.robot.subsystems.Subsystems;
 
 public class Robot extends TimedRobot {
 
-    private SendableChooser<AutoRoutine> autoChooser = new SendableChooser<>();
+    private SendableChooser<AutoRoutines> autoChooser = new SendableChooser<>();
     private DriverStation driverStation;
     private ControlScheme controls;
     private Action auto;
@@ -40,12 +40,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        autoChooser.setDefaultOption(AutoRoutine.NULL.name, AutoRoutine.NULL);
-        autoChooser.addOption(AutoRoutine.ENEMY_TENCH_RUN.name, AutoRoutine.ENEMY_TENCH_RUN);
-        autoChooser.addOption(AutoRoutine.SHOOT_3.name, AutoRoutine.SHOOT_3);
-        SmartDashboard.putData("Autonomous Routines", autoChooser);
-
-        // driverStation = DriverStation.getInstance();
+        autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
+        autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
+        autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -93,12 +91,7 @@ public class Robot extends TimedRobot {
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-        auto = new Routine(new Action[] {
-        
-                // Center auto
-
-                new DriveStraight(36, 0.5),
-        });
+        auto = autoChooser.getSelected().actions;
         teleop = new Teleop(controls);
     }
 
