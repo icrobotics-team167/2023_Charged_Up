@@ -1,10 +1,8 @@
 package frc.robot.routines.auto;
 
-import frc.robot.routines.Routine;
-
-import java.time.Duration;
-
 import frc.robot.routines.Action;
+import frc.robot.routines.Routine;
+import java.time.Duration;
 
 /**
  * An enum for selecting auto routines.

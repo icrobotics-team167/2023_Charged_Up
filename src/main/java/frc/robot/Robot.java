@@ -1,9 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
 import frc.robot.controls.controllers.XBController;
@@ -12,8 +12,8 @@ import frc.robot.controls.controlschemes.DoubleController;
 import frc.robot.controls.controlschemes.NullController;
 import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
-import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.*;
+import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
 
 public class Robot extends TimedRobot {

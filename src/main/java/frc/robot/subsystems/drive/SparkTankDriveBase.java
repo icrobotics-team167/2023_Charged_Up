@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
-import frc.robot.util.MovingAverage;;
+import frc.robot.util.MovingAverage;
 
 public class SparkTankDriveBase implements TankDriveBase {
     private AHRS navx;
