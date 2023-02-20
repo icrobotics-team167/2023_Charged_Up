@@ -1,8 +1,13 @@
 package frc.robot.routines.auto;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.util.PID;
 import frc.robot.util.PeriodicTimer;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
@@ -16,21 +21,24 @@ public class DriveStraight extends Action {
     private double timeoutSeconds;
     private double leftEncoderInitialPosition;
     private double rightEncoderInitialPosition;
-    private double minSpeed;
-    private double maxSpeed;
-    private double offset;
-    // private double speedRange;
-    private double accelerationMeters;
+    
     private PeriodicTimer timer;
     private double startAngle;
     private boolean initTickIsDone;
     private AHRS ahrs;
 
-    /** 
+    private PID pidController;
+    private double P = 0.015;
+    private double I = 0.0;
+    private double D = 0.0;
+
+    private AHRS navx;
+
+    /**
      * Constructs a new DriveStraight auto routine.
      * 
      * @param inches Distance to drive in inches
-     * @param speed How fast to drive
+     * @param speed  How fast to drive
      */
     public DriveStraight(double inches, double speed) {
         this(inches, speed, -1);
@@ -39,9 +47,10 @@ public class DriveStraight extends Action {
     /**
      * Constructs a new DriveStraight auto routine.
      * 
-     * @param inches Distance to drive in inches
-     * @param speed How fast to drive
-     * @param timeoutSeconds How many seconds before it times out and gives up on trying to reach the target distance. -1 for no timeout.
+     * @param inches         Distance to drive in inches
+     * @param speed          How fast to drive
+     * @param timeoutSeconds How many seconds before it times out and gives up on
+     *                       trying to reach the target distance. -1 for no timeout.
      */
     public DriveStraight(double inches, double speed, double timeoutSeconds) {
         super();
@@ -51,36 +60,12 @@ public class DriveStraight extends Action {
         leftEncoderInitialPosition = 0;
         rightEncoderInitialPosition = 0;
 
-        speed = Math.abs(speed);
-
-        minSpeed = 0.2 * speed;
-        if (minSpeed < 0.1) {
-            minSpeed = 0.1;
-        }
-        if (minSpeed > speed) {
-            minSpeed = speed;
-        }
-
-        accelerationMeters = Units.feetToMeters(3 * speed);
-        if (2 * accelerationMeters > meters) {
-            accelerationMeters = meters / 2;
-        }
-
-        offset = Units.inchesToMeters(6.25 * speed);
-
-        double maxAcceleration = Math.min((speed - minSpeed) / accelerationMeters, 0.8 / Units.feetToMeters(3));
-        maxSpeed = minSpeed + accelerationMeters * maxAcceleration;
-
-        // speedRange = maxSpeed - minSpeed;
-
-        initTickIsDone = false;
-
         timer = new PeriodicTimer();
 
         try {
-            ahrs = new AHRS(SPI.Port.kMXP);
-        } catch (RuntimeException e) {
-            DriverStation.reportError("Error initializing the navX over SPI: " + e.toString(), e.getStackTrace());
+            navx = new AHRS(SPI.Port.kMXP);
+        } catch (Exception ex) {
+            DriverStation.reportError("Error instantiating the navx, " + ex.getMessage(), true);
         }
     }
 
@@ -96,6 +81,8 @@ public class DriveStraight extends Action {
         // TODO Auto-generated method stub
         startAngle = ahrs.getYaw()%360;
         timer.reset();
+        startAngle = navx.getYaw();
+        pidController = new PID(P, I, D, timer.get(), startAngle);
     }
 
     // new code starts here:
@@ -111,7 +98,9 @@ public class DriveStraight extends Action {
             Subsystems.driveBase.stop();
         }
 
-        Subsystems.driveBase.tankDrive(-speed, -speed);
+        double pidOutput = pidController.compute(navx.getYaw(), timer.get());
+        pidOutput = Math.min(1, Math.max(pidOutput, -1));
+        Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
     }
 
     @Override

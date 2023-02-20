@@ -95,15 +95,10 @@ public class Robot extends TimedRobot {
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
         auto = new Routine(new Action[] {
+        
+                // Center auto
 
-                // // Drive forwards until we sense ourselves starting up the ramp
-                // new DriveForwardsUntil(
-                //         ahrs -> Math.abs(ahrs.getPitch()) >= 5, // condition
-                //         0.2, // speed
-                //         Duration.ofMillis(5_000) // duration
-                // ),
-                // new AutoBalance(),
-                new DriveStraight(40.0, 0.4, 10),
+                new DriveStraight(36, 0.5),
         });
         teleop = new Teleop(controls);
     }
