@@ -99,9 +99,8 @@ public class DriveStraight extends Action {
         }
 
         double pidOutput = pidController.compute(navx.getYaw(), timer.get());
-        // pidOutput = Math.min(1, Math.max(pidOutput, -1));
-        pidOutput = 0;
-        Subsystems.driveBase.tankDrive(speed + pidOutput, speed - pidOutput);
+        pidOutput = Math.min(1, Math.max(pidOutput, -1));
+        Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
     }
 
     @Override
