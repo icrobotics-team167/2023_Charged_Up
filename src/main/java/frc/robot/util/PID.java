@@ -4,16 +4,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PID {
 
-    // PID tuning values
-    // If you're not at the target angle, get there. Higher values make it get there
-    // faster.
     private double proportionalCoefficient = 0.0;
-    // The longer you haven't been at the target angle, (AKA the bigger the sum of
-    // the error) get there faster. Higher values increase the speed at which it
-    // accelerates.
     private double integralCoeficcient = 0.0;
-    // If you're getting there too fast or too slow, adjust the speed. Higher values
-    // adjust more aggressively.
     private double derivativeCoefficient = 0.0;
 
     private double initialControlOutput;
@@ -24,9 +16,6 @@ public class PID {
     private double errorSum;
 
     private double target = 0.0;
-
-    private double minDerivative;
-    private double maxDerivative;
 
     /**
      * Constructs a new PID controller instance.
@@ -100,12 +89,6 @@ public class PID {
         double integral = integralCoeficcient * errorSum;
         double derivative = derivativeCoefficient * (deltaError / deltaTime);
 
-        minDerivative = Math.min(minDerivative, derivative);
-        maxDerivative = Math.max(maxDerivative, derivative);
-
-        SmartDashboard.putNumber("PID.minDerivative", minDerivative);
-        SmartDashboard.putNumber("PID.maxDerivative", maxDerivative);
-
         double output = proportional + integral + derivative + initialControlOutput;
         lastError = currentError;
         lastTime = currentTime;
@@ -132,4 +115,3 @@ public class PID {
     public void resetIntegralSum() {
         errorSum = 0.0;
     }
-}
