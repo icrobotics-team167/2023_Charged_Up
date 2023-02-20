@@ -36,7 +36,6 @@ public class Teleop {
 
     public void init() {
         driveBase.setLowGear();
-        // driveBase.setCoast();
         driveBase.resetEncoders();
 
         try {
@@ -72,9 +71,6 @@ public class Teleop {
             driveBase.setLowGear();
         }
 
-        SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
-        SmartDashboard.putNumber("IMU_Pitch", navx.getPitch());
-
         driveBase.setLowerGear(controls.doLowerGear());
         if (controls.doAutoBalance()) {
             autoBalance.exec();
@@ -103,9 +99,6 @@ public class Teleop {
         } else {
             turretSwivel.move(0);
         }
-        // SmartDashboard.putNumber("turretExtendRetract.posInch", turretExtendRetract.getPositionInches());
-        SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
-        SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
     }
 
 }

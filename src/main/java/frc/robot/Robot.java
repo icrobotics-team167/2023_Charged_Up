@@ -81,9 +81,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putNumber("drive/leftEncoderPosition", Subsystems.driveBase.getLeftEncoderPosition());
-        SmartDashboard.putNumber("drive/rightEncoderPosition", Subsystems.driveBase.getRightEncoderPosition());
-        SmartDashboard.putNumber("drive/gyroAngle", Subsystems.driveBase.getAngle());
     }
 
     @Override

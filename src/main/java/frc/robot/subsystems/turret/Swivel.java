@@ -45,7 +45,6 @@ public class Swivel {
 
         // Set up encoder
         swivelEncoder = swivelMotor.getEncoder();
-        SmartDashboard.putNumber("Swivel.PositionScaleFactor", swivelEncoder.getPositionConversionFactor());
 
         // Set up positon (Assuming it's centered when powered on)
         initialEncoderPosition = swivelEncoder.getPosition();
@@ -62,7 +61,6 @@ public class Swivel {
      */
     public void move(double speed) {
         SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
-        SmartDashboard.putNumber("Swivel.speed", speed);
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
             swivelMotor.set(-motorOutput);

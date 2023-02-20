@@ -49,21 +49,14 @@ public class DriveForwardsUntil extends Action {
 
     // new code starts here:
     public void periodic() {
-        SmartDashboard.putBoolean("isCalibrating", navx.isCalibrating());
         if (navx.isCalibrating()) {
             return;
         }
 
-        SmartDashboard.putNumber("pitch", navx.getPitch());
         maxPitchValue = Math.max(maxPitchValue, Math.abs(navx.getPitch()));
-        SmartDashboard.putNumber("maxRollValue", maxPitchValue);
 
         conditionMet = this.condition.call(this.navx);
         timeoutReached = timer.hasElapsed(this.timeout.toMillis() / 1_000);
-
-        SmartDashboard.putBoolean("conditionMet", conditionMet);
-        SmartDashboard.putBoolean("timeoutReached", timeoutReached);
-        SmartDashboard.putNumber("timer", timer.get());
 
         if (conditionMet || timeoutReached) {
             this.isDone = true;
@@ -71,8 +64,6 @@ public class DriveForwardsUntil extends Action {
         } else {
             Subsystems.driveBase.tankDrive(this.speed, this.speed);
         }
-        SmartDashboard.putBoolean("hello", conditionMet || timeoutReached);
-        SmartDashboard.putBoolean("done", this.isDone);
 
     }
 

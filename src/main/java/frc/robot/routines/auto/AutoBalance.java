@@ -108,8 +108,6 @@ public class AutoBalance extends Action {
         } else {
             Subsystems.driveBase.stop();
         }
-
-        SmartDashboard.putNumber("AutoBalance.pidOutput", pidOutput);
     }
 
     /**
