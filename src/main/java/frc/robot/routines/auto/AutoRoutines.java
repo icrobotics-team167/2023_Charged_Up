@@ -8,9 +8,15 @@ import frc.robot.routines.Action;
 import frc.robot.routines.auto.*;
 
 /**
- * An enum for selecting auto routines
+ * An enum for selecting auto routines.
  */
 public enum AutoRoutines {
+    // ROUTINE TEMPLATE
+    //
+    // ROUTINE_ID("Routine Name", new Routine(new Action[] {
+    // new NullAction(),
+    // })),
+
     SCORE_CONE("Score Cone", new Routine(new Action[] {
     // TODO: Make an auto routine for scoring a cone
     })),
@@ -22,13 +28,13 @@ public enum AutoRoutines {
                     ahrs -> ahrs.getPitch() >= 5,
                     0.3,
                     Duration.ofMillis(3500)),
-            new AutoBalance()
+            new AutoBalance(),
     })),
     GO_STRAIGHT("Go straight", new Routine(new Action[] {
-            new DriveStraight(35, 0.5)
+            new DriveStraight(35, 0.5),
     })),
     NOTHING("Nothing", new Routine(new Action[] {
-            null
+            new NullAction(),
     }));
 
     public String name;
