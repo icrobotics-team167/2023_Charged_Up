@@ -22,7 +22,6 @@ import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.routines.auto.AutoRoutine;
 import frc.robot.routines.auto.DriveForwardsUntil;
-import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.DriveStraight;
 import frc.robot.routines.auto.Wait;
 import frc.robot.subsystems.Subsystems;

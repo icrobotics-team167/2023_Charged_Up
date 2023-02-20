@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import frc.robot.routines.auto.FollowPath;
 import frc.robot.routines.auto.AutoState;
 
 public class Routine extends Action {
@@ -25,9 +24,6 @@ public class Routine extends Action {
     @Override
     public void periodic() {
         if (currentAction != null) {
-            if (currentAction instanceof FollowPath) {
-                System.out.println("auto");
-            }
             if (currentAction.getState() == AutoState.EXIT) {
                 state = AutoState.EXIT;
             }
