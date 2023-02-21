@@ -1,14 +1,13 @@
 package frc.robot;
 
-import edu.wpi.first.cscore.UsbCamera;
-
-import java.time.Duration;
-
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
 import frc.robot.controls.controllers.XBController;
@@ -17,15 +16,16 @@ import frc.robot.controls.controlschemes.DoubleController;
 import frc.robot.controls.controlschemes.NullController;
 import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
-import frc.robot.routines.Routine;
-import frc.robot.routines.Teleop;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.routines.auto.AutoRoutine;
 import frc.robot.routines.auto.DriveForwardsUntil;
-import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.DriveStraight;
+import frc.robot.routines.auto.SmartDriveStraight;
 import frc.robot.routines.auto.Wait;
+import frc.robot.routines.Routine;
+import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
+import java.time.Duration;
 
 public class Robot extends TimedRobot {
 
@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
     private ControlScheme controls;
     private Action auto;
     private Teleop teleop;
+    private Compressor phCompressor;
 
     public Robot() {
         super(Config.Settings.CPU_PERIOD);
@@ -84,6 +85,13 @@ public class Robot extends TimedRobot {
             // This could only occur if the secondary controller is configured but the
             // primary controller isn't
             controls = new NullController();
+        }
+
+        try {
+            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
+            phCompressor.enableAnalog(60, 65);
+        } catch (RuntimeException ex) {
+            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
 
         new Thread(() -> {
