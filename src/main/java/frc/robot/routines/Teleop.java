@@ -12,6 +12,7 @@ import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
+import frc.robot.subsystems.turret.Claw;
 import frc.robot.subsystems.turret.ExtendRetract;
 import frc.robot.subsystems.turret.Pivot;
 import frc.robot.subsystems.turret.Swivel;
@@ -26,6 +27,7 @@ public class Teleop {
     private ExtendRetract turretExtendRetract;
     private Pivot turretPivot;
     private Swivel turretSwivel;
+    private Claw turretClaw;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -33,6 +35,7 @@ public class Teleop {
         turretExtendRetract = ExtendRetract.getInstance();
         turretPivot = Pivot.getInstance();
         turretSwivel = Swivel.getInstance();
+        turretClaw = Claw.getInstance();
     }
 
     public void init() {
@@ -92,18 +95,26 @@ public class Teleop {
         if (Math.abs(controls.getArmExtend()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
             turretExtendRetract.move(controls.getArmExtend());
         } else {
-            turretExtendRetract.move(0);
+            turretExtendRetract.stop();
         }
         if (Math.abs(controls.getArmPivot()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
             turretPivot.move(controls.getArmPivot());
         } else {
-            turretPivot.move(0);
+            turretPivot.stop();
         }
         if (Math.abs(controls.getArmSwivel()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
             turretSwivel.move(controls.getArmSwivel());
         } else {
-            turretSwivel.move(0);
+            turretSwivel.stop();
         }
+
+        if (controls.doOpenClaw()) {
+            turretClaw.openClaw();
+        }
+        else if (controls.doCloseClaw()) {
+            turretClaw.closeClaw();
+        }
+        
         // SmartDashboard.putNumber("turretExtendRetract.posInch", turretExtendRetract.getPositionInches());
         SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
         SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());

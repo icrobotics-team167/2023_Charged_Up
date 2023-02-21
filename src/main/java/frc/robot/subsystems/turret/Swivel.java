@@ -4,12 +4,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
 /**
  * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both sides.
- * 
- * 
+ * TODO: Find way to correct encoder values based off the limit switch
+ * TODO: Find out which limit switch we are hitting. 
+ * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
  */
 public class Swivel {
 
@@ -20,6 +22,8 @@ public class Swivel {
 
     private final double MAX_TURN_ANGLE = 60;
     private final double MAX_TURN_SPEED = 0.2;
+
+    private DigitalInput swivelSwitch;
 
     // Singleton
     public static Swivel instance;
@@ -54,6 +58,8 @@ public class Swivel {
 
         // Set up positon (Assuming it's centered when powered on)
         initialEncoderPosition = swivelEncoder.getPosition();
+
+        swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
     /**
@@ -106,5 +112,13 @@ public class Swivel {
      */
     private boolean tooFarRight() {
         return getPositionDegrees() > MAX_TURN_ANGLE;
+    }
+
+    /**
+     * Immediately stops the robot from swiveling
+     */
+    public void stop()
+    {
+        move(0);
     }
 }

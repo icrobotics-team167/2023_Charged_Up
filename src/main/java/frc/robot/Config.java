@@ -86,16 +86,14 @@ public class Config {
             // Pneumatic Hub Ports
             // Arm PH Ports
             // TEMPORARY VALUES
-            public static final int CLAW = 0;
+            public static final int OPEN_CLAW = 0;
+            public static final int CLOSE_CLAW = 2;
             
             // Digital Limit Switches
             // Temporary Values
-            public static final int EXTEND_RETRACT_FRONT = 0;
-            public static final int EXTEND_RETRACT_BACK = 1;
-            public static final int SWIVEL_CENTER = 2;
-            public static final int SWIVEL_ENDS = 3;
-            public static final int PIVOT_TOP = 4;
-            public static final int PIVOT_BOTTOM = 5;
+            public static final int EXTEND_RETRACT_SWITCH = 0;
+            public static final int SWIVEL_SWITCH = 1;
+            public static final int PIVOT_SWITCH = 2;
         }
 
     }

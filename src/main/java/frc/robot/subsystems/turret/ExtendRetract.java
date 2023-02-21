@@ -3,8 +3,16 @@ package frc.robot.subsystems.turret;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
+/**
+ * Extends and retracts the arm
+ * TODO: Find way to correct encoder values based off the limit switch
+ * TODO: Find out which limit switch we are hitting. 
+ * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
+ */
 public class ExtendRetract {
 
     private CANSparkMax extendRetractMotor;
@@ -13,6 +21,8 @@ public class ExtendRetract {
     private double initialEncoderPosition;
 
     private static final double MAX_EXTEND_SPEED = 0.2;
+
+    private DigitalInput extendRetractSwitch;
 
     // Singleton
     public static ExtendRetract instance;
@@ -45,6 +55,8 @@ public class ExtendRetract {
 
         // Set up encoder
         extendRetractEncoder = extendRetractMotor.getEncoder();
+
+        extendRetractSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
     }
 
     /**
@@ -76,5 +88,13 @@ public class ExtendRetract {
     public double getPositionInches(){
         double scalar = 1;
         return (extendRetractEncoder.getPosition() - initialEncoderPosition) * scalar;
+    }
+
+    /*
+     * Immediately stops the robot from extending/retracting
+     */
+    public void stop()
+    {
+        move(0);
     }
 }
