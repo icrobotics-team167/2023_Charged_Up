@@ -2,20 +2,20 @@ package frc.robot.routines.auto;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
+import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.PID;
-import frc.robot.controls.controlschemes.ControlScheme;
 
 public class AutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS ahrs;
+    private AHRS navx;
     private PID pidController;
     private boolean teleop;
     private ControlScheme controls;
@@ -37,7 +37,7 @@ public class AutoBalance extends Action {
     }
 
     /**
-     * Constructs a new AutoBalance auto routine.
+     * Constructs a new AutoBalance routine.
      * 
      * @param teleop   Whether or not it's being called in teleop mode (true) or
      *                 autonomous mode (false)
@@ -49,7 +49,7 @@ public class AutoBalance extends Action {
 
         // Initialize the navX
         try {
-            ahrs = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP);
             // DriverStation.reportError("Not really an error, successfully loaded navX",
             // true);
         } catch (RuntimeException ex) {
@@ -92,7 +92,7 @@ public class AutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
-        double pitch = ahrs.getPitch();
+        double pitch = navx.getPitch();
         if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
             pitch = 0.0;
         }
@@ -108,8 +108,6 @@ public class AutoBalance extends Action {
         } else {
             Subsystems.driveBase.stop();
         }
-
-        SmartDashboard.putNumber("AutoBalance.pidOutput", pidOutput);
     }
 
     /**

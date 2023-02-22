@@ -1,8 +1,9 @@
 package frc.robot.routines.auto;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
@@ -76,13 +77,19 @@ public class DriveStraight extends Action {
 
     // new code starts here:
     public void periodic() {
-        if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) {
+        if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) { // If the timeout isn't a sentinel value and the
+                                                                       // timeout has happened
+            // Stop the routine and stop the robot
             state = AutoState.DONE;
             Subsystems.driveBase.stop();
         }
 
+        // Compute the PID for keeping the robot straight
         double pidOutput = pidController.compute(navx.getYaw(), timer.get());
-        pidOutput = Math.min(1, Math.max(pidOutput, -1));
+        // Clamp the PID output
+        pidOutput = MathUtil.clamp(pidOutput, -1, 1);
+
+        // Move the robot
         Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
     }
 

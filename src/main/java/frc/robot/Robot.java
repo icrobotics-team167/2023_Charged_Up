@@ -1,14 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.cscore.UsbCamera;
-
-import java.time.Duration;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
 import frc.robot.controls.controllers.XBController;
@@ -17,20 +11,13 @@ import frc.robot.controls.controlschemes.DoubleController;
 import frc.robot.controls.controlschemes.NullController;
 import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
-import frc.robot.routines.Routine;
+import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
-import frc.robot.routines.auto.AutoBalance;
-import frc.robot.routines.auto.AutoRoutine;
-import frc.robot.routines.auto.DriveForwardsUntil;
-import frc.robot.routines.auto.SmartDriveStraight;
-import frc.robot.routines.auto.DriveStraight;
-import frc.robot.routines.auto.Wait;
 import frc.robot.subsystems.Subsystems;
 
 public class Robot extends TimedRobot {
 
-    private SendableChooser<AutoRoutine> autoChooser = new SendableChooser<>();
-    private DriverStation driverStation;
+    private SendableChooser<AutoRoutines> autoChooser = new SendableChooser<>();
     private ControlScheme controls;
     private Action auto;
     private Teleop teleop;
@@ -41,12 +28,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        autoChooser.setDefaultOption(AutoRoutine.NULL.name, AutoRoutine.NULL);
-        autoChooser.addOption(AutoRoutine.ENEMY_TENCH_RUN.name, AutoRoutine.ENEMY_TENCH_RUN);
-        autoChooser.addOption(AutoRoutine.SHOOT_3.name, AutoRoutine.SHOOT_3);
+        autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
+        autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
+        autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
-
-        // driverStation = DriverStation.getInstance();
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -86,28 +72,14 @@ public class Robot extends TimedRobot {
             controls = new NullController();
         }
 
-        new Thread(() -> {
-            UsbCamera camera = CameraServer.startAutomaticCapture();
-            // camera.setFPS(30);
-            // camera.setRessssa1olution(320, 240);
-        }).start();
-
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-        auto = new Routine(new Action[] {
-        
-                // Center auto
-
-                new DriveStraight(36, 0.5),
-        });
+        auto = autoChooser.getSelected().actions;
         teleop = new Teleop(controls);
     }
 
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putNumber("drive/leftEncoderPosition", Subsystems.driveBase.getLeftEncoderPosition());
-        SmartDashboard.putNumber("drive/rightEncoderPosition", Subsystems.driveBase.getRightEncoderPosition());
-        SmartDashboard.putNumber("drive/gyroAngle", Subsystems.driveBase.getAngle());
     }
 
     @Override
