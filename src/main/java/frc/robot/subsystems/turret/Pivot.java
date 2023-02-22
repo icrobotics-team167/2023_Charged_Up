@@ -23,12 +23,11 @@ public class Pivot {
     private double initialEncoderPosition;
 
     private DigitalInput pivotSwitch;
-
-    private static final double MAX_TURN_SPEED = 0.2;
-    private static final double INITIAL_PIVOT_ANGLE = 45;
-    private static final double MAX_PIVOT_ANGLE = 60;
-    private static final double MIN_PIVOT_ANGLE = 0;
-    private static final boolean OVERRIDE_ANGLE_LIMITS = true;
+    private static final double MAX_TURN_SPEED = 0.3;
+    private static final double INITIAL_PIVOT_ANGLE = 65;
+    private static final double MAX_PIVOT_ANGLE = 80;
+    private static final double MIN_PIVOT_ANGLE = -35;
+    private static final boolean OVERRIDE_ANGLE_LIMITS = false;
 
     // Singleton
     public static Pivot instance;
@@ -47,7 +46,7 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 45 degree angle on code boot.
+     * Assumes the arm is at a 65 degree angle up relative to the drive base on code boot.
      */
     private Pivot() {
         // Set up motors
