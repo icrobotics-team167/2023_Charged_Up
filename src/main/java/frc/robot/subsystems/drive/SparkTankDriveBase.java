@@ -115,16 +115,6 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         );
 
-        // Make sure the other 2 solenoid ports don't do anything
-        // TODO: Remove this when we actually do something with these ports
-
-        try (var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0)) {
-            port0.set(false);
-        }
-        try (var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2)) {
-            port2.set(false);
-        }
-
         voltageFilter = new MovingAverage(25, true);
     }
 
