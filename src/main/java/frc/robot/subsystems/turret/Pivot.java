@@ -27,7 +27,6 @@ public class Pivot {
     private static final double INITIAL_PIVOT_ANGLE = 65;
     private static final double MAX_PIVOT_ANGLE = 80;
     private static final double MIN_PIVOT_ANGLE = -35;
-    private static final boolean OVERRIDE_ANGLE_LIMITS = false;
 
     // Singleton
     public static Pivot instance;
