@@ -197,7 +197,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     /**
      * Sets whether or not to move at a slower speed or not.
      * 
-     * @param lowerGear Whether or not to move at slow mode. true for slower mode, false for normal mode.
+     * @param lowerGear Whether or not to move at slow mode. true for slower mode,
+     *                  false for normal mode.
      */
     @Override
     public void setLowerGear(boolean lowerGear) {
@@ -241,16 +242,28 @@ public class SparkTankDriveBase implements TankDriveBase {
         tankDrive(0, 0);
     }
 
+    /**
+     * Gets the encoder positon of the left side of the robots, in meters traveled.
+     */
     @Override
     public double getLeftEncoderPosition() {
         return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
+    /**
+     * Gets the encoder position of the right side of the robot, in meters traveled.
+     */
     @Override
     public double getRightEncoderPosition() {
         return encoderDistanceToMeters(rightEncoder.getPosition());
     }
 
+    /**
+     * Converts encoder ticks to meters traveled.
+     * 
+     * @param encoderValue The encoder position
+     * @return Meters traveled.
+     */
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 5.1 : 13.5;
         double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI;
@@ -258,6 +271,9 @@ public class SparkTankDriveBase implements TankDriveBase {
         return Units.inchesToMeters(encoderValue * wheelCircumferenceInches / gearRatio / scalar);
     }
 
+    /**
+     * Resets the encoders to 0.
+     */
     @Override
     public void resetEncoders() {
         leftEncoder.setPosition(0);
