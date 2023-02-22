@@ -34,13 +34,6 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
-
-        try {
-            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            phCompressor.enableAnalog(60, 65);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
-        }
         autoBalance = new AutoBalance(true, controls);
     }
 
