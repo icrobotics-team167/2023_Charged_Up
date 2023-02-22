@@ -2,9 +2,8 @@ package frc.robot.routines;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.Compressor;
+
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
@@ -21,7 +20,6 @@ public class Teleop {
 
     private AHRS navx;
     private AutoBalance autoBalance;
-    private Compressor phCompressor;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private ExtendRetract turretExtendRetract;
@@ -43,12 +41,7 @@ public class Teleop {
         // driveBase.setCoast();
         driveBase.resetEncoders();
 
-        try {
-            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            phCompressor.enableAnalog(60, 65);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
-        }
+        
         try {
             /***********************************************************************
              * navX-MXP:

@@ -49,8 +49,8 @@ public class SparkTankDriveBase implements TankDriveBase {
     private boolean highGear;
     private MovingAverage voltageFilter;
 
-    private double normalSpeed = 1;
-    private double slowSpeed = 0.5;
+    private double normalSpeed = 0.75;
+    private double slowSpeed = 0.375;
     private double speedMultiplier = normalSpeed;
 
     private final int SMART_CURRENT_LIMIT = 60;
@@ -153,10 +153,6 @@ public class SparkTankDriveBase implements TankDriveBase {
                 Config.Ports.SparkTank.LOW_GEAR
 
         );
-        var port0 = new Solenoid(2, PneumaticsModuleType.REVPH, 0);
-        var port2 = new Solenoid(2, PneumaticsModuleType.REVPH, 2);
-        port0.set(false);
-        port2.set(false);
 
         highGear = true;
 
