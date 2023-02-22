@@ -85,7 +85,6 @@ public class Pivot {
      */
     public void move(double speed) {
         SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
-        SmartDashboard.putNumber("Swivel.speed", speed);
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
         if (speed > 0 && !tooFarUp()) {
@@ -104,10 +103,7 @@ public class Pivot {
      *         degrees
      */
     private boolean tooFarUp() {
-        if (OVERRIDE_ANGLE_LIMITS) {
-            return false;
-        }
-        return !pivotSwitch.get();
+        return getPositionDegrees() >= MAX_PIVOT_ANGLE;
     }
 
     /**
@@ -116,10 +112,7 @@ public class Pivot {
      * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
     private boolean tooFarDown() {
-        if (OVERRIDE_ANGLE_LIMITS) {
-            return false;
-        }
-        return !pivotSwitch.get();
+        return getPositionDegrees() <= MIN_PIVOT_ANGLE;
     }
 
     /**

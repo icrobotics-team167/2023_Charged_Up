@@ -1,26 +1,17 @@
 package frc.robot.subsystems.drive;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
-import frc.robot.util.MovingAverage;;
+import frc.robot.util.MovingAverage;
 
 public class SparkTankDriveBase implements TankDriveBase {
-    private AHRS navx;
     private CANSparkMax leftMaster;
     private CANSparkMax leftSlave1;
     private CANSparkMax leftSlave2;
@@ -29,22 +20,6 @@ public class SparkTankDriveBase implements TankDriveBase {
     private CANSparkMax rightSlave2;
     private RelativeEncoder leftEncoder;
     private RelativeEncoder rightEncoder;
-    private boolean straightDriving;
-    private double straightDriveAngleSetpoint;
-    private PIDController straightDrivePID;
-    private final double STRAIGHT_DRIVE_KP = -0.015; // 0.02 works
-    private final double STRAIGHT_DRIVE_KI = 0;
-    private final double STRAIGHT_DRIVE_KD = 0;
-    private SparkMaxPIDController leftPID;
-    private final double LEFT_KP = 0.002; // last tried: 0.0001
-    private final double LEFT_KI = 0;
-    private final double LEFT_KD = 0;
-    private final double LEFT_KF = 0.000268; // with slower paths?: 0.00075
-    private SparkMaxPIDController rightPID;
-    private final double RIGHT_KP = 0.0015; // last tried: 0.0001
-    private final double RIGHT_KI = 0;
-    private final double RIGHT_KD = 0;
-    private final double RIGHT_KF = 0.000232; // with slower paths?: 0.00075
     private Solenoid Solenoid;
     private boolean highGear;
     private MovingAverage voltageFilter;
@@ -75,12 +50,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     private SparkTankDriveBase() {
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-        } catch (RuntimeException e) {
-            DriverStation.reportError("Error initializing the navX over SPI: " + e.toString(), e.getStackTrace());
-        }
-
+        // Initialize drive motors
         leftMaster = new CANSparkMax(Config.Ports.SparkTank.LEFT_1, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftSlave1 = new CANSparkMax(Config.Ports.SparkTank.LEFT_2, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftSlave2 = new CANSparkMax(Config.Ports.SparkTank.LEFT_3, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -88,19 +58,19 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave1 = new CANSparkMax(Config.Ports.SparkTank.RIGHT_2, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightSlave2 = new CANSparkMax(Config.Ports.SparkTank.RIGHT_3, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+        // Set drive motor settings
         leftMaster.restoreFactoryDefaults();
         rightMaster.restoreFactoryDefaults();
+
         leftMaster.setInverted(true);
         rightMaster.setInverted(false);
+
         leftMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightSlave2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-        leftEncoder = leftMaster.getEncoder();
-        rightEncoder = rightMaster.getEncoder();
 
         leftMaster.setSmartCurrentLimit(SMART_CURRENT_LIMIT);
         leftMaster.setSecondaryCurrentLimit(SECONDARY_CURRENT_LIMIT);
@@ -128,25 +98,16 @@ public class SparkTankDriveBase implements TankDriveBase {
         rightSlave2.setOpenLoopRampRate(0);
         rightSlave2.setClosedLoopRampRate(0);
 
-        straightDrivePID = new PIDController(STRAIGHT_DRIVE_KP, STRAIGHT_DRIVE_KI, STRAIGHT_DRIVE_KD);
-        straightDrivePID.setTolerance(0.4);
-
-        leftPID = leftMaster.getPIDController();
-        leftPID.setP(LEFT_KP);
-        leftPID.setI(LEFT_KI);
-        leftPID.setD(LEFT_KD);
-        leftPID.setFF(LEFT_KF);
-        rightPID = rightMaster.getPIDController();
-        rightPID.setP(RIGHT_KP);
-        rightPID.setI(RIGHT_KI);
-        rightPID.setD(RIGHT_KD);
-        rightPID.setFF(RIGHT_KF);
-
         leftSlave1.follow(leftMaster, false);
         leftSlave2.follow(leftMaster, false);
         rightSlave1.follow(rightMaster, false);
         rightSlave2.follow(rightMaster, false);
 
+        // Initialize drive encoders
+        leftEncoder = leftMaster.getEncoder();
+        rightEncoder = rightMaster.getEncoder();
+
+        // Initialize gear switching solenoids
         Solenoid = new Solenoid(
                 Config.Ports.SparkTank.PH,
                 PneumaticsModuleType.REVPH,
@@ -154,20 +115,34 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         );
 
-        highGear = true;
-
         voltageFilter = new MovingAverage(25, true);
     }
 
+    /**
+     * Drives using tank drive controls.
+     * 
+     * @param leftSpeed  The motor speeds for the left side of the robot. Between -1
+     *                   (100% speed backwards) and 1. (100% speed forwards)
+     * @param rightSpeed The motor speeds for the right side of the robot. Between
+     *                   -1
+     *                   (100% speed backwards) and 1. (100% speed forwards)
+     */
     @Override
     public void tankDrive(double leftSpeed, double rightSpeed) {
         double voltageMultiplier = adjustVoltage();
 
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
-        straightDriving = false;
     }
 
+    /**
+     * Drives using arcade drive controls.
+     * 
+     * @param throttle The throttle speed for the robot's forward motion. Between -1
+     *                 (100% speed backwards) and 1. (100% speed forwards)
+     * @param wheel    The speed for the robot's turning motion. Between -1 (100%
+     *                 speed clockwise) and 1. (100% speed counterclockwise)
+     */
     @Override
     public void arcadeDrive(double throttle, double wheel) {
         double voltageMultiplier = adjustVoltage();
@@ -189,6 +164,9 @@ public class SparkTankDriveBase implements TankDriveBase {
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
 
+    /**
+     * Toggles between high gear and low gear.
+     */
     @Override
     public void toggleGearing() {
         if (highGear) {
@@ -198,18 +176,30 @@ public class SparkTankDriveBase implements TankDriveBase {
         }
     }
 
+    /**
+     * Sets the drivetrain to high gear.
+     */
     @Override
     public void setHighGear() {
         Solenoid.set(true);
         highGear = true;
     }
 
+    /**
+     * Sets the drivetrain to low gear.
+     */
     @Override
     public void setLowGear() {
         Solenoid.set(false);
         highGear = false;
     }
 
+    /**
+     * Sets whether or not to move at a slower speed or not.
+     * 
+     * @param lowerGear Whether or not to move at slow mode. true for slower mode,
+     *                  false for normal mode.
+     */
     @Override
     public void setLowerGear(boolean lowerGear) {
         if (lowerGear) {
@@ -220,67 +210,60 @@ public class SparkTankDriveBase implements TankDriveBase {
         SmartDashboard.putBoolean("lowerGear", lowerGear);
     }
 
+    /**
+     * @return Whether or not the drivetrain is on high gear or not.
+     */
     @Override
     public boolean isHighGear() {
         return highGear;
     }
 
+    /**
+     * @return Whether or not the drivetrain is on low gear or not.
+     */
     @Override
     public boolean isLowGear() {
         return !highGear;
     }
 
+    /**
+     * @return Whether or not the drivetrain is on slow mode or not.
+     */
     @Override
     public boolean isLowerGear() {
         return speedMultiplier != 1;
     }
 
-    @Override
-    public void straightDrive(double speed) {
-        straightDrive(speed, true);
-    }
-
-    @Override
-    public void straightDrive(double speed, boolean newAngle) {
-        double voltageMultiplier = adjustVoltage();
-
-        if (!straightDriving) {
-            straightDriving = true;
-            straightDriveAngleSetpoint = newAngle ? navx.getAngle() : straightDriveAngleSetpoint;
-            straightDrivePID.setSetpoint(straightDriveAngleSetpoint);
-        }
-
-        double error = straightDrivePID.calculate(navx.getAngle());
-        leftMaster.set(MathUtil.clamp(speed - error, -1, 1) * voltageMultiplier);
-        rightMaster.set(MathUtil.clamp(speed + error, -1, 1) * voltageMultiplier);
-    }
-
+    /**
+     * Stops the drivetrain.
+     */
     @Override
     public void stop() {
         tankDrive(0, 0);
     }
 
-    @Override
-    public void pointTurn(double speed) {
-        leftMaster.set(speed);
-        rightMaster.set(-speed);
-    }
-
-    @Override
-    public double getAngle() {
-        return navx.getAngle();
-    }
-
+    /**
+     * Gets the encoder positon of the left side of the robots, in meters traveled.
+     */
     @Override
     public double getLeftEncoderPosition() {
         return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
+    /**
+     * Gets the encoder position of the right side of the robot, in meters traveled.
+     */
     @Override
     public double getRightEncoderPosition() {
         return encoderDistanceToMeters(rightEncoder.getPosition());
     }
 
+    /**
+     * Converts encoder ticks to meters traveled.
+     * 
+     * @param encoderValue The encoder position
+     * @return Meters traveled.
+     */
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 5.1 : 13.5;
         double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI;
@@ -288,28 +271,13 @@ public class SparkTankDriveBase implements TankDriveBase {
         return Units.inchesToMeters(encoderValue * wheelCircumferenceInches / gearRatio / scalar);
     }
 
+    /**
+     * Resets the encoders to 0.
+     */
     @Override
     public void resetEncoders() {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
-    }
-
-    @Override
-    public void setReferences(double leftMetersPerSecond, double rightMetersPerSecond) {
-        double leftSpeed = metersPerSecondToRPM(leftMetersPerSecond);
-        leftPID.setReference(leftSpeed, ControlType.kVelocity);
-        System.out.println("Left RPM: " + leftSpeed);
-
-        double rightSpeed = metersPerSecondToRPM(rightMetersPerSecond);
-        rightPID.setReference(rightSpeed, ControlType.kVelocity);
-        System.out.println("Right RPM: " + rightSpeed);
-
-        straightDriving = false;
-    }
-
-    @Override
-    public Rotation2d getGyroHeading() {
-        return Rotation2d.fromDegrees(-navx.getRate());
     }
 
     @Override
@@ -362,9 +330,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         SmartDashboard.putNumber("SparkTankDriveBase.voltage", filteredVoltage);
 
-        if (filteredVoltage < 10) {
+        if (filteredVoltage < MIN_VOLTAGE) {
             output = 0;
-        } else if (filteredVoltage >= 12) {
+        } else if (filteredVoltage >= NOMINAL_VOLTAGE) {
             output = 1;
         } else {
             output = (filteredVoltage / (NOMINAL_VOLTAGE - MIN_VOLTAGE))

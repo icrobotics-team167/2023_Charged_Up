@@ -74,7 +74,7 @@ public class PID {
      * @param currentValue The current input value. Used to calculate error from the
      *                     target and delta error.
      * @param currentTime  The current time. Used to calculate delta time.
-     * @return
+     * @return The PID output.
      */
     public double compute(double currentValue, double currentTime) {
         double currentError = target - currentValue;

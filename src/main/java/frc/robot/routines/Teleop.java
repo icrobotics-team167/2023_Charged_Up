@@ -1,11 +1,8 @@
 package frc.robot.routines;
 
-import com.kauailabs.navx.frc.AHRS;
-
-
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
@@ -18,7 +15,6 @@ import frc.robot.subsystems.turret.Swivel;
 
 public class Teleop {
 
-    private AHRS navx;
     private AutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
@@ -37,27 +33,13 @@ public class Teleop {
     }
 
     public void init() {
-        driveBase.setLowGear();
-        // driveBase.setCoast();
         driveBase.resetEncoders();
 
-        
         try {
-            /***********************************************************************
-             * navX-MXP:
-             * - Communication via RoboRIO MXP (SPI, I2C, TTL UART) and USB.
-             * - See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface.
-             * 
-             * navX-Micro:
-             * - Communication via I2C (RoboRIO MXP or Onboard) and USB.
-             * - See http://navx-micro.kauailabs.com/guidance/selecting-an-interface.
-             * 
-             * Multiple navX-model devices on a single robot are supported.
-             ************************************************************************/
-            navx = new AHRS(SPI.Port.kMXP);
-            DriverStation.reportError("Not really an error, successfully loaded navX", true);
+            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
+            phCompressor.enableAnalog(60, 65);
         } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
+            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
         autoBalance = new AutoBalance(true, controls);
     }
@@ -68,9 +50,6 @@ public class Teleop {
         } else if (controls.doSwitchLowGear()) {
             driveBase.setLowGear();
         }
-
-        SmartDashboard.putBoolean("High Gear", driveBase.isHighGear());
-        SmartDashboard.putNumber("IMU_Pitch", navx.getPitch());
 
         driveBase.setLowerGear(controls.doLowerGear());
         if (controls.doAutoBalance()) {
