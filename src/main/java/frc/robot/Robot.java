@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
         autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
         autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
         autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
