@@ -79,7 +79,8 @@ public class Robot extends TimedRobot {
 
         try {
             phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            phCompressor.enableAnalog(60, 65);
+            // phCompressor.enableAnalog(60, 65);
+            phCompressor.disable();
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
