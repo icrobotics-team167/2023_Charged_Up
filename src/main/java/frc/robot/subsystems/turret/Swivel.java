@@ -72,6 +72,7 @@ public class Swivel {
      *              negative values swivels counterclockwise.
      */
     public void move(double speed) {
+        speed *= -1; // Left-right inputs were backwards
         SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
