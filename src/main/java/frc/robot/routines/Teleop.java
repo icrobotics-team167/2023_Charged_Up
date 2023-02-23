@@ -61,14 +61,16 @@ public class Teleop {
         SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
         SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
 
-        if (controls.doOpenClaw()) {
-            turretClaw.openClaw();
-        }
-        else if (controls.doCloseClaw()) {
-            turretClaw.closeClaw();
-        }
-        
-        // SmartDashboard.putNumber("turretExtendRetract.posInch", turretExtendRetract.getPositionInches());
+        turretClaw.stopSolenoid();
+        // if (controls.doOpenClaw()) {
+        //     turretClaw.stopSolenoid();
+        // }
+        // else if (controls.doCloseClaw()) {
+        // turretClaw.closeClaw();
+        // }
+
+        // SmartDashboard.putNumber("turretExtendRetract.posInch",
+        // turretExtendRetract.getPositionInches());
         SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
         SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
     }
