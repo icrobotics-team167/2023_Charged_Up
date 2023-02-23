@@ -9,6 +9,7 @@ import frc.robot.Config;
 
 /**
  * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both sides.
+ * Disregard TODOs for now as we will be working with only encoder values for the time being
  * TODO: Find way to correct encoder values based off the limit switch
  * TODO: Find out which limit switch we are hitting. 
  * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
@@ -23,7 +24,7 @@ public class Swivel {
     private final double MAX_TURN_ANGLE = 60;
     private final double MAX_TURN_SPEED = 0.2;
 
-    private DigitalInput swivelSwitch;
+    // private DigitalInput swivelSwitch;
 
     // Singleton
     public static Swivel instance;
@@ -58,7 +59,7 @@ public class Swivel {
         // Set up positon (Assuming it's centered when powered on)
         initialEncoderPosition = swivelEncoder.getPosition();
 
-        swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
+        // swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
     /**

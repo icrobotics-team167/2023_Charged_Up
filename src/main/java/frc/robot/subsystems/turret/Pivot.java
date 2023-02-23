@@ -10,6 +10,7 @@ import frc.robot.Config;
 
 /**
  * Tilts the arm up and down
+ * Disregard TODOs for now as we will be working with only encoder values for the time being
  * TODO: Find way to correct encoder values based off the limit switch
  * TODO: Find out which limit switch we are hitting. 
  * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
@@ -22,10 +23,10 @@ public class Pivot {
 
     private double initialEncoderPosition;
 
-    private DigitalInput pivotSwitch;
+    // private DigitalInput pivotSwitch;
     private static final double MAX_TURN_SPEED = 0.3;
     private static final double INITIAL_PIVOT_ANGLE = 65;
-    private static final double MAX_PIVOT_ANGLE = 80;
+    private static final double MAX_PIVOT_ANGLE = 65;
     private static final double MIN_PIVOT_ANGLE = -35;
 
     // Singleton
@@ -71,7 +72,7 @@ public class Pivot {
 
         initialEncoderPosition = pivotEncoder.getPosition();
 
-        pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
+        // pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
     }
 
     /**
