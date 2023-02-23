@@ -95,6 +95,9 @@ public class ExtendRetract {
      * @return If the arm is too far in.
      */
     private boolean tooFarIn() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
     }
 
@@ -104,6 +107,9 @@ public class ExtendRetract {
      * @return If the arm is too far out.
      */
     private boolean tooFarOut() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionInches() >= MAX_EXTENSION - DECEL_DISTANCE;
     }
 
