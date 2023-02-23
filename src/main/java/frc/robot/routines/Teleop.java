@@ -61,6 +61,10 @@ public class Teleop {
         SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
         SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
 
+        turretPivot.move(controls.getArmPivot());
+
+        turretSwivel.move(controls.getArmSwivel());
+
         turretClaw.stopSolenoid();
         // if (controls.doOpenClaw()) {
         //     turretClaw.stopSolenoid();
