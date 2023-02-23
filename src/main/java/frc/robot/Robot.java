@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-        auto = autoChooser.getSelected().actions;
+
         teleop = new Teleop(controls);
     }
 
@@ -102,6 +102,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        auto = autoChooser.getSelected().actions;
         Subsystems.driveBase.resetEncoders();
         Subsystems.driveBase.setHighGear();
         auto.exec();
