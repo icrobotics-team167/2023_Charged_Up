@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
         autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
         autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
         autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
         autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
         Subsystems.driveBase.resetEncoders();
         Subsystems.driveBase.setHighGear();
         auto.exec();
-        System.out.println("Auto selected: " + autoChooser.getSelected().name);
+        // System.out.println("Auto selected: " + autoChooser.getSelected().name);
     }
 
     @Override
