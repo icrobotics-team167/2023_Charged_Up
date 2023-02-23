@@ -36,7 +36,7 @@ public class TestPivotArm extends Action {
 
     @Override
     public void done() {
-        // TODO Auto-generated method stub
+        pivot.stop();
         
     }
     
