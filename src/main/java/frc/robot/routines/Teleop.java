@@ -57,21 +57,9 @@ public class Teleop {
             }
         }
 
-        if (Math.abs(controls.getArmExtend()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretExtendRetract.move(controls.getArmExtend());
-        } else {
-            turretExtendRetract.stop();
-        }
-        if (Math.abs(controls.getArmPivot()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretPivot.move(controls.getArmPivot());
-        } else {
-            turretPivot.stop();
-        }
-        if (Math.abs(controls.getArmSwivel()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretSwivel.move(controls.getArmSwivel());
-        } else {
-            turretSwivel.stop();
-        }
+        turretExtendRetract.move(controls.getArmExtend());
+        SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
+        SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
 
         if (controls.doOpenClaw()) {
             turretClaw.openClaw();
