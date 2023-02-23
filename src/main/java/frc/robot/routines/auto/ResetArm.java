@@ -9,12 +9,15 @@ public class ResetArm extends Action {
     Pivot pivot;
     Swivel swivel;
 
-    @Override
-    public void init() {
+    public ResetArm() {
         claw = Claw.getInstance();
         extendRetract = ExtendRetract.getInstance();
         pivot = Pivot.getInstance();
         swivel = Swivel.getInstance();
+    }
+
+    @Override
+    public void init() {
     }
 
     @Override
