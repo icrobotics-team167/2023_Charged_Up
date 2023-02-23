@@ -1,17 +1,12 @@
 package frc.robot.routines;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
-import frc.robot.subsystems.turret.Claw;
-import frc.robot.subsystems.turret.ExtendRetract;
-import frc.robot.subsystems.turret.Pivot;
-import frc.robot.subsystems.turret.Swivel;
+import frc.robot.subsystems.turret.*;
 
 public class Teleop {
 
