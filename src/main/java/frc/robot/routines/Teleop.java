@@ -2,13 +2,13 @@ package frc.robot.routines;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
+import frc.robot.subsystems.turret.Claw;
 import frc.robot.subsystems.turret.ExtendRetract;
 import frc.robot.subsystems.turret.Pivot;
 import frc.robot.subsystems.turret.Swivel;
@@ -16,12 +16,12 @@ import frc.robot.subsystems.turret.Swivel;
 public class Teleop {
 
     private AutoBalance autoBalance;
-    private Compressor phCompressor;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private ExtendRetract turretExtendRetract;
     private Pivot turretPivot;
     private Swivel turretSwivel;
+    private Claw turretClaw;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -29,17 +29,11 @@ public class Teleop {
         turretExtendRetract = ExtendRetract.getInstance();
         turretPivot = Pivot.getInstance();
         turretSwivel = Swivel.getInstance();
+        turretClaw = Claw.getInstance();
     }
 
     public void init() {
         driveBase.resetEncoders();
-
-        try {
-            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            phCompressor.enableAnalog(60, 65);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
-        }
         autoBalance = new AutoBalance(true, controls);
     }
 
@@ -63,21 +57,26 @@ public class Teleop {
             }
         }
 
-        if (Math.abs(controls.getArmExtend()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretExtendRetract.move(controls.getArmExtend());
-        } else {
-            turretExtendRetract.move(0);
-        }
-        if (Math.abs(controls.getArmPivot()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretPivot.move(controls.getArmPivot());
-        } else {
-            turretPivot.move(0);
-        }
-        if (Math.abs(controls.getArmSwivel()) > Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE) {
-            turretSwivel.move(controls.getArmSwivel());
-        } else {
-            turretSwivel.move(0);
-        }
+        turretExtendRetract.move(controls.getArmExtend());
+        SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
+        SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
+
+        turretPivot.move(controls.getArmPivot());
+
+        turretSwivel.move(controls.getArmSwivel());
+
+        turretClaw.stopSolenoid();
+        // if (controls.doOpenClaw()) {
+        //     turretClaw.stopSolenoid();
+        // }
+        // else if (controls.doCloseClaw()) {
+        // turretClaw.closeClaw();
+        // }
+
+        // SmartDashboard.putNumber("turretExtendRetract.posInch",
+        // turretExtendRetract.getPositionInches());
+        SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
+        SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
     }
 
 }

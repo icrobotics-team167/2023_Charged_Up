@@ -3,9 +3,18 @@ package frc.robot.subsystems.turret;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
+/**
+ * Tilts the arm up and down
+ * Disregard TODOs for now as we will be working with only encoder values for the time being
+ * TODO: Find way to correct encoder values based off the limit switch
+ * TODO: Find out which limit switch we are hitting. 
+ * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
+ */
 public class Pivot {
 
     private CANSparkMax pivotMaster;
@@ -14,10 +23,11 @@ public class Pivot {
 
     private double initialEncoderPosition;
 
-    private static final double MAX_TURN_SPEED = 0.2;
-    private static final double INITIAL_PIVOT_ANGLE = 45;
-    private static final double MAX_PIVOT_ANGLE = 60;
-    private static final double MIN_PIVOT_ANGLE = 0;
+    // private DigitalInput pivotSwitch;
+    private static final double MAX_TURN_SPEED = 0.3;
+    private static final double INITIAL_PIVOT_ANGLE = 65;
+    private static final double MAX_PIVOT_ANGLE = 65;
+    private static final double MIN_PIVOT_ANGLE = -35;
 
     // Singleton
     public static Pivot instance;
@@ -36,7 +46,7 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 45 degree angle on code boot.
+     * Assumes the arm is at a 65 degree angle up relative to the drive base on code boot.
      */
     private Pivot() {
         // Set up motors
@@ -61,6 +71,8 @@ public class Pivot {
         pivotEncoder = pivotMaster.getEncoder();
 
         initialEncoderPosition = pivotEncoder.getPosition();
+
+        // pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
     }
 
     /**
@@ -109,5 +121,13 @@ public class Pivot {
     public double getPositionDegrees() {
         double scalar = -0.9;
         return (pivotEncoder.getPosition() - initialEncoderPosition) * scalar + INITIAL_PIVOT_ANGLE;
+    }
+
+    /*
+     * Immediately stops the robot from pivoting
+     */
+    public void stop()
+    {
+        move(0);
     }
 }
