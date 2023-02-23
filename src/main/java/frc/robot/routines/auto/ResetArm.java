@@ -23,10 +23,10 @@ public class ResetArm extends Action {
     @Override
     public void periodic() {
         claw.closeClaw();
-        if (extendRetract.getPositionInches() > ExtendRetract.MIN_EXTENSION) {
+        if (!extendRetract.tooFarIn()) {
             extendRetract.move(-1);
         }
-        if (pivot.getPositionDegrees() < Pivot.MAX_PIVOT_ANGLE) {
+        if (!pivot.tooFarUp()) {
             pivot.move(1);
         }
         if (swivel.getPositionDegrees() > 0) {
@@ -38,8 +38,8 @@ public class ResetArm extends Action {
 
     @Override
     public boolean isDone() {
-        if (extendRetract.getPositionInches() <= ExtendRetract.MIN_EXTENSION
-                && pivot.getPositionDegrees() >= Pivot.MAX_PIVOT_ANGLE
+        if (extendRetract.tooFarIn()
+                && pivot.tooFarUp()
                 && Math.abs(swivel.getPositionDegrees()) <= 0.5) {
             return true;
         }

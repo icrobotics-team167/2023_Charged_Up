@@ -27,7 +27,7 @@ public class ExtendRetract {
     private static final double START_EXTENSION = 3.5;
 
     private static final double MAX_EXTENSION = 35;
-    public static final double MIN_EXTENSION = 3.5;
+    private static final double MIN_EXTENSION = 3.5;
     private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
                                                       // to account for that
 
@@ -94,7 +94,7 @@ public class ExtendRetract {
      * 
      * @return If the arm is too far in.
      */
-    private boolean tooFarIn() {
+    public boolean tooFarIn() {
         if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
             return false;
         }
@@ -106,7 +106,7 @@ public class ExtendRetract {
      * 
      * @return If the arm is too far out.
      */
-    private boolean tooFarOut() {
+    public boolean tooFarOut() {
         if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
             return false;
         }
