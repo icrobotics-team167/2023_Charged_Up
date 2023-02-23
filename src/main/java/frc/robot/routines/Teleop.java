@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.routines.auto.AutoBalance;
+import frc.robot.routines.auto.PIDAutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
 import frc.robot.subsystems.turret.Claw;
@@ -15,7 +15,7 @@ import frc.robot.subsystems.turret.Swivel;
 
 public class Teleop {
 
-    private AutoBalance autoBalance;
+    private PIDAutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private ExtendRetract turretExtendRetract;
@@ -34,7 +34,7 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
-        autoBalance = new AutoBalance(true, controls);
+        autoBalance = new PIDAutoBalance(true, controls);
     }
 
     public void periodic() {

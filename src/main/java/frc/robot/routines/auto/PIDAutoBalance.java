@@ -11,7 +11,7 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
 import frc.robot.util.PID;
 
-public class AutoBalance extends Action {
+public class PIDAutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
@@ -32,7 +32,7 @@ public class AutoBalance extends Action {
     /**
      * Constructs a new AutoBalance auto routine.
      */
-    public AutoBalance() {
+    public PIDAutoBalance() {
         this(false, null);
     }
 
@@ -44,7 +44,7 @@ public class AutoBalance extends Action {
      * @param controls If in teleop, takes the ControlScheme of the primary
      *                 controller for checking whether to stop or not.
      */
-    public AutoBalance(boolean teleop, ControlScheme controls) {
+    public PIDAutoBalance(boolean teleop, ControlScheme controls) {
         super();
 
         // Initialize the navX

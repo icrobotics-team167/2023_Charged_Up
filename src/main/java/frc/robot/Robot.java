@@ -14,6 +14,7 @@ import frc.robot.controls.controlschemes.DoubleController;
 import frc.robot.controls.controlschemes.NullController;
 import frc.robot.controls.controlschemes.SingleController;
 import frc.robot.routines.Action;
+import frc.robot.routines.Routine;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
@@ -33,12 +34,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
-        autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
-        autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
-        autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
-        autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        SmartDashboard.putData("Autonomous Routines", autoChooser);
+        // autoChooser.setDefaultOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        // autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        // autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
+        // autoChooser.addOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
+        // autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
+        // autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        // SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -88,7 +90,8 @@ public class Robot extends TimedRobot {
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-        auto = autoChooser.getSelected().actions;
+        auto = new Routine(new Action[] {
+                new NaiveAutoBalance()});
         teleop = new Teleop(controls);
     }
 
