@@ -2,14 +2,14 @@ package frc.robot.routines.auto;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
-import frc.robot.util.PeriodicTimer;
-import frc.robot.util.PID;
+import frc.robot.util.*;
 
 public class PIDAutoBalance extends Action {
 
@@ -19,6 +19,7 @@ public class PIDAutoBalance extends Action {
     private PID pidController;
     private boolean teleop;
     private ControlScheme controls;
+    private MovingAverage pitchFilter;
 
     // Whether or not to actually drive when running code (DEBUG ONLY)
     private final boolean MOTORS_ENABLED = true;
@@ -62,6 +63,9 @@ public class PIDAutoBalance extends Action {
 
         // Initialize timer
         timer = new PeriodicTimer();
+
+        // Initialize moving average filter
+        pitchFilter = new MovingAverage(25, true);
     }
 
     /**
@@ -84,6 +88,7 @@ public class PIDAutoBalance extends Action {
         // P: 0.4 / 12 * -1
         // I: 0
         // D: 0.01
+
     }
 
     /**
@@ -92,15 +97,23 @@ public class PIDAutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
+        // Get the robot's pitch
         double pitch = navx.getPitch();
-        if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
-            pitch = 0.0;
-        }
-        double pidOutput = pidController.compute(pitch, timer.get());
 
-        // Clamp pidOutput to be between -maxOutput and maxOutput
-        pidOutput = Math.max(pidOutput, -MAX_OUTPUT);
-        pidOutput = Math.min(pidOutput, MAX_OUTPUT);
+        // Smooth the pitch values with a moving average filter
+        pitchFilter.add(pitch);
+        double pitchFilterOut = pitchFilter.get();
+
+        // If the pitch is less than SENSITIVITY_THRESHOLD, don't move the robot
+        if (Math.abs(pitchFilterOut) < SENSITIVITY_THRESHOLD) {
+            pitchFilterOut = 0.0;
+        }
+
+        // Compute the PID
+        double pidOutput = pidController.compute(pitchFilterOut, timer.get());
+
+        // Clamp pidOutput to be between -MAX_OUTPUT and MAX_OUTPUT
+        pidOutput = MathUtil.clamp(pidOutput, -MAX_OUTPUT, MAX_OUTPUT);
 
         // Ignore dead code warnings here
         if (MOTORS_ENABLED && pidOutput != 0) {
