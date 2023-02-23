@@ -102,6 +102,9 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees counterclockwise
      */
     private boolean tooFarLeft() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() < -MAX_TURN_ANGLE;
     }
 
@@ -111,6 +114,9 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees clockwise
      */
     private boolean tooFarRight() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() > MAX_TURN_ANGLE;
     }
 

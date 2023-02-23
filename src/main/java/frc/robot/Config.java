@@ -20,6 +20,8 @@ public class Config {
         // CPU period (seconds)
         public static final double CPU_PERIOD = 0.02;
 
+        // Arm angle limit override
+        public static final boolean OVERRIDE_ARM_ANGLE_LIMITS = false;
     }
 
     public static final class Tolerances {

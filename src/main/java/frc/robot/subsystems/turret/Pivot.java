@@ -103,6 +103,9 @@ public class Pivot {
      *         degrees
      */
     private boolean tooFarUp() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() >= MAX_PIVOT_ANGLE;
     }
 
@@ -112,6 +115,9 @@ public class Pivot {
      * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
     private boolean tooFarDown() {
+        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+            return false;
+        }
         return getPositionDegrees() <= MIN_PIVOT_ANGLE;
     }
 
