@@ -50,4 +50,9 @@ public class Claw {
         openClaw.set(false);
         closeClaw.set(true);
     }
+
+    public void stopSolenoid() {
+        openClaw.set(false);
+        closeClaw.set(false);
+    }
 }
