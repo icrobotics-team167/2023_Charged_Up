@@ -9,9 +9,12 @@ import frc.robot.Config;
 
 /**
  * Extends and retracts the arm
+ * Disregard TODOs for now as we will be working with only encoder values for
+ * the time being
  * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting. 
- * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
+ * TODO: Find out which limit switch we are hitting.
+ * One limit switch is triggered by both ends so we need a method to figure out
+ * which one we are hitting.
  */
 public class ExtendRetract {
 
@@ -20,9 +23,15 @@ public class ExtendRetract {
 
     private double initialEncoderPosition;
 
-    private static final double MAX_EXTEND_SPEED = 0.2;
+    private static final double MAX_EXTEND_SPEED = 0.3;
+    private static final double START_EXTENSION = 3.5;
 
-    private DigitalInput extendRetractSwitch;
+    private static final double MAX_EXTENSION = 35;
+    private static final double MIN_EXTENSION = 3.5;
+    private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
+                                                      // to account for that
+
+    // private DigitalInput extendRetractSwitch;
 
     // Singleton
     public static ExtendRetract instance;
@@ -30,7 +39,8 @@ public class ExtendRetract {
     /**
      * Allows only one instance of ExtendRetract to exist at once.
      * 
-     * @return An instance of ExtendRetract. Creates a new one if it doesn't exist already.
+     * @return An instance of ExtendRetract. Creates a new one if it doesn't exist
+     *         already.
      */
     public static ExtendRetract getInstance() {
         if (instance == null) {
@@ -55,8 +65,10 @@ public class ExtendRetract {
 
         // Set up encoder
         extendRetractEncoder = extendRetractMotor.getEncoder();
+        initialEncoderPosition = extendRetractEncoder.getPosition();
 
-        extendRetractSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
+        // extendRetractSwitch = new
+        // DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
     }
 
     /**
@@ -77,24 +89,47 @@ public class ExtendRetract {
         }
     }
 
+    /**
+     * Gets whether or not the arm is too far in.
+     * 
+     * @return If the arm is too far in.
+     */
     private boolean tooFarIn() {
-        return false;
+        return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
     }
 
+    /**
+     * Gets whether or not the arm is too far out.
+     * 
+     * @return If the arm is too far out.
+     */
     private boolean tooFarOut() {
-        return false;
+        return getPositionInches() >= MAX_EXTENSION - DECEL_DISTANCE;
     }
 
-    public double getPositionInches(){
-        double scalar = 1;
-        return (extendRetractEncoder.getPosition() - initialEncoderPosition) * scalar;
+    /**
+     * Gets the raw encoder position.
+     * 
+     * @return The raw encoder position.
+     */
+    public double getRawPosition() {
+        return extendRetractEncoder.getPosition();
+    }
+
+    /**
+     * Gets the position of the arm's extension in inches.
+     * 
+     * @return The position in inches.
+     */
+    public double getPositionInches() {
+        double scalar = -0.113;
+        return (extendRetractEncoder.getPosition() - initialEncoderPosition) * scalar + START_EXTENSION;
     }
 
     /*
      * Immediately stops the robot from extending/retracting
      */
-    public void stop()
-    {
+    public void stop() {
         move(0);
     }
 }
