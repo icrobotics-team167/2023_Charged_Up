@@ -34,7 +34,7 @@ public enum AutoRoutines {
             new NullAction(),
     })),
     TEST_PIVOT_ARM("TEST:Pivot Arm", new Routine(new Action[] {
-        // TODO: Make an auto routine for pivoting the arm
+        new TestPivotArm(-1, -35),
     }));
 
     public String name;

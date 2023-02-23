@@ -8,6 +8,12 @@ public class TestPivotArm extends Action {
     Pivot pivot;
     double pivotSpeed;
     double pivotAngle;
+
+    /**
+     * Constructs a new TestPivotArm auto routine.
+     * @param speed The speed to pivot the arm at.
+     * @param angle The target angle.
+     */
     public TestPivotArm(double speed, double angle) {
         pivotSpeed = speed;
         pivotAngle = angle;
@@ -26,9 +32,12 @@ public class TestPivotArm extends Action {
 
     @Override
     public boolean isDone() {
-        if (pivotAngle > 0 && pivot.getPositionDegrees() >= pivotAngle) {
+        if (pivotSpeed == 0) {
             return true;
-        } else if (pivotAngle <= 0 && pivot.getPositionDegrees() <= pivotAngle) {
+        }
+        if (pivotSpeed > 0 && pivot.getPositionDegrees() >= pivotAngle) {
+            return true;
+        } else if (pivotSpeed < 0 && pivot.getPositionDegrees() <= pivotAngle) {
             return true;
         }
         return false;
