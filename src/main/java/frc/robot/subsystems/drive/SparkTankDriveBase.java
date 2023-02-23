@@ -25,7 +25,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private MovingAverage voltageFilter;
 
     private double normalSpeed = 1;
-    private double slowSpeed = 0.5;
+    private double slowSpeed = normalSpeed * 0.5;
     private double speedMultiplier = normalSpeed;
 
     private final int SMART_CURRENT_LIMIT = 60;
@@ -326,25 +326,26 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         double voltage = RobotController.getBatteryVoltage();
 
+        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
+
         // Moving average filter
         voltageFilter.add(voltage);
         double filteredVoltage = voltageFilter.get();
 
-        SmartDashboard.putNumber("SparkTankDriveBase.voltage", filteredVoltage);
+        SmartDashboard.putNumber("SparkTankDriveBase.filteredVoltage", filteredVoltage);
 
         if (filteredVoltage < MIN_VOLTAGE) {
-            output = 0;
+            output = MIN_MULTIPLIER;
         } else if (filteredVoltage >= NOMINAL_VOLTAGE) {
             output = 1;
         } else {
-            output = ((filteredVoltage * (1 - MIN_MULTIPLIER)) / (NOMINAL_VOLTAGE - MIN_VOLTAGE))
-                    - ((MIN_VOLTAGE * (1 - MIN_MULTIPLIER)) / (NOMINAL_VOLTAGE - MIN_VOLTAGE)) + MIN_VOLTAGE;
-            // a = MIN_VOLTAGE
-            // b = NOMINAL_VOLTAGE
-            // c = MIN_MULTIPLIER
+            var a = MIN_VOLTAGE;
+            var b = NOMINAL_VOLTAGE;
+            var c = MIN_MULTIPLIER;
             // y = output
-            // x = voltage
+            var x = filteredVoltage;
             // y = (x(1-c))/(b-a) - (a(1-c)/(b-a)) + c
+            output = (x * (1 - c)) / (b - a) - (a * (1 - c) / (b - a)) + c;
         }
         SmartDashboard.putNumber("SparkTankDriveBase.voltageMultiplier", output);
         return output;

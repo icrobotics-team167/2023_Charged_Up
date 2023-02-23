@@ -2,6 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
@@ -14,6 +17,7 @@ import frc.robot.routines.Action;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
+import java.time.Duration;
 
 public class Robot extends TimedRobot {
 
@@ -21,6 +25,7 @@ public class Robot extends TimedRobot {
     private ControlScheme controls;
     private Action auto;
     private Teleop teleop;
+    private Compressor phCompressor;
 
     public Robot() {
         super(Config.Settings.CPU_PERIOD);
@@ -31,6 +36,7 @@ public class Robot extends TimedRobot {
         autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
         autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
         autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
         autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
@@ -72,6 +78,14 @@ public class Robot extends TimedRobot {
             controls = new NullController();
         }
 
+        try {
+            phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
+            // phCompressor.enableAnalog(60, 65);
+            phCompressor.disable();
+        } catch (RuntimeException ex) {
+            DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
+        }
+
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
         auto = autoChooser.getSelected().actions;
@@ -87,7 +101,7 @@ public class Robot extends TimedRobot {
         Subsystems.driveBase.resetEncoders();
         Subsystems.driveBase.setHighGear();
         auto.exec();
-        System.out.println("Auto selected: " + autoChooser.getSelected().name);
+        // System.out.println("Auto selected: " + autoChooser.getSelected().name);
     }
 
     @Override
