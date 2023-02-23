@@ -123,7 +123,7 @@ public class Pivot {
         return (pivotEncoder.getPosition() - initialEncoderPosition) * scalar + INITIAL_PIVOT_ANGLE;
     }
 
-    /*
+    /**
      * Immediately stops the robot from pivoting
      */
     public void stop()
