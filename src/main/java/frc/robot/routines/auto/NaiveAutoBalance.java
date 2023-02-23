@@ -24,8 +24,9 @@ public class NaiveAutoBalance extends Action {
     // The max output that can be sent to the motors. The proportional value also
     // scales off this.
     // private final double MAX_OUTPUT = 0.4;
+    private final double DRIVE_TIME = 0.25;
     // Time to wait between every time the robot moves in seconds
-    private final double WAIT_TIME = 0.5;
+    private final double WAIT_TIME = 1;
     private boolean stop = false;
 
     /**
@@ -79,28 +80,26 @@ public class NaiveAutoBalance extends Action {
      */
     public void periodic() {
         if (stop) {
-            if(timer.hasElapsed(1))
-            {
-                stop=false;
+            if (timer.hasElapsed(WAIT_TIME)) {
+                stop = false;
                 timer.reset();
             } else {
                 Subsystems.driveBase.stop();
             }
-            
+
         } else {
-            if(timer.hasElapsed(.25))
-            {
-                stop=true;
+            if (timer.hasElapsed(DRIVE_TIME)) {
+                stop = true;
                 timer.reset();
             } else {
                 // double pitch = navx.getPitch();
                 // if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
-                //     pitch = 0.0;
+                // pitch = 0.0;
                 // }
                 Subsystems.driveBase.arcadeDrive(0.1, 0);
             }
         }
-    }  
+    }
 
     /**
      * @return If the routine is done or not.
