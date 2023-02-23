@@ -1,31 +1,53 @@
 package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
+import frc.robot.subsystems.turret.*;
 
 public class ResetArm extends Action {
+    Claw claw;
+    ExtendRetract extendRetract;
+    Pivot pivot;
+    Swivel swivel;
 
     @Override
     public void init() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'init'");
+        claw = Claw.getInstance();
+        extendRetract = ExtendRetract.getInstance();
+        pivot = Pivot.getInstance();
+        swivel = Swivel.getInstance();
     }
 
     @Override
     public void periodic() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'periodic'");
+        claw.closeClaw();
+        if (extendRetract.getPositionInches() > ExtendRetract.MIN_EXTENSION) {
+            extendRetract.move(-1);
+        }
+        if (pivot.getPositionDegrees() < Pivot.MAX_PIVOT_ANGLE) {
+            pivot.move(1);
+        }
+        if (swivel.getPositionDegrees() > 0) {
+            swivel.move(-1);
+        } else if (swivel.getPositionDegrees() < 0) {
+            swivel.move(1);
+        }
     }
 
     @Override
     public boolean isDone() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isDone'");
+        if (extendRetract.getPositionInches() <= ExtendRetract.MIN_EXTENSION
+                && pivot.getPositionDegrees() >= Pivot.MAX_PIVOT_ANGLE
+                && Math.abs(swivel.getPositionDegrees()) <= 0.5) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void done() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'done'");
+        extendRetract.stop();
+        pivot.stop();
+        swivel.stop();
     }
 
 }
