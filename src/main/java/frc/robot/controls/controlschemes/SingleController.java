@@ -17,7 +17,7 @@ public class SingleController extends ControlScheme {
     @Override
     public double getTankLeftSpeed() {
         double speed = primary.getLeftStickY();
-        if (Config.Settings.TANK_DEAD_ZONE_ENABLED
+        if (Config.Settings.PRIMARY_DEADZONE_ENABLED
                 && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
@@ -27,7 +27,7 @@ public class SingleController extends ControlScheme {
     @Override
     public double getTankRightSpeed() {
         double speed = primary.getRightStickY();
-        if (Config.Settings.TANK_DEAD_ZONE_ENABLED
+        if (Config.Settings.PRIMARY_DEADZONE_ENABLED
                 && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
@@ -37,7 +37,7 @@ public class SingleController extends ControlScheme {
     @Override
     public double getArcadeThrottle() {
         double speed = primary.getLeftStickY();
-        if (Config.Settings.TANK_DEAD_ZONE_ENABLED
+        if (Config.Settings.PRIMARY_DEADZONE_ENABLED
                 && Math.abs(speed) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             speed = 0;
         }
@@ -47,7 +47,7 @@ public class SingleController extends ControlScheme {
     @Override
     public double getArcadeWheel() {
         double wheel = primary.getRightStickX();
-        if (Config.Settings.TANK_DEAD_ZONE_ENABLED
+        if (Config.Settings.PRIMARY_DEADZONE_ENABLED
                 && Math.abs(wheel) < Math.abs(Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE)) {
             wheel = 0;
         }
