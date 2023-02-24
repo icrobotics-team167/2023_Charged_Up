@@ -82,8 +82,7 @@ public class Robot extends TimedRobot {
 
         try {
             phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            // phCompressor.enableAnalog(60, 65);
-            phCompressor.disable();
+            phCompressor.enableAnalog(60, 65);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
@@ -91,7 +90,14 @@ public class Robot extends TimedRobot {
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
         auto = new Routine(new Action[] {
-                new NaiveAutoBalance()});
+                new DriveForwardsUntil(
+                    navx -> navx.getPitch() >= 8,
+                    0.15,
+                    Duration.ofMillis(5500)),
+                new DriveStraight(20, 0.2, 2),
+                new NaiveAutoBalance()
+                // new PIDAutoBalance()
+            });
         teleop = new Teleop(controls);
     }
 

@@ -95,7 +95,8 @@ public class ExtendRetract {
      * @return If the arm is too far in.
      */
     private boolean tooFarIn() {
-        return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
+        // return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
+        return false;
     }
 
     /**

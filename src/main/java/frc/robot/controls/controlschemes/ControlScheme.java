@@ -37,4 +37,8 @@ public abstract class ControlScheme {
     public abstract double getArmPivot();
 
     public abstract double getArmExtend();
+
+
+    // add brake
+    public abstract boolean getBrake();
 }

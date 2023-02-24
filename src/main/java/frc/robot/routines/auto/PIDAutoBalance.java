@@ -25,10 +25,10 @@ public class PIDAutoBalance extends Action {
     private final boolean MOTORS_ENABLED = true;
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
-    private final double SENSITIVITY_THRESHOLD = 3;
+    private final double SENSITIVITY_THRESHOLD = 4;
     // The max output that can be sent to the motors. The proportional value also
     // scales off this.
-    private final double MAX_OUTPUT = 0.4;
+    private final double MAX_OUTPUT = 0.15;
 
     /**
      * Constructs a new AutoBalance auto routine.
@@ -78,11 +78,11 @@ public class PIDAutoBalance extends Action {
         // Max pitch value we saw was +-12, scaling proportional coefficient to that
         // * -1 is there to flip the output values around (positive pitch means we want
         // to drive backwards)
-        double proportionalCoefficient = MAX_OUTPUT / 12.0 * -1;
+        double proportionalCoefficient = MAX_OUTPUT / 12.0 * -0.6;
         // Target pitch value.
         double target = 0.0;
-        pidController = new PID(proportionalCoefficient, 0, 0.01, timer.get(), target, 0);
-        // Known working values:
+        pidController = new PID(proportionalCoefficient, 0, 0.0, timer.get(), target, 0);
+        // Known working values before arm:
         // Max Output: 0.4
         // Sensitivity threshold: 3
         // P: 0.4 / 12 * -1
@@ -114,6 +114,7 @@ public class PIDAutoBalance extends Action {
 
         // Clamp pidOutput to be between -MAX_OUTPUT and MAX_OUTPUT
         pidOutput = MathUtil.clamp(pidOutput, -MAX_OUTPUT, MAX_OUTPUT);
+        SmartDashboard.putNumber("pidOutput", pidOutput);
 
         // Ignore dead code warnings here
         if (MOTORS_ENABLED && pidOutput != 0) {

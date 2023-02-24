@@ -103,4 +103,10 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return 0;
     }
+
+    @Override
+    public boolean getBrake() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

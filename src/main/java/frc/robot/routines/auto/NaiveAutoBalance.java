@@ -9,6 +9,7 @@ import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
+// import frc.robot.subsystems.drive.TankDriveBase;
 
 public class NaiveAutoBalance extends Action {
 
@@ -23,11 +24,17 @@ public class NaiveAutoBalance extends Action {
     private final double SENSITIVITY_THRESHOLD = 3;
     // The max output that can be sent to the motors. The proportional value also
     // scales off this.
-    // private final double MAX_OUTPUT = 0.4;
-    private final double DRIVE_TIME = 0.25;
+
+    // Potential change: Add these to the constructor?
+    // Speed at which the robot moves while driving
+    private double speed = 0.6;
+
+    // How long the robot moves each time it moves
+    private double driveTime = 0.2;
     // Time to wait between every time the robot moves in seconds
-    private final double WAIT_TIME = 1;
+    private double waitTime = 1;
     private boolean stop = false;
+    boolean done=false;
 
     /**
      * Constructs a new AutoBalance auto routine.
@@ -79,24 +86,40 @@ public class NaiveAutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
+        if (done) {
+            Subsystems.driveBase.stop();
+            return;
+        }
+        double pitch = navx.getPitch();
+
+        if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
+            Subsystems.driveBase.stop();
+            done = true;
+            return;
+        }
+
         if (stop) {
-            if (timer.hasElapsed(WAIT_TIME)) {
+            if (timer.hasElapsed(waitTime)) {
                 stop = false;
                 timer.reset();
             } else {
-                Subsystems.driveBase.stop();
+                Subsystems.driveBase.arcadeDrive(0.05, 0);
             }
 
         } else {
-            if (timer.hasElapsed(DRIVE_TIME)) {
+            if (timer.hasElapsed(driveTime)) {
                 stop = true;
                 timer.reset();
             } else {
-                // double pitch = navx.getPitch();
-                // if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
-                // pitch = 0.0;
-                // }
-                Subsystems.driveBase.arcadeDrive(0.1, 0);
+                SmartDashboard.putNumber("pitch", pitch);
+                if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
+                    Subsystems.driveBase.arcadeDrive(pitch/Math.abs(pitch)*0.33, 0);
+                }
+                else
+                {
+                    done = true;
+                    Subsystems.driveBase.arcadeDrive(-pitch/Math.abs(pitch)*0.05, 0);
+                }
             }
         }
     }
@@ -114,7 +137,7 @@ public class NaiveAutoBalance extends Action {
         }
         // There's no code for handling how long it should be autobalancing for during
         // auto as we don't expect any other auto routines to come after autoBalance
-        return false;
+        return done;
     }
 
     @Override

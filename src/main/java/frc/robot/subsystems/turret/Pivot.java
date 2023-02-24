@@ -103,7 +103,8 @@ public class Pivot {
      *         degrees
      */
     private boolean tooFarUp() {
-        return getPositionDegrees() >= MAX_PIVOT_ANGLE;
+        // return getPositionDegrees() >= MAX_PIVOT_ANGLE;
+        return false;
     }
 
     /**
