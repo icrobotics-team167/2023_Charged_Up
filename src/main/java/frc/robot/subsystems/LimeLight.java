@@ -24,5 +24,5 @@ public class LimeLight {
                                              // LimeLight API)
     private double targetAreaOfVision; // The percentage of the vision the target is taking up, from 0 (No target) to
                                        // 100 (Target takes up the entire FOV)
-    
+    private double aprilTagID;
 }
