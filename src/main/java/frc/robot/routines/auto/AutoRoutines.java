@@ -1,6 +1,7 @@
 package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
+import frc.robot.routines.auto.*;
 import frc.robot.routines.Routine;
 import java.time.Duration;
 
@@ -34,7 +35,7 @@ public enum AutoRoutines {
             new NullAction(),
     })),
     TEST_PIVOT_ARM("TEST:Pivot Arm", new Routine(new Action[] {
-        new TestPivotArm(-1, -35),
+        // new TestPivotArm(-1, -35),
     }));
 
     public String name;
