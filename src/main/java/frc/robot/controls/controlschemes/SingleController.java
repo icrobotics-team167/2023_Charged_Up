@@ -2,7 +2,6 @@ package frc.robot.controls.controlschemes;
 
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
 
 public class SingleController extends ControlScheme {
 
@@ -74,6 +73,12 @@ public class SingleController extends ControlScheme {
         return primary.getYButton();
     }
 
+    @Override
+    public boolean toggleCameraMode() {
+        return primary.getLeftBumperToggled();
+    }
+
+    // Arm Controls
     @Override
     public boolean doOpenClaw() {
         // TODO Auto-generated method stub

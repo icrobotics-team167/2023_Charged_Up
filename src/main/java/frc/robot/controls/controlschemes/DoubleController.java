@@ -2,7 +2,6 @@ package frc.robot.controls.controlschemes;
 
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
 
 public class DoubleController extends ControlScheme {
 
@@ -74,6 +73,11 @@ public class DoubleController extends ControlScheme {
     @Override
     public boolean doAutoBalance() {
         return primary.getYButton();
+    }
+
+    @Override
+    public boolean toggleCameraMode() {
+        return primary.getLeftBumperToggled();
     }
 
     @Override

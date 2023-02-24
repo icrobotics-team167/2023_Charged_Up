@@ -24,6 +24,8 @@ public abstract class ControlScheme {
     // Autobalance
     public abstract boolean doAutoBalance();
 
+    public abstract boolean toggleCameraMode();
+
     // Turret (Secondary controller)
 
     // Claw

@@ -69,4 +69,10 @@ public class NullController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean toggleCameraMode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toggleCameraMode'");
+    }
 }
