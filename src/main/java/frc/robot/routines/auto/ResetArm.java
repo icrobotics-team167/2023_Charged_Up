@@ -30,9 +30,9 @@ public class ResetArm extends Action {
             pivot.move(1);
         }
         if (swivel.getPositionDegrees() > 0) {
-            swivel.move(-1);
+            swivel.move(-0.5);
         } else if (swivel.getPositionDegrees() < 0) {
-            swivel.move(1);
+            swivel.move(0.5);
         }
     }
 

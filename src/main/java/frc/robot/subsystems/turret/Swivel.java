@@ -8,11 +8,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
 /**
- * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both sides.
- * Disregard TODOs for now as we will be working with only encoder values for the time being
+ * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both
+ * sides.
+ * Disregard TODOs for now as we will be working with only encoder values for
+ * the time being
  * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting. 
- * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
+ * TODO: Find out which limit switch we are hitting.
+ * One limit switch is triggered by both ends so we need a method to figure out
+ * which one we are hitting.
  */
 public class Swivel {
 
@@ -22,7 +25,7 @@ public class Swivel {
     private double initialEncoderPosition;
 
     private final double MAX_TURN_ANGLE = 60;
-    private final double MAX_TURN_SPEED = 0.2;
+    private final double MAX_TURN_SPEED = 0.4;
 
     // private DigitalInput swivelSwitch;
 
@@ -49,7 +52,7 @@ public class Swivel {
         swivelMotor = new CANSparkMax(Config.Ports.Arm.SWIVEL, CANSparkMaxLowLevel.MotorType.kBrushless);
         swivelMotor.restoreFactoryDefaults();
         swivelMotor.setInverted(false);
-        swivelMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        swivelMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         swivelMotor.setSmartCurrentLimit(60);
         swivelMotor.setSecondaryCurrentLimit(80);
 
@@ -123,8 +126,7 @@ public class Swivel {
     /**
      * Immediately stops the robot from swiveling
      */
-    public void stop()
-    {
+    public void stop() {
         move(0);
     }
 }
