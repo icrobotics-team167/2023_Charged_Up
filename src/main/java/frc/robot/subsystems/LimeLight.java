@@ -142,6 +142,11 @@ public class LimeLight {
         return aprilTagID;
     }
 
+    /**
+     * If a valid trackable object exists, gets its ID
+     * 
+     * @return The ID of the object
+     */
     public double getObjectID() {
         return objectID;
     }
