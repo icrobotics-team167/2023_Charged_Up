@@ -30,6 +30,7 @@ public class LimeLight {
     private double targetAreaOfVision; // The percentage of the vision the target is taking up, from 0 (No target) to
                                        // 100 (Target takes up the entire FOV) ("ta" in LimeLight API)
     private double aprilTagID; // The ID of the detected AprilTag ("tid" in LimeLight API)
+    private double objectID; // The ID of the detected object ("tclass" in LimeLight API)
 
     private NetworkTable limeLight;
 
@@ -38,6 +39,7 @@ public class LimeLight {
     private LimeLight() {
         limeLight = NetworkTableInstance.getDefault().getTable("limelight");
         setVisionMode();
+        update();
     }
 
     /**
@@ -59,6 +61,7 @@ public class LimeLight {
         targetCrosshairDistanceY = limeLight.getEntry("ty").getDouble(0);
         targetAreaOfVision = limeLight.getEntry("ta").getDouble(0);
         aprilTagID = limeLight.getEntry("tid").getDouble(0);
+        objectID = limeLight.getEntry("tclass").getDouble(0);
     }
 
     /**
@@ -139,36 +142,7 @@ public class LimeLight {
         return aprilTagID;
     }
 
-    /**
-     * Crops the area in which the LimeLight will attempt to detect targets to
-     * optimize framerates
-     */
-    public void optimizeCropping() {
-        double[] cropValues = new double[4];
-        /*
-         * Technically the following values can be between -1 to 1 but for the sake of
-         * code simplicity they don't
-         * 
-         * cropValues[0]: Min x value of crop rectangle (-1 to 0)
-         * cropValues[1]: Max x value of crop rectangle (0 to 1)
-         * cropValues[2]: Min y value of crop rectangle (-1 to 0)
-         * cropValues[3]: Max y value of crop rectangle (0 to 1)
-         */
-        if (!validTargetExists) { // If a valid target doesn't exist
-            // Search the entire FOV
-            cropValues[0] = -1.0;
-            cropValues[1] = 1.0;
-            cropValues[2] = -1.0;
-            cropValues[3] = 1.0;
-            limeLight.getEntry("crop").setDoubleArray(cropValues);
-            return;
-        } // Otherwise, continue
-
-        // Get the size and position of the target
-        double targetHorizontalSize = limeLight.getEntry("thor").getDouble(0);
-        double targetVerticalSize = limeLight.getEntry("tvert").getDouble(0);
-        update();
-
-
+    public double getObjectID() {
+        return objectID;
     }
 }
