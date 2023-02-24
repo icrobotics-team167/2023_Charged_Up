@@ -36,8 +36,6 @@ public class Robot extends TimedRobot {
         autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
         autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
         autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        autoChooser.addOption(AutoRoutines.TEST_PIVOT_ARM.name, AutoRoutines.TEST_PIVOT_ARM);
-        autoChooser.addOption(AutoRoutines.TEST_RESET_ARM.name, AutoRoutines.TEST_RESET_ARM);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
