@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimeLight {
@@ -33,11 +33,14 @@ public class LimeLight {
     private double objectID; // The ID of the detected object ("tclass" in LimeLight API)
 
     private NetworkTable limeLight;
+    private HttpCamera limeLightFeed;
 
     private boolean cameraMode;
 
     private LimeLight() {
         limeLight = NetworkTableInstance.getDefault().getTable("limelight");
+        limeLightFeed = new HttpCamera("LimeLight", "http://"); // TODO: Figure out static IP address of the limelight
+        CameraServer.startAutomaticCapture(limeLightFeed);
         setVisionMode();
         update();
     }
@@ -80,7 +83,7 @@ public class LimeLight {
     public void setVisionMode() {
         limeLight.getEntry("camMode").setDouble(0); // Set the LimeLight to vision mode (Enable vision processing and
                                                     // decrease exposure)
-        limeLight.getEntry("ledMode").setDouble(3); // Turn on the LEDs
+        limeLight.getEntry("ledMode").setDouble(0); // Turn on the LEDs
         cameraMode = false;
     }
 
