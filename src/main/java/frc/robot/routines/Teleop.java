@@ -26,15 +26,6 @@ public class Teleop {
     }
 
     public void periodic() {
-        Subsystems.driveBase.setBrake(); // this doesn't work :(
-
-        if (controls.getBrake()) {
-            Subsystems.driveBase.setCoast();
-            SmartDashboard.putBoolean("test", true);
-        } else {
-            SmartDashboard.putBoolean("test", false);
-
-        }
 
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
