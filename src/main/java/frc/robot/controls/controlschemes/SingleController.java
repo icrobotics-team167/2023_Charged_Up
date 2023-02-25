@@ -105,6 +105,11 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
+    public boolean getBrake() {
+        return false;
+    }
+    
+    @Override
     public boolean getLimitOverride() {
         return false;
     }

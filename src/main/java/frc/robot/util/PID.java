@@ -79,7 +79,10 @@ public class PID {
     public double compute(double currentValue, double currentTime) {
         double currentError = target - currentValue;
         double deltaError = lastError - currentError;
-        double deltaTime = currentTime - lastTime;
+        if (Math.abs(deltaError) > 1) {
+            deltaError = 0;
+        }
+        // double deltaTime = currentTime - lastTime;
 
         // Adds current error to errorSum for integral calculations
         errorSum += currentError;
@@ -87,9 +90,13 @@ public class PID {
         // Calculate the values for the proportional, the integral, and the deriative
         double proportional = currentError * proportionalCoefficient;
         double integral = integralCoeficcient * errorSum;
-        double derivative = derivativeCoefficient * (deltaError / deltaTime);
+        double derivative = (-1) * derivativeCoefficient * (deltaError);
 
         double output = proportional + integral + derivative + initialControlOutput;
+        SmartDashboard.putNumber("P", proportional);
+        SmartDashboard.putNumber("deltaError", deltaError);
+        SmartDashboard.putNumber("I", integral);
+        SmartDashboard.putNumber("D", derivative);
         lastError = currentError;
         lastTime = currentTime;
 

@@ -3,6 +3,7 @@ package frc.robot.controls.controlschemes;
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
+import frc.robot.subsystems.Subsystems;
 
 public class DoubleController extends ControlScheme {
 
@@ -116,6 +117,12 @@ public class DoubleController extends ControlScheme {
         return extend;
     }
 
+    @Override
+    public boolean getBrake() {
+        boolean brake = primary.getBButton();
+        return brake;
+    }
+    
     @Override
     public boolean getLimitOverride() {
         return secondary.getBButton();

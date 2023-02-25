@@ -1,6 +1,7 @@
 package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
+import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
 
 public class Wait extends Action {
@@ -21,6 +22,7 @@ public class Wait extends Action {
 
     @Override
     public void periodic() {
+        Subsystems.driveBase.stop();
     }
 
     @Override

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.*;
 import frc.robot.controls.controlschemes.*;
 import frc.robot.routines.Action;
+import frc.robot.routines.Routine;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
@@ -28,15 +29,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        // Auto routine chooser
-        // ROUTINE TEMPLATE:
-        // autoChooser.addOption(AutoRoutines.(ROUTINE).name, AutoRoutines.(ROUTINE));
-        autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
-        autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
-        autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
-        autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
-        autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        SmartDashboard.putData("Autonomous Routines", autoChooser);
+        // autoChooser.setDefaultOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        // autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
+        // autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
+        // autoChooser.addOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
+        // autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
+        // autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        // SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -78,15 +77,22 @@ public class Robot extends TimedRobot {
 
         try {
             phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            // phCompressor.enableAnalog(60, 65);
-            phCompressor.disable();
+            phCompressor.enableAnalog(60, 65);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-
+        auto = new Routine(new Action[] {
+                new DriveForwardsUntil(
+                    navx -> navx.getPitch() >= 8,
+                    0.15,
+                    Duration.ofMillis(5500)),
+                new DriveStraight(20, 0.2, 2),
+                new NaiveAutoBalance()
+                // new PIDAutoBalance()
+            });
         teleop = new Teleop(controls);
     }
 

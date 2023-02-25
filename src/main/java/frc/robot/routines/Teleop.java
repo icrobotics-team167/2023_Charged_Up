@@ -3,14 +3,14 @@ package frc.robot.routines;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.routines.auto.AutoBalance;
+import frc.robot.routines.auto.PIDAutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
 import frc.robot.subsystems.turret.*;
 
 public class Teleop {
 
-    private AutoBalance autoBalance;
+    private PIDAutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private Turret turret;
@@ -25,10 +25,21 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
-        autoBalance = new AutoBalance(true, controls);
+        autoBalance = new PIDAutoBalance(true, controls);
     }
 
     public void periodic() {
+        Subsystems.driveBase.setBrake(); // this doesn't work :(
+
+        if (controls.getBrake()) {
+            Subsystems.driveBase.setCoast();
+            SmartDashboard.putBoolean("test", true);
+        } else {
+            SmartDashboard.putBoolean("test", false);
+
+        }
+
+
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
         } else if (controls.doSwitchLowGear()) {
