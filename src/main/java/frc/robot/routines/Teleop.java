@@ -39,7 +39,6 @@ public class Teleop {
 
         }
 
-
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
         } else if (controls.doSwitchLowGear()) {
@@ -47,8 +46,6 @@ public class Teleop {
         }
 
         driveBase.setLowerGear(controls.doLowerGear());
-        if (controls.doAutoBalance()) {
-            autoBalance.exec();
         if (Config.Settings.TANK_DRIVE) {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
