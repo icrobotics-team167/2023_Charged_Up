@@ -122,4 +122,9 @@ public class DoubleController extends ControlScheme {
         boolean brake = primary.getBButton();
         return brake;
     }
+    
+    @Override
+    public boolean getLimitOverride() {
+        return secondary.getBButton();
+    }
 }

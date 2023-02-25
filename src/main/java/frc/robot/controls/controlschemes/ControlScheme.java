@@ -38,7 +38,8 @@ public abstract class ControlScheme {
 
     public abstract double getArmExtend();
 
-
     // add brake
     public abstract boolean getBrake();
+    
+    public abstract boolean getLimitOverride();
 }

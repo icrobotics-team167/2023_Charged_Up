@@ -6,13 +6,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
-import frc.robot.controls.controllers.XBController;
-import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.controls.controlschemes.DoubleController;
-import frc.robot.controls.controlschemes.NullController;
-import frc.robot.controls.controlschemes.SingleController;
+import frc.robot.controls.controllers.*;
+import frc.robot.controls.controlschemes.*;
 import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
 import frc.robot.routines.auto.*;
@@ -107,6 +102,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        auto = autoChooser.getSelected().actions;
         Subsystems.driveBase.resetEncoders();
         Subsystems.driveBase.setHighGear();
         auto.exec();

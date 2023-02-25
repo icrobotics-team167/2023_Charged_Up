@@ -14,6 +14,8 @@ public class Claw {
 
     public static Claw instance;
 
+    private boolean open;
+
     /**
      * Allows only one instance of Claw to exist at once.
      * 
@@ -41,6 +43,7 @@ public class Claw {
     public void openClaw() {
         openClaw.set(true);
         closeClaw.set(false);
+        open = true;
     }
 
     /**
@@ -49,10 +52,15 @@ public class Claw {
     public void closeClaw() {
         openClaw.set(false);
         closeClaw.set(true);
+        open = false;
     }
 
     public void stopSolenoid() {
         openClaw.set(false);
         closeClaw.set(false);
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }
