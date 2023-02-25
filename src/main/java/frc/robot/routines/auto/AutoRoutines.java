@@ -30,7 +30,7 @@ public enum AutoRoutines {
                         new NaiveAutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(35, 0.5).withTurret(TurretPosition.INITIAL.withPivot(26)),
+                        new DriveStraight(35, 0.5),
                         new ResetArm()
         })),
         TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {
