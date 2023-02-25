@@ -23,14 +23,15 @@ public enum AutoRoutines {
         // TODO: Make an auto routine for scoring a cube
         })),
         BALANCE("Balance (Engaged score)", new Routine(new Action[] {
-                        // new DriveForwardsUntil(
-                        // navx -> navx.getPitch() >= 5,
-                        // 0.3,
-                        // Duration.ofMillis(3500)),
+                        new DriveForwardsUntil(
+                                        navx -> navx.getPitch() >= 5,
+                                        0.5,
+                                        Duration.ofMillis(3500)),
+                        new DriveStraight(25, 0.4),
                         new NaiveAutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(35, 0.5),
+                        new DriveStraight(40, 0.5),
                         new ResetArm()
         })),
         TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {

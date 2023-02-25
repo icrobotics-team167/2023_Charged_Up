@@ -70,23 +70,6 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return primary.getYButton();
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public double getArmSwivel() {
         // TODO Auto-generated method stub
         return 0;
@@ -116,6 +99,12 @@ public class SingleController extends ControlScheme {
 
     @Override
     public boolean doResetTurret() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleClaw() {
         // TODO Auto-generated method stub
         return false;
     }

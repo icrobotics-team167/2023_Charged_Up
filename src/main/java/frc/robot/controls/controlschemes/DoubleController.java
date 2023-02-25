@@ -73,18 +73,8 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return primary.getYButton();
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        return secondary.getLeftBumper();
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        return secondary.getRightBumper();
+    public boolean toggleClaw() {
+        return secondary.getRightBumperToggled();
     }
 
     @Override

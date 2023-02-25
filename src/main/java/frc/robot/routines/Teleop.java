@@ -9,8 +9,6 @@ import frc.robot.subsystems.drive.TankDriveBase;
 import frc.robot.subsystems.turret.*;
 
 public class Teleop {
-
-    private PIDAutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private Turret turret;
@@ -25,7 +23,6 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
-        autoBalance = new PIDAutoBalance(true, controls);
     }
 
     public void periodic() {
@@ -62,15 +59,16 @@ public class Teleop {
         turret.setLimitOverride(controls.doLimitOverride());
         turret.move(-controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
-        if (controls.doOpenClaw()) {
-        claw.openClaw();
-        }
-        else if (controls.doCloseClaw()) {
-        claw.closeClaw();
+        if (controls.toggleClaw()) {
+            if (claw.isOpen()) {
+                claw.closeClaw();
+            } else {
+                claw.openClaw();
+            }
         }
 
         // PUT DEBUG STATEMENTS HERE
-        SmartDashboard.putNumber("Pivot.position",Subsystems.turret.getPosition().pivotAngle());
+        SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
         SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
     }

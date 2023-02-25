@@ -21,15 +21,10 @@ public abstract class ControlScheme {
 
     public abstract boolean doLowerGear();
 
-    // Autobalance
-    public abstract boolean doAutoBalance();
-
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean doOpenClaw();
-
-    public abstract boolean doCloseClaw();
+    public abstract boolean toggleClaw();
 
     // Arm controls
     public abstract double getArmSwivel();

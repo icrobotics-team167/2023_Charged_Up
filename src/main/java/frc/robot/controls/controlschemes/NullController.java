@@ -35,21 +35,6 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return false;
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        return false;
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        return false;
-    }
-
-    @Override
     public double getArmSwivel() {
         return 0;
     }
@@ -87,6 +72,12 @@ public class NullController extends ControlScheme {
     public boolean doResetTurret() {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'doResetTurret'");
+        return false;
+    }
+
+    @Override
+    public boolean toggleClaw() {
+        // TODO Auto-generated method stub
         return false;
     }
 }

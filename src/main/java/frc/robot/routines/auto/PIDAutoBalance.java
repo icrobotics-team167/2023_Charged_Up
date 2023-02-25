@@ -6,7 +6,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
-import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.*;
@@ -17,8 +16,6 @@ public class PIDAutoBalance extends Action {
     private PeriodicTimer timer;
     private AHRS navx;
     private PID pidController;
-    private boolean teleop;
-    private ControlScheme controls;
     private MovingAverage pitchFilter;
 
     // Whether or not to actually drive when running code (DEBUG ONLY)
@@ -31,21 +28,11 @@ public class PIDAutoBalance extends Action {
     private final double MAX_OUTPUT = 0.15;
 
     /**
-     * Constructs a new AutoBalance auto routine.
-     */
-    public PIDAutoBalance() {
-        this(false, null);
-    }
-
-    /**
      * Constructs a new AutoBalance routine.
      * 
-     * @param teleop   Whether or not it's being called in teleop mode (true) or
-     *                 autonomous mode (false)
-     * @param controls If in teleop, takes the ControlScheme of the primary
-     *                 controller for checking whether to stop or not.
+     * 
      */
-    public PIDAutoBalance(boolean teleop, ControlScheme controls) {
+    public PIDAutoBalance() {
         super();
 
         // Initialize the navX
@@ -58,8 +45,6 @@ public class PIDAutoBalance extends Action {
         }
 
         // Set variables
-        this.teleop = teleop;
-        this.controls = controls;
 
         // Initialize timer
         timer = new PeriodicTimer();
@@ -129,12 +114,7 @@ public class PIDAutoBalance extends Action {
      */
     @Override
     public boolean isDone() {
-        if (teleop && // If it's in teleop mode and
-                controls != null && // There is a primary controller attached and
-                !controls.doAutoBalance() // The button for running the autoBalance code has been released
-        ) {
-            return true; // Return true
-        }
+
         // There's no code for handling how long it should be autobalancing for during
         // auto as we don't expect any other auto routines to come after autoBalance
         return false;
