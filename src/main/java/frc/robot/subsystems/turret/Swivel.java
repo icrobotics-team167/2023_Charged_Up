@@ -25,12 +25,12 @@ public class Swivel {
 
     private double initialEncoderPosition;
 
-    private final double MAX_TURN_ANGLE = 200;
+    private final double MAX_TURN_ANGLE = 100;
     private final double MAX_TURN_SPEED = 0.8;
 
     private ExtendRetract extendRetract;
 
-    // private DigitalInput swivelSwitch;
+    private DigitalInput swivelSwitch;
 
     private boolean overrideAngleLimits = false;
 
@@ -69,7 +69,7 @@ public class Swivel {
 
         extendRetract = ExtendRetract.getInstance();
 
-        // swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
+        swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
     /**
@@ -84,7 +84,6 @@ public class Swivel {
     public void move(double speed) {
         double speedMult = extensionSpeedMultiplier();
         speed *= -speedMult; // Left-right inputs were backwards
-        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
             swivelMotor.set(-motorOutput);
@@ -104,6 +103,10 @@ public class Swivel {
      */
     public double getPositionDegrees() {
         double scalar = 0.782;
+
+        if (!swivelSwitch.get()) {
+            initialEncoderPosition = swivelEncoder.getPosition();
+        }
         double position = (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
         // return MathUtil.clamp(position, -MAX_TURN_ANGLE, MAX_TURN_ANGLE);
         return position;
@@ -115,6 +118,7 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees counterclockwise
      */
     private boolean tooFarLeft() {
+        SmartDashboard.putBoolean("Swivel.tooFarLeft", getPositionDegrees() < -MAX_TURN_ANGLE);
         if (overrideAngleLimits) {
             return false;
         }
@@ -127,6 +131,7 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees clockwise
      */
     private boolean tooFarRight() {
+        SmartDashboard.putBoolean("Swivel.tooFarRight", getPositionDegrees() > MAX_TURN_ANGLE);
         if (overrideAngleLimits) {
             return false;
         }
@@ -145,14 +150,16 @@ public class Swivel {
     }
 
     private double extensionSpeedMultiplier() {
+        double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();
         double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
-                / (2 * (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)))
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
                 + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
-        multiplier = MathUtil.clamp(multiplier, 0.5, 1);
+        multiplier = MathUtil.clamp(multiplier, low, 1);
         if (overrideAngleLimits) {
             multiplier = 1;
         }
+        // SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
         return multiplier;
     }
 }

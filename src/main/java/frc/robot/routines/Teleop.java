@@ -50,10 +50,12 @@ public class Teleop {
 
         }
         if (controls.doResetTurret()) {
-            turret.moveTo(TurretPosition.INITIAL);
+            SmartDashboard.putBoolean("Teleop.turretResetDone", turret.moveTo(TurretPosition.INITIAL));
+            SmartDashboard.putBoolean("Teleop.resettingTurret", true);
         } else {
             turret.setLimitOverride(controls.doLimitOverride());
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+            SmartDashboard.putBoolean("Teleop.resettingTurret", false);
         }
         turret.setLimitOverride(controls.doLimitOverride());
         turret.move(-controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());

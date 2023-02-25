@@ -94,8 +94,7 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
-        speed *= extensionSpeedMultiplier();
-        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
+        speed *= -extensionSpeedMultiplier();
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
         if (speed > 0 && !tooFarUp()) {
@@ -152,14 +151,16 @@ public class Pivot {
     }
 
     private double extensionSpeedMultiplier() {
+        double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();
         double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
-                / (2 * (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)))
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
                 + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
-        multiplier = MathUtil.clamp(multiplier, 0.5, 1);
+        multiplier = MathUtil.clamp(multiplier, low, 1);
         if (overrideAngleLimits) {
             multiplier = 1;
         }
+        SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
         return multiplier;
     }
 }
