@@ -21,6 +21,8 @@ public class DriveStraight extends Action {
     private double leftEncoderInitialPosition;
     private double rightEncoderInitialPosition;
 
+    private boolean turretDone = true;
+
     private PeriodicTimer timer;
     private double startAngle;
 
@@ -69,6 +71,7 @@ public class DriveStraight extends Action {
 
     public DriveStraight withTurret(TurretPosition target) {
         targetState = target;
+        turretDone = false;
         return this;
     }
 
@@ -100,11 +103,17 @@ public class DriveStraight extends Action {
 
         // Move the robot
         Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
-        Subsystems.turret.moveTo(targetState);
+        if(targetState != null) {
+            turretDone = Subsystems.turret.moveTo(targetState);
+        }
     }
 
     @Override
     public boolean isDone() {
+        return driveDone() && turretDone;
+    }
+
+    private boolean driveDone() {
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
         if (speed > 0) {
@@ -121,6 +130,7 @@ public class DriveStraight extends Action {
     @Override
     public void done() {
         Subsystems.driveBase.stop();
+        Subsystems.turret.stop();
     }
 
 }
