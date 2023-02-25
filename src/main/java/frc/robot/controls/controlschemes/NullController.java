@@ -71,9 +71,14 @@ public class NullController extends ControlScheme {
     }
 
     @Override
+    public boolean getBrake() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
     public boolean getLimitOverride() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getLimitOverride'");
     }
-
 }
