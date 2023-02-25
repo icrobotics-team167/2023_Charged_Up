@@ -69,8 +69,7 @@ public class ExtendRetract {
         extendRetractEncoder = extendRetractMotor.getEncoder();
         initialEncoderPosition = extendRetractEncoder.getPosition();
 
-        // extendRetractSwitch = new
-        // DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
+        
     }
 
     /**
