@@ -108,9 +108,15 @@ public class SingleController extends ControlScheme {
     public boolean getBrake() {
         return false;
     }
-    
+
     @Override
-    public boolean getLimitOverride() {
+    public boolean doLimitOverride() {
+        return false;
+    }
+
+    @Override
+    public boolean doResetTurret() {
+        // TODO Auto-generated method stub
         return false;
     }
 }
