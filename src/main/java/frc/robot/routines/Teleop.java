@@ -14,13 +14,13 @@ public class Teleop {
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private Turret turret;
-    private Claw turretClaw;
+    private Claw claw;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
         turret = Subsystems.turret;
-        turretClaw = Claw.getInstance();
+        claw = Subsystems.claw;
     }
 
     public void init() {
@@ -60,7 +60,7 @@ public class Teleop {
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
         }
 
-        turretClaw.stopSolenoid();
+        claw.stopSolenoid();
 
         // PUT DEBUG STATEMENTS HERE
         SmartDashboard.putNumber("Pivot.position",Subsystems.turret.getPosition().pivotAngle());
