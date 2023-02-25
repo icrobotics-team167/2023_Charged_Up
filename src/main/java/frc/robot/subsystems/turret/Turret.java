@@ -16,9 +16,6 @@ public class Turret {
     private final double SWIVEL_SENSITIVITY_THRESHOLD = 2;
     private final double EXTENSION_SENSITIVITY_THRESHOLD = 1;
 
-    private DigitalInput retractSwitch;
-    private DigitalInput swivelSwitch;
-
     public static Turret getinstance() {
         if (instance == null) {
             instance = new Turret();
@@ -31,9 +28,6 @@ public class Turret {
         swivel = Swivel.getInstance();
         extendRetract = ExtendRetract.getInstance();
         claw = Claw.getInstance();
-
-        retractSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
-        swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
     /**
@@ -59,9 +53,10 @@ public class Turret {
      * @return If it has finished moving (AKA when all the targets are met)
      */
     public boolean moveTo(TurretPosition targetState) {
-        return pivotToAngle(targetState.pivotAngle()) &&
-                swivelToAngle(targetState.swivelAngle()) &&
-                extendToPosition(targetState.extensionPosition());
+        boolean pivot = pivotToAngle(targetState.pivotAngle());
+        boolean swivel = swivelToAngle(targetState.swivelAngle());
+        boolean extend = extendToPosition(targetState.extensionPosition());
+        return pivot && swivel && extend;
     }
 
     public void stop() {
@@ -70,51 +65,46 @@ public class Turret {
         extendRetract.stop();
     }
 
-    /**
-     * Gets the positions of the turret's systems in an array.
-     * [0]: The pivot position in degrees.
-     * [1]: The swivel position in degrees.
-     * [2]: The extension position in inches.
-     * 
-     * @return An array containing the positions.
-     */
-    public TurretPosition getPositions() {
+    public TurretPosition getPosition() {
         return new TurretPosition(pivot.getPositionDegrees(), swivel.getPositionDegrees(),
                 extendRetract.getPositionInches());
     }
 
     public boolean pivotToAngle(double target) {
         double speed;
-        double error = Math.abs(target - pivot.getPositionDegrees());
-        if (error < PIVOT_SENSITIVITY_THRESHOLD) {
+        double error = target - pivot.getPositionDegrees();
+        if (Math.abs(error) < PIVOT_SENSITIVITY_THRESHOLD) {
             speed = 0;
         } else {
             speed = MathUtils.getSign(error);
         }
+        speed *= 0.6;
         pivot.move(speed);
         return speed == 0;
     }
 
     public boolean swivelToAngle(double target) {
         double speed;
-        double error = Math.abs(target - swivel.getPositionDegrees());
-        if (error < SWIVEL_SENSITIVITY_THRESHOLD) {
+        double error = target - swivel.getPositionDegrees();
+        if (Math.abs(error) < SWIVEL_SENSITIVITY_THRESHOLD) {
             speed = 0;
         } else {
             speed = MathUtils.getSign(error);
         }
+        speed *= 0.6;
         swivel.move(speed);
         return speed == 0;
     }
 
     public boolean extendToPosition(double target) {
         double speed;
-        double error = Math.abs(target - extendRetract.getPositionInches());
-        if (error < EXTENSION_SENSITIVITY_THRESHOLD) {
+        double error = target - extendRetract.getPositionInches();
+        if (Math.abs(error) < EXTENSION_SENSITIVITY_THRESHOLD) {
             speed = 0;
         } else {
             speed = MathUtils.getSign(error);
         }
+        speed *= 0.6;
         extendRetract.move(speed);
         return speed == 0;
     }
@@ -123,13 +113,5 @@ public class Turret {
         pivot.setLimitOverride(newVal);
         swivel.setLimitOverride(newVal);
         extendRetract.setLimitOverride(newVal);
-    }
-
-    public boolean isSwivelCentered() {
-        return !swivelSwitch.get();
-    }
-
-    public boolean isFullyRetracted() {
-        return !retractSwitch.get();
     }
 }

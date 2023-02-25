@@ -42,4 +42,6 @@ public abstract class ControlScheme {
     public abstract boolean getBrake();
 
     public abstract boolean doLimitOverride();
+
+    public abstract boolean doResetTurret();
 }
