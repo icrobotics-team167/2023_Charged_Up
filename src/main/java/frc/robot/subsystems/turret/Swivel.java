@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
@@ -26,6 +27,8 @@ public class Swivel {
 
     private final double MAX_TURN_ANGLE = 200;
     private final double MAX_TURN_SPEED = 0.8;
+
+    private ExtendRetract extendRetract;
 
     // private DigitalInput swivelSwitch;
 
@@ -64,6 +67,8 @@ public class Swivel {
         // Set up positon (Assuming it's centered when powered on)
         initialEncoderPosition = swivelEncoder.getPosition();
 
+        extendRetract = ExtendRetract.getInstance();
+
         // swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
@@ -77,7 +82,8 @@ public class Swivel {
      *              negative values swivels counterclockwise.
      */
     public void move(double speed) {
-        speed *= -1; // Left-right inputs were backwards
+        double speedMult = extensionSpeedMultiplier();
+        speed *= -speedMult; // Left-right inputs were backwards
         SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
@@ -98,7 +104,9 @@ public class Swivel {
      */
     public double getPositionDegrees() {
         double scalar = 0.782;
-        return (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
+        double position = (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
+        // return MathUtil.clamp(position, -MAX_TURN_ANGLE, MAX_TURN_ANGLE);
+        return position;
     }
 
     /**
@@ -134,5 +142,17 @@ public class Swivel {
 
     public void setLimitOverride(boolean newValue) {
         overrideAngleLimits = newValue;
+    }
+
+    private double extensionSpeedMultiplier() {
+        double extensionPosition = extendRetract.getPositionInches();
+        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
+                / (2 * (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)))
+                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        multiplier = MathUtil.clamp(multiplier, 0.5, 1);
+        if (overrideAngleLimits) {
+            multiplier = 1;
+        }
+        return multiplier;
     }
 }

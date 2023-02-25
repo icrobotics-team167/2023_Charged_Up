@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
@@ -35,6 +36,8 @@ public class Pivot {
 
     // Singleton
     public static Pivot instance;
+
+    private ExtendRetract extendRetract;
 
     /**
      * Allows only one instance of Pivot to exist at once.
@@ -77,6 +80,8 @@ public class Pivot {
 
         initialEncoderPosition = pivotEncoder.getPosition();
 
+        extendRetract = ExtendRetract.getInstance();
+
         // pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
     }
 
@@ -89,6 +94,7 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
+        speed *= extensionSpeedMultiplier();
         SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
@@ -143,5 +149,17 @@ public class Pivot {
 
     public void setLimitOverride(boolean newValue) {
         overrideAngleLimits = newValue;
+    }
+
+    private double extensionSpeedMultiplier() {
+        double extensionPosition = extendRetract.getPositionInches();
+        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
+                / (2 * (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)))
+                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        multiplier = MathUtil.clamp(multiplier, 0.5, 1);
+        if (overrideAngleLimits) {
+            multiplier = 1;
+        }
+        return multiplier;
     }
 }

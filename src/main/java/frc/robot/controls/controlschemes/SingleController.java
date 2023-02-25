@@ -99,7 +99,13 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean toggleClaw() {
+    public boolean openClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean closeClaw() {
         // TODO Auto-generated method stub
         return false;
     }

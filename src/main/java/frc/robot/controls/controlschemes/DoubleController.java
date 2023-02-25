@@ -72,8 +72,13 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean toggleClaw() {
-        return secondary.getRightBumperToggled();
+    public boolean openClaw() {
+        return secondary.getRightBumper();
+    }
+
+    @Override 
+    public boolean closeClaw() {
+        return secondary.getLeftBumper();
     }
 
     @Override

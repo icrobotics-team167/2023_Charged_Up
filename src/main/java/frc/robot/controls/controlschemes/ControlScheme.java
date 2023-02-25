@@ -24,7 +24,9 @@ public abstract class ControlScheme {
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean toggleClaw();
+    public abstract boolean openClaw();
+
+    public abstract boolean closeClaw();
 
     // Arm controls
     public abstract double getArmSwivel();

@@ -50,12 +50,10 @@ public class Teleop {
         turret.setLimitOverride(controls.doLimitOverride());
         turret.move(-controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
-        if (controls.toggleClaw()) {
-            if (claw.isOpen()) {
-                claw.closeClaw();
-            } else {
-                claw.openClaw();
-            }
+        if (controls.openClaw()) {
+            claw.openClaw();
+        } else if (controls.closeClaw()) {
+            claw.closeClaw();
         }
 
         // PUT DEBUG STATEMENTS HERE
