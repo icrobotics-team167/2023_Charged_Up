@@ -40,6 +40,6 @@ public abstract class ControlScheme {
 
     // add brake
     public abstract boolean getBrake();
-    
-    public abstract boolean getLimitOverride();
+
+    public abstract boolean doLimitOverride();
 }
