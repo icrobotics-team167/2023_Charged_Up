@@ -10,10 +10,12 @@ import frc.robot.Config;
 
 /**
  * Tilts the arm up and down
- * Disregard TODOs for now as we will be working with only encoder values for the time being
+ * Disregard TODOs for now as we will be working with only encoder values for
+ * the time being
  * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting. 
- * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
+ * TODO: Find out which limit switch we are hitting.
+ * One limit switch is triggered by both ends so we need a method to figure out
+ * which one we are hitting.
  */
 public class Pivot {
 
@@ -24,10 +26,12 @@ public class Pivot {
     private double initialEncoderPosition;
 
     // private DigitalInput pivotSwitch;
-    private static final double MAX_TURN_SPEED = 0.3;
-    private static final double INITIAL_PIVOT_ANGLE = 65;
-    private static final double MAX_PIVOT_ANGLE = 65;
+    private static final double MAX_TURN_SPEED = 1;
+    private static final double INITIAL_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
+    private static final double MAX_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
     private static final double MIN_PIVOT_ANGLE = -35;
+
+    private boolean overrideAngleLimits = false;
 
     // Singleton
     public static Pivot instance;
@@ -46,7 +50,8 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 65 degree angle up relative to the drive base on code boot.
+     * Assumes the arm is at a 65 degree angle up relative to the drive base on code
+     * boot.
      */
     private Pivot() {
         // Set up motors
@@ -102,8 +107,8 @@ public class Pivot {
      * @return Whether or not the pivot's angle is greater than or equal to 45
      *         degrees
      */
-    private boolean tooFarUp() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarUp() {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() >= MAX_PIVOT_ANGLE;
@@ -114,8 +119,8 @@ public class Pivot {
      * 
      * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
-    private boolean tooFarDown() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarDown() {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() <= MIN_PIVOT_ANGLE;
@@ -132,8 +137,11 @@ public class Pivot {
     /**
      * Immediately stops the robot from pivoting
      */
-    public void stop()
-    {
+    public void stop() {
         move(0);
+    }
+
+    public void setLimitOverride(boolean newValue) {
+        overrideAngleLimits = newValue;
     }
 }

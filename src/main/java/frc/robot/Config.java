@@ -19,9 +19,6 @@ public class Config {
 
         // CPU period (seconds)
         public static final double CPU_PERIOD = 0.02;
-
-        // Arm angle limit override
-        public static final boolean OVERRIDE_ARM_ANGLE_LIMITS = false;
     }
 
     public static final class Tolerances {
@@ -79,7 +76,7 @@ public class Config {
             // TEMPORARY VALUES
             public static final int OPEN_CLAW = 0;
             public static final int CLOSE_CLAW = 2;
-            
+
             // Digital Limit Switches
             // Temporary Values
             public static final int EXTEND_RETRACT_SWITCH = 0;

@@ -37,4 +37,6 @@ public abstract class ControlScheme {
     public abstract double getArmPivot();
 
     public abstract double getArmExtend();
+
+    public abstract boolean getLimitOverride();
 }

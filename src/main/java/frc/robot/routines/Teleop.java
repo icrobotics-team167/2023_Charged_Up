@@ -1,34 +1,25 @@
 package frc.robot.routines;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
-import frc.robot.subsystems.turret.Claw;
-import frc.robot.subsystems.turret.ExtendRetract;
-import frc.robot.subsystems.turret.Pivot;
-import frc.robot.subsystems.turret.Swivel;
+import frc.robot.subsystems.turret.*;
 
 public class Teleop {
 
     private AutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
-    private ExtendRetract turretExtendRetract;
-    private Pivot turretPivot;
-    private Swivel turretSwivel;
+    private Turret turret;
     private Claw turretClaw;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
-        turretExtendRetract = ExtendRetract.getInstance();
-        turretPivot = Pivot.getInstance();
-        turretSwivel = Swivel.getInstance();
+        turret = Subsystems.turret;
         turretClaw = Claw.getInstance();
     }
 
@@ -56,18 +47,12 @@ public class Teleop {
                         controls.getArcadeWheel());
             }
         }
-
-        turretExtendRetract.move(controls.getArmExtend());
-        SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
-        SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
-
-        turretPivot.move(controls.getArmPivot());
-
-        turretSwivel.move(controls.getArmSwivel());
+        turret.setLimitOverride(controls.getLimitOverride());
+        turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
         turretClaw.stopSolenoid();
         // if (controls.doOpenClaw()) {
-        //     turretClaw.stopSolenoid();
+        // turretClaw.stopSolenoid();
         // }
         // else if (controls.doCloseClaw()) {
         // turretClaw.closeClaw();
@@ -75,8 +60,9 @@ public class Teleop {
 
         // SmartDashboard.putNumber("turretExtendRetract.posInch",
         // turretExtendRetract.getPositionInches());
-        SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
-        SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
+
+        SmartDashboard.putBoolean("turret.swivelCentered", turret.isSwivelCentered());
+        SmartDashboard.putBoolean("turret.isRetracted", turret.isFullyRetracted());
     }
 
 }

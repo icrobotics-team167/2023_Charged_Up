@@ -6,13 +6,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
-import frc.robot.controls.controllers.XBController;
-import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.controls.controlschemes.DoubleController;
-import frc.robot.controls.controlschemes.NullController;
-import frc.robot.controls.controlschemes.SingleController;
+import frc.robot.controls.controllers.*;
+import frc.robot.controls.controlschemes.*;
 import frc.robot.routines.Action;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
@@ -41,7 +36,6 @@ public class Robot extends TimedRobot {
         autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
         autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
         autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        autoChooser.addOption(AutoRoutines.TEST_PIVOT_ARM.name, AutoRoutines.TEST_PIVOT_ARM);
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
