@@ -34,7 +34,14 @@ public enum AutoRoutines {
                         new ResetArm()
         })),
         TEST_MOVE_ARM("TEST:Move Arm", new Routine(new Action[] {
-                        new MoveArm(new TurretPosition(45,45,10), 20),
+                        new MoveArm(new TurretPosition(45, 45, 10), 20),
+        })),
+        YES_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
+                        new DriveStraight(1, 0.5).withTurret(TurretPosition.INITIAL.withPivot(92)),
+                        new ResetArm()
+        })),
+        TEST_CLAW("Move the claw", new Routine(new Action[] {
+                        new OpenClaw(),
                         new Wait(5),
                         new ResetArm()
         })),
