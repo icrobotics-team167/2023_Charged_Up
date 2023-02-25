@@ -9,6 +9,8 @@ public class Config {
         // Control Scheme
         public static final boolean TANK_DRIVE = false;
 
+        public static final boolean EXPONENTIAL_JOYSTICKS = true;
+
         // Controllers
         public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
         public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.XB;
@@ -28,10 +30,10 @@ public class Config {
         public static final double TRIGGER_PRESSED_THRESHOLD = 0.2;
 
         // Primary controller deadzone size
-        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.2;
+        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.15;
 
         // Secondary controller deadzone size
-        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.1;
+        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.2;
     }
 
     public static final class Ports {
