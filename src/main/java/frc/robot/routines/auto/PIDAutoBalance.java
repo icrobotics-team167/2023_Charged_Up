@@ -99,7 +99,6 @@ public class PIDAutoBalance extends Action {
 
         // Clamp pidOutput to be between -MAX_OUTPUT and MAX_OUTPUT
         pidOutput = MathUtil.clamp(pidOutput, -MAX_OUTPUT, MAX_OUTPUT);
-        SmartDashboard.putNumber("pidOutput", pidOutput);
 
         // Ignore dead code warnings here
         if (MOTORS_ENABLED && pidOutput != 0) {
