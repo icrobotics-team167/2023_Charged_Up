@@ -24,8 +24,8 @@ public class Swivel {
 
     private double initialEncoderPosition;
 
-    private final double MAX_TURN_ANGLE = 60;
-    private final double MAX_TURN_SPEED = 0.4;
+    private final double MAX_TURN_ANGLE = 200;
+    private final double MAX_TURN_SPEED = 0.8;
 
     // private DigitalInput swivelSwitch;
 
@@ -98,7 +98,7 @@ public class Swivel {
      */
     public double getPositionDegrees() {
         double scalar = 0.782;
-        return (swivelEncoder.getPosition() - initialEncoderPosition) * -scalar;
+        return (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
     }
 
     /**
