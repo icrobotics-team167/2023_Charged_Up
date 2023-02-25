@@ -1,19 +1,21 @@
 package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
+import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.turret.*;
+import frc.robot.util.PeriodicTimer;
 
 public class ResetArm extends Action {
-    Claw claw;
-    ExtendRetract extendRetract;
-    Pivot pivot;
-    Swivel swivel;
+
+    boolean done;
+    PeriodicTimer timer;
 
     public ResetArm() {
-        claw = Claw.getInstance();
-        extendRetract = ExtendRetract.getInstance();
-        pivot = Pivot.getInstance();
-        swivel = Swivel.getInstance();
+        this(5);
+    }
+
+    public ResetArm(double timeout) {
+        timer = new PeriodicTimer();
     }
 
     @Override
@@ -22,35 +24,17 @@ public class ResetArm extends Action {
 
     @Override
     public void periodic() {
-        claw.closeClaw();
-        if (!extendRetract.tooFarIn()) {
-            extendRetract.move(-1);
-        }
-        if (!pivot.tooFarUp()) {
-            pivot.move(1);
-        }
-        if (swivel.getPositionDegrees() > 0) {
-            swivel.move(-0.5);
-        } else if (swivel.getPositionDegrees() < 0) {
-            swivel.move(0.5);
-        }
+        done = Subsystems.turret.moveTo(TurretPosition.INITIAL);
     }
 
     @Override
     public boolean isDone() {
-        if (extendRetract.tooFarIn()
-                && pivot.tooFarUp()
-                && Math.abs(swivel.getPositionDegrees()) <= 0.5) {
-            return true;
-        }
-        return false;
+        return done;
     }
 
     @Override
     public void done() {
-        extendRetract.stop();
-        pivot.stop();
-        swivel.stop();
+        Subsystems.turret.stop();
     }
 
 }

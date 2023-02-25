@@ -2,6 +2,8 @@ package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
+import frc.robot.subsystems.turret.TurretPosition;
+
 import java.time.Duration;
 
 /**
@@ -28,7 +30,8 @@ public enum AutoRoutines {
                         new AutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(35, 0.5),
+                        new DriveStraight(35, 0.5).withTurret(TurretPosition.INITIAL.withPivot(26)),
+                        new ResetArm()
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

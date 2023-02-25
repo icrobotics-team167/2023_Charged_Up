@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.turret.TurretPosition;
 import frc.robot.util.PeriodicTimer;
 import frc.robot.util.PID;
 
@@ -28,8 +29,9 @@ public class DriveStraight extends Action {
     private double I = 0.0;
     private double D = 0.0;
 
-    private AHRS navx;
+    private TurretPosition targetState = null;
 
+    private AHRS navx;
     /**
      * Constructs a new DriveStraight auto routine.
      * 
@@ -65,6 +67,13 @@ public class DriveStraight extends Action {
         }
     }
 
+    public DriveStraight withTurret(TurretPosition target) {
+        targetState = target;
+        return this;
+    }
+
+
+
     @Override
     public void init() {
         Subsystems.driveBase.setBrake();
@@ -91,6 +100,7 @@ public class DriveStraight extends Action {
 
         // Move the robot
         Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
+        Subsystems.turret.moveTo(targetState);
     }
 
     @Override

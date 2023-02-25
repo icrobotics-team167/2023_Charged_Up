@@ -19,7 +19,7 @@ public class Teleop {
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
-        turret = Turret.getinstance();
+        turret = Subsystems.turret;
         turretClaw = Claw.getInstance();
     }
 
@@ -47,7 +47,6 @@ public class Teleop {
                         controls.getArcadeWheel());
             }
         }
-
         turret.setLimitOverride(controls.getLimitOverride());
         turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
@@ -62,6 +61,8 @@ public class Teleop {
         // SmartDashboard.putNumber("turretExtendRetract.posInch",
         // turretExtendRetract.getPositionInches());
 
+        SmartDashboard.putBoolean("turret.swivelCentered", turret.isSwivelCentered());
+        SmartDashboard.putBoolean("turret.isRetracted", turret.isFullyRetracted());
     }
 
 }
