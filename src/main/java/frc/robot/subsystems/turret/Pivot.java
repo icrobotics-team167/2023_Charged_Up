@@ -29,6 +29,8 @@ public class Pivot {
     private static final double MAX_PIVOT_ANGLE = 65;
     private static final double MIN_PIVOT_ANGLE = -35;
 
+    private boolean overrideAngleLimits = false;
+
     // Singleton
     public static Pivot instance;
 
@@ -103,7 +105,7 @@ public class Pivot {
      *         degrees
      */
     public boolean tooFarUp() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() >= MAX_PIVOT_ANGLE;
@@ -115,7 +117,7 @@ public class Pivot {
      * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
     public boolean tooFarDown() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() <= MIN_PIVOT_ANGLE;
@@ -132,8 +134,11 @@ public class Pivot {
     /**
      * Immediately stops the robot from pivoting
      */
-    public void stop()
-    {
+    public void stop() {
         move(0);
+    }
+
+    public void setLimitOverride(boolean newValue) {
+        overrideAngleLimits = newValue;
     }
 }

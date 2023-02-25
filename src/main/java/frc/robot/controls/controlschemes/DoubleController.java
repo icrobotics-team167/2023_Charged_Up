@@ -115,4 +115,9 @@ public class DoubleController extends ControlScheme {
         }
         return extend;
     }
+
+    @Override
+    public boolean getLimitOverride() {
+        return secondary.getBButton();
+    }
 }

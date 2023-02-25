@@ -30,4 +30,9 @@ public class Turret {
         swivel.stop();
         extendRetract.stop();
     }
+    public void setLimitOverride(boolean newVal) {
+        pivot.setLimitOverride(newVal);
+        swivel.setLimitOverride(newVal);
+        extendRetract.setLimitOverride(newVal);
+    }
 }

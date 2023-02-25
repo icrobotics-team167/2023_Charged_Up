@@ -31,6 +31,8 @@ public class ExtendRetract {
     private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
                                                       // to account for that
 
+    private boolean overridePositionLimits = false;
+
     // private DigitalInput extendRetractSwitch;
 
     // Singleton
@@ -95,7 +97,7 @@ public class ExtendRetract {
      * @return If the arm is too far in.
      */
     public boolean tooFarIn() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+        if (overridePositionLimits) {
             return false;
         }
         return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
@@ -107,7 +109,7 @@ public class ExtendRetract {
      * @return If the arm is too far out.
      */
     public boolean tooFarOut() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+        if (overridePositionLimits) {
             return false;
         }
         return getPositionInches() >= MAX_EXTENSION - DECEL_DISTANCE;
@@ -137,5 +139,9 @@ public class ExtendRetract {
      */
     public void stop() {
         move(0);
+    }
+
+    public void setLimitOverride(boolean newValue) {
+        overridePositionLimits = newValue;
     }
 }

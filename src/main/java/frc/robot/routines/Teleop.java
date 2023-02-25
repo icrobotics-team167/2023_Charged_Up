@@ -48,6 +48,7 @@ public class Teleop {
             }
         }
 
+        turret.setLimitOverride(controls.getLimitOverride());
         turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
         turretClaw.stopSolenoid();
