@@ -137,6 +137,8 @@ public class DriveStraight extends Action {
         // to how far it wants to drive
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
+        SmartDashboard.putNumber("DriveStraight.leftEncoderPosition",Units.metersToInches(leftEncoderPosition));
+        SmartDashboard.putNumber("DriveStraight.rightEncoderPosition",Units.metersToInches(rightEncoderPosition));
         if (speed > 0) {
             return leftEncoderPosition - leftEncoderInitialPosition >= meters
                     || rightEncoderPosition - rightEncoderInitialPosition >= meters;
