@@ -74,6 +74,10 @@ public class Teleop {
 
         SmartDashboard.putBoolean("turret.swivelCentered", turret.isSwivelCentered());
         SmartDashboard.putBoolean("turret.isRetracted", turret.isFullyRetracted());
+        // PUT DEBUG STATEMENTS HERE
+        SmartDashboard.putNumber("Pivot.position",Subsystems.turret.getPosition().pivotAngle());
+        SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
+        SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
     }
 
 }
