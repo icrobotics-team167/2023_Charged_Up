@@ -27,11 +27,11 @@ public enum AutoRoutines {
                                         navx -> navx.getPitch() >= 5,
                                         0.5,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(25, 0.4),
+                        new DriveStraight(20, 0.4),
                         new NaiveAutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(38, -0.5),
+                        new DriveStraight(120, 0.5),
                         new ResetArm()
         })),
         TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {
