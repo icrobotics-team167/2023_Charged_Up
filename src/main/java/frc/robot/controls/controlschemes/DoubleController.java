@@ -120,4 +120,9 @@ public class DoubleController extends ControlScheme {
     public boolean doResetTurret() {
         return secondary.getXButton();
     }
+
+    @Override
+    public boolean slowDownTurn() {
+        return primary.getLeftBumper();
+    }
 }

@@ -14,6 +14,8 @@ public class Teleop {
     private Turret turret;
     private Claw claw;
 
+    private final double slowTurnMult = 0.5;
+
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
@@ -38,8 +40,14 @@ public class Teleop {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
         } else {
-            driveBase.arcadeDrive(controls.getArcadeThrottle(),
-                    controls.getArcadeWheel());
+            if (controls.slowDownTurn()) {
+                driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                        controls.getArcadeWheel() * slowTurnMult);
+            } else {
+                driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                        controls.getArcadeWheel());
+            }
+
         }
         if (controls.doResetTurret()) {
             turret.moveTo(TurretPosition.INITIAL);

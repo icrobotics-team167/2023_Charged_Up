@@ -21,6 +21,8 @@ public abstract class ControlScheme {
 
     public abstract boolean doLowerGear();
 
+    public abstract boolean slowDownTurn();
+
     // Turret (Secondary controller)
 
     // Claw

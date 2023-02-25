@@ -109,4 +109,9 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean slowDownTurn() {
+        return primary.getLeftBumper();
+    }
 }
