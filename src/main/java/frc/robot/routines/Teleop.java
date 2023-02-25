@@ -62,22 +62,9 @@ public class Teleop {
             turret.setLimitOverride(controls.doLimitOverride());
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
         }
-        turret.setLimitOverride(controls.getLimitOverride());
-        turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
         turretClaw.stopSolenoid();
-        // if (controls.doOpenClaw()) {
-        // turretClaw.stopSolenoid();
-        // }
-        // else if (controls.doCloseClaw()) {
-        // turretClaw.closeClaw();
-        // }
 
-        // SmartDashboard.putNumber("turretExtendRetract.posInch",
-        // turretExtendRetract.getPositionInches());
-
-        SmartDashboard.putBoolean("turret.swivelCentered", turret.isSwivelCentered());
-        SmartDashboard.putBoolean("turret.isRetracted", turret.isFullyRetracted());
         // PUT DEBUG STATEMENTS HERE
         SmartDashboard.putNumber("Pivot.position",Subsystems.turret.getPosition().pivotAngle());
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
