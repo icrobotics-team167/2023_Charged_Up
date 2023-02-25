@@ -33,6 +33,11 @@ public enum AutoRoutines {
                         new DriveStraight(35, 0.5).withTurret(TurretPosition.INITIAL.withPivot(26)),
                         new ResetArm()
         })),
+        TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {
+                        new DriveStraight(10, 0.2).withTurret(TurretPosition.INITIAL.withSwivel(
+                                        120)),
+                        new ResetArm()
+        })),
         TEST_CLAW("Move the claw", new Routine(new Action[] {
                         new OpenClaw(),
                         new Wait(5),

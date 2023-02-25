@@ -22,6 +22,7 @@ public class DriveStraight extends Action {
     private double rightEncoderInitialPosition;
 
     private boolean turretDone = true;
+    private boolean driveDone;
 
     private PeriodicTimer timer;
     private double startAngle;
@@ -108,17 +109,22 @@ public class DriveStraight extends Action {
         pidOutput = MathUtil.clamp(pidOutput, -1, 1);
 
         // Move the robot
-        Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
+        if(driveDone) {
+            Subsystems.driveBase.stop();
+        } else {
+            driveDone = isDistanceReached();
+            Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
+        }
 
         // Move the arm if specified to
-        if(targetState != null) {
+        if(targetState != null && !turretDone) {
             turretDone = Subsystems.turret.moveTo(targetState);
         }
     }
 
     @Override
     public boolean isDone() {
-        return driveDone() && turretDone;
+        return driveDone && turretDone;
     }
 
     /**
@@ -126,7 +132,7 @@ public class DriveStraight extends Action {
      * to how far it wants to drive
      * @return The above
      */
-    private boolean driveDone() {
+    private boolean isDistanceReached() {
         // Calculates whether the drive base has stopped moving by checking how far it has driven compared 
         // to how far it wants to drive
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
