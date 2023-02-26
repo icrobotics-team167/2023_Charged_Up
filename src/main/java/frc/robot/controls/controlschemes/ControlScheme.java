@@ -40,4 +40,6 @@ public abstract class ControlScheme {
     public abstract boolean doLimitOverride();
 
     public abstract boolean doResetTurret();
+
+    public abstract boolean doSlowerSwivel();
 }

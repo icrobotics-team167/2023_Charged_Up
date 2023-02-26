@@ -12,6 +12,7 @@ public class Teleop {
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private Turret turret;
+    private Swivel swivel;
     private Claw claw;
 
     private final double slowTurnMult = 0.5;
@@ -20,6 +21,7 @@ public class Teleop {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
         turret = Subsystems.turret;
+        swivel = Swivel.getInstance();
         claw = Subsystems.claw;
     }
 
@@ -49,6 +51,8 @@ public class Teleop {
             }
 
         }
+        swivel.setSlowerTurn(controls.doSlowerSwivel());
+
         if (controls.doResetTurret()) {
             SmartDashboard.putBoolean("Teleop.turretResetDone", turret.moveTo(TurretPosition.INITIAL));
             SmartDashboard.putBoolean("Teleop.resettingTurret", true);

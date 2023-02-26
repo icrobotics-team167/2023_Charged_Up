@@ -34,6 +34,10 @@ public class Swivel {
 
     private boolean overrideAngleLimits = false;
 
+    private double fastSpeed = 1;
+    private double slowSpeed = 0.5;
+    private double speedMult = fastSpeed;
+
     // Singleton
     public static Swivel instance;
 
@@ -82,8 +86,8 @@ public class Swivel {
      *              negative values swivels counterclockwise.
      */
     public void move(double speed) {
-        double speedMult = extensionSpeedMultiplier();
-        speed *= -speedMult; // Left-right inputs were backwards
+        double extensionSpeedMult = extensionSpeedMultiplier();
+        speed *= -extensionSpeedMult * speedMult; // Left-right inputs were backwards
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
             swivelMotor.set(-motorOutput);
@@ -149,6 +153,13 @@ public class Swivel {
         overrideAngleLimits = newValue;
     }
 
+    public void setSlowerTurn(boolean slower) {
+        if (slower) {
+            speedMult = slowSpeed;
+        } else {
+            speedMult = fastSpeed;
+        }
+    }
     private double extensionSpeedMultiplier() {
         double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();

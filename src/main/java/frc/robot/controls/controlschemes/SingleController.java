@@ -114,4 +114,10 @@ public class SingleController extends ControlScheme {
     public boolean slowDownTurn() {
         return primary.getLeftBumper();
     }
+
+    @Override
+    public boolean doSlowerSwivel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

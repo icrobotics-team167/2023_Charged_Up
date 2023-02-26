@@ -125,4 +125,9 @@ public class DoubleController extends ControlScheme {
     public boolean slowDownTurn() {
         return primary.getLeftBumper();
     }
+
+    @Override
+    public boolean doSlowerSwivel() {
+        return primary.getLeftTrigger();
+    }
 }
