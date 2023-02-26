@@ -11,6 +11,7 @@ import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.turret.TurretPosition;
 import frc.robot.util.PeriodicTimer;
+import frc.robot.util.MovingAverage;
 import frc.robot.util.PID;
 
 public class DriveStraight extends Action {
@@ -30,9 +31,11 @@ public class DriveStraight extends Action {
     private PID pidController;
     private double P = 0.015;
     private double I = 0.0;
-    private double D = 0.0;
+    private double D = 0.008;
 
     private TurretPosition targetState = null;
+
+    private MovingAverage angleFilter;
 
     private AHRS navx;
     /**
@@ -68,6 +71,8 @@ public class DriveStraight extends Action {
         } catch (Exception ex) {
             DriverStation.reportError("Error instantiating the navx, " + ex.getMessage(), true);
         }
+
+        angleFilter = new MovingAverage(25, false);
     }
 
     /**
@@ -89,7 +94,8 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
-        startAngle = navx.getYaw() % 360;
+        startAngle = navx.getYaw();
+        SmartDashboard.putNumber("DriveStraight.targetAngle", startAngle);
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);
     }
@@ -104,7 +110,11 @@ public class DriveStraight extends Action {
         }
 
         // Compute the PID for keeping the robot straight
-        double pidOutput = pidController.compute(navx.getYaw(), timer.get());
+        angleFilter.add(navx.getAngle());
+        double angle = angleFilter.get();
+        SmartDashboard.putNumber("DriveStrsight.rawAngle", navx.getAngle());
+        SmartDashboard.putNumber("DriveStraight.CurrentAngle", angle);
+        double pidOutput = pidController.compute(angle, timer.get());
         // Clamp the PID output
         pidOutput = MathUtil.clamp(pidOutput, -1, 1);
 
@@ -139,6 +149,8 @@ public class DriveStraight extends Action {
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
         SmartDashboard.putNumber("DriveStraight.leftEncoderPosition",Units.metersToInches(leftEncoderPosition));
         SmartDashboard.putNumber("DriveStraight.rightEncoderPosition",Units.metersToInches(rightEncoderPosition));
+        SmartDashboard.putNumber("DriveStraight.initialRightEncoderPosition",Units.metersToInches(rightEncoderInitialPosition));
+        SmartDashboard.putNumber("DriveStraight.initialLeftEncoderPosition",Units.metersToInches(leftEncoderInitialPosition));
         if (speed > 0) {
             return leftEncoderPosition - leftEncoderInitialPosition >= meters
                     || rightEncoderPosition - rightEncoderInitialPosition >= meters;
