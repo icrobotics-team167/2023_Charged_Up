@@ -16,13 +16,19 @@ public enum AutoRoutines {
         // new NullAction(),
         // })),
 
-        SCORE_CONE("Score Cone", new Routine(new Action[] {
-        // TODO: Make an auto routine for scoring a cone
+        BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
+                        new MoveArm(TurretPosition.HIGH_GOAL),
+                        new OpenClaw(),
+                        new MoveArm(TurretPosition.INTAKE),
+                        new DriveStraight(100, -1),
+                        new DriveForwardsUntil(
+                                        navx -> navx.getPitch() >= 5,
+                                        0.5,
+                                        Duration.ofMillis(3500)),
+                        new DriveStraight(20, 0.4),
+                        new NaiveAutoBalance(),
         })),
-        SCORE_CUBE("Score cube", new Routine(new Action[] {
-        // TODO: Make an auto routine for scoring a cube
-        })),
-        BALANCE("Balance (Engaged score)", new Routine(new Action[] {
+        BALANCE_GREEDY("Balance Greedy", new Routine(new Action[] {
                         new DriveForwardsUntil(
                                         navx -> navx.getPitch() >= 5,
                                         0.5,
@@ -43,6 +49,9 @@ public enum AutoRoutines {
                         new OpenClaw(),
                         new Wait(5),
                         new CloseClaw()
+        })),
+        DRIVE_BACKWARDS("drive backwards", new Routine(new Action[] {
+                        new DriveStraight(-50, -0.5)
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

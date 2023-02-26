@@ -19,7 +19,7 @@ public abstract class ControlScheme {
 
     public abstract boolean doSwitchHighGear();
 
-    public abstract boolean doLowerGear();
+    public abstract boolean doSlowMode();
 
     // public abstract boolean slowDownTurn();
 

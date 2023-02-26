@@ -50,7 +50,7 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         // TODO Auto-generated method stub
         return false;
     }

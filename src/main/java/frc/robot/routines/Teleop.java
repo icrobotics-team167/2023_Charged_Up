@@ -33,7 +33,7 @@ public class Teleop {
             driveBase.setLowGear();
         }
         if(driveBase.isHighGear()) {
-            driveBase.setLowerGear(controls.doLowerGear());
+            driveBase.setSlowMode(controls.doSlowMode());
         }
         if (Config.Settings.TANK_DRIVE) {
             driveBase.tankDrive(controls.getTankLeftSpeed(),

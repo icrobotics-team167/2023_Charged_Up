@@ -65,7 +65,7 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         return primary.getLeftTrigger();
     }
 

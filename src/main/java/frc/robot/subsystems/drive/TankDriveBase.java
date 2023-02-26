@@ -22,6 +22,8 @@ public interface TankDriveBase {
 
     boolean isLowerGear();
 
+    void setSlowMode(boolean slow);
+
     // Auto
     void stop();
 

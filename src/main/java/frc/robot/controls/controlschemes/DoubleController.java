@@ -67,7 +67,7 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         return primary.getLeftTrigger();
     }
 
@@ -83,7 +83,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmSwivel() {
-        double swivel = secondary.getRightStickX();
+        double swivel = secondary.getLeftStickX();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(swivel) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             swivel = 0;
@@ -93,7 +93,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmPivot() {
-        double pivot = secondary.getRightStickY();
+        double pivot = secondary.getLeftStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(pivot) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             pivot = 0;
@@ -103,7 +103,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        double extend = secondary.getLeftStickY();
+        double extend = secondary.getRightStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(extend) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             extend = 0;
