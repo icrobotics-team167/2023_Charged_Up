@@ -30,7 +30,7 @@ public class Config {
         public static final double TRIGGER_PRESSED_THRESHOLD = 0.2;
 
         // Primary controller deadzone size
-        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.15;
+        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.1;
 
         // Secondary controller deadzone size
         public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.2;
