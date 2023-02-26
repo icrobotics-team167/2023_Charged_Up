@@ -93,10 +93,6 @@ public class PID {
         double derivative = (-1) * derivativeCoefficient * (deltaError);
 
         double output = proportional + integral + derivative + initialControlOutput;
-        SmartDashboard.putNumber("P", proportional);
-        SmartDashboard.putNumber("deltaError", deltaError);
-        SmartDashboard.putNumber("I", integral);
-        SmartDashboard.putNumber("D", derivative);
         lastError = currentError;
         lastTime = currentTime;
 

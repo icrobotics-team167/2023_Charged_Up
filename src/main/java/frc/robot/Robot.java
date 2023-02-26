@@ -29,13 +29,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        // autoChooser.setDefaultOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
-        // autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
-        // autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
-        // autoChooser.addOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
-        // autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
-        // autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        // SmartDashboard.putData("Autonomous Routines", autoChooser);
+        autoChooser.setDefaultOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        for (AutoRoutines routine : AutoRoutines.values()) {
+            if (routine != AutoRoutines.NOTHING) {
+                autoChooser.addOption(routine.name, routine);
+            }
+
+        }
+        SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -77,22 +78,13 @@ public class Robot extends TimedRobot {
 
         try {
             phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            phCompressor.enableAnalog(60, 65);
+            phCompressor.enableAnalog(100, 120);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-        auto = new Routine(new Action[] {
-                new DriveForwardsUntil(
-                    navx -> navx.getPitch() >= 8,
-                    0.15,
-                    Duration.ofMillis(5500)),
-                new DriveStraight(20, 0.2, 2),
-                new NaiveAutoBalance()
-                // new PIDAutoBalance()
-            });
         teleop = new Teleop(controls);
     }
 

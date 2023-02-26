@@ -3,7 +3,6 @@ package frc.robot.controls.controlschemes;
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
 import frc.robot.controls.controllers.PSController;
-import frc.robot.subsystems.Subsystems;
 
 public class DoubleController extends ControlScheme {
 
@@ -73,18 +72,13 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return primary.getYButton();
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        return secondary.getLeftBumper();
-    }
-
-    @Override
-    public boolean doCloseClaw() {
+    public boolean openClaw() {
         return secondary.getRightBumper();
+    }
+
+    @Override 
+    public boolean closeClaw() {
+        return secondary.getLeftBumper();
     }
 
     @Override
@@ -118,13 +112,17 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean getBrake() {
-        boolean brake = primary.getBButton();
-        return brake;
-    }
-    
-    @Override
-    public boolean getLimitOverride() {
+    public boolean doLimitOverride() {
         return secondary.getBButton();
+    }
+
+    @Override
+    public boolean doResetTurret() {
+        return secondary.getXButton();
+    }
+
+    @Override
+    public boolean slowDownTurn() {
+        return primary.getLeftBumper();
     }
 }

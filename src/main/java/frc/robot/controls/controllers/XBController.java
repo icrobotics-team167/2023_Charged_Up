@@ -2,6 +2,8 @@ package frc.robot.controls.controllers;
 
 // import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Config;
+import frc.robot.util.MathUtils;
 
 public class XBController implements Controller {
 
@@ -117,11 +119,17 @@ public class XBController implements Controller {
 
     @Override
     public double getLeftStickX() {
+        if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
+            return Math.pow(controller.getLeftX(),2) * MathUtils.getSign(controller.getLeftX());
+        }
         return controller.getLeftX();
     }
 
     @Override
     public double getLeftStickY() {
+        if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
+            return -Math.pow(controller.getLeftY(),2) * MathUtils.getSign(controller.getLeftY());
+        }
         return -controller.getLeftY();
     }
 
@@ -142,11 +150,17 @@ public class XBController implements Controller {
 
     @Override
     public double getRightStickX() {
+        if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
+            return Math.pow(controller.getRightX(),2) * MathUtils.getSign(controller.getRightX());
+        }
         return controller.getRightX();
     }
 
     @Override
     public double getRightStickY() {
+        if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
+            return -Math.pow(controller.getRightY(),2) * MathUtils.getSign(controller.getRightY());
+        }
         return -controller.getRightY();
     }
 

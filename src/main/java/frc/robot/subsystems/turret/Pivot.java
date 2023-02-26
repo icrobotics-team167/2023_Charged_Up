@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
@@ -28,13 +29,15 @@ public class Pivot {
     // private DigitalInput pivotSwitch;
     private static final double MAX_TURN_SPEED = 1;
     private static final double INITIAL_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
-    private static final double MAX_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
+    private static final double MAX_PIVOT_ANGLE = 90;
     private static final double MIN_PIVOT_ANGLE = -35;
 
     private boolean overrideAngleLimits = false;
 
     // Singleton
     public static Pivot instance;
+
+    private ExtendRetract extendRetract;
 
     /**
      * Allows only one instance of Pivot to exist at once.
@@ -77,6 +80,8 @@ public class Pivot {
 
         initialEncoderPosition = pivotEncoder.getPosition();
 
+        extendRetract = ExtendRetract.getInstance();
+
         // pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
     }
 
@@ -89,7 +94,7 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
-        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
+        speed *= -extensionSpeedMultiplier();
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
         if (speed > 0 && !tooFarUp()) {
@@ -143,5 +148,19 @@ public class Pivot {
 
     public void setLimitOverride(boolean newValue) {
         overrideAngleLimits = newValue;
+    }
+
+    private double extensionSpeedMultiplier() {
+        double low = 0.25;
+        double extensionPosition = extendRetract.getPositionInches();
+        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
+                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        multiplier = MathUtil.clamp(multiplier, low, 1);
+        if (overrideAngleLimits) {
+            multiplier = 1;
+        }
+        SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
+        return multiplier;
     }
 }

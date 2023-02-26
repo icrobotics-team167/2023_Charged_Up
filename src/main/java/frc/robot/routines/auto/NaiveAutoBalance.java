@@ -16,8 +16,6 @@ public class NaiveAutoBalance extends Action {
     // private double speedRange;
     private PeriodicTimer timer;
     private AHRS navx;
-    private boolean teleop;
-    private ControlScheme controls;
 
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
@@ -27,31 +25,19 @@ public class NaiveAutoBalance extends Action {
 
     // Potential change: Add these to the constructor?
     // Speed at which the robot moves while driving
-    private double speed = 0.6;
+    private double speed = 0.5;
 
     // How long the robot moves each time it moves
     private double driveTime = 0.2;
     // Time to wait between every time the robot moves in seconds
-    private double waitTime = 1;
+    private double waitTime = 0.75;
     private boolean stop = false;
-    boolean done=false;
-
-    /**
-     * Constructs a new AutoBalance auto routine.
-     */
-    public NaiveAutoBalance() {
-        this(false, null);
-    }
+    boolean done = false;
 
     /**
      * Constructs a new AutoBalance routine.
-     * 
-     * @param teleop   Whether or not it's being called in teleop mode (true) or
-     *                 autonomous mode (false)
-     * @param controls If in teleop, takes the ControlScheme of the primary
-     *                 controller for checking whether to stop or not.
      */
-    public NaiveAutoBalance(boolean teleop, ControlScheme controls) {
+    public NaiveAutoBalance() {
         super();
 
         // Initialize the navX
@@ -64,8 +50,6 @@ public class NaiveAutoBalance extends Action {
         }
 
         // Set variables
-        this.teleop = teleop;
-        this.controls = controls;
 
         // Initialize timer
         timer = new PeriodicTimer();
@@ -113,12 +97,7 @@ public class NaiveAutoBalance extends Action {
             } else {
                 SmartDashboard.putNumber("pitch", pitch);
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
-                    Subsystems.driveBase.arcadeDrive(pitch/Math.abs(pitch)*0.33, 0);
-                }
-                else
-                {
-                    done = true;
-                    Subsystems.driveBase.arcadeDrive(-pitch/Math.abs(pitch)*0.05, 0);
+                    Subsystems.driveBase.arcadeDrive(pitch / Math.abs(pitch) * speed, 0);
                 }
             }
         }
@@ -129,12 +108,6 @@ public class NaiveAutoBalance extends Action {
      */
     @Override
     public boolean isDone() {
-        if (teleop && // If it's in teleop mode and
-                controls != null && // There is a primary controller attached and
-                !controls.doAutoBalance() // The button for running the autoBalance code has been released
-        ) {
-            return true; // Return true
-        }
         // There's no code for handling how long it should be autobalancing for during
         // auto as we don't expect any other auto routines to come after autoBalance
         return done;

@@ -15,7 +15,7 @@ public enum AutoRoutines {
         // ROUTINE_ID("Routine Name", new Routine(new Action[] {
         // new NullAction(),
         // })),
-        
+
         SCORE_CONE("Score Cone", new Routine(new Action[] {
         // TODO: Make an auto routine for scoring a cone
         })),
@@ -23,14 +23,20 @@ public enum AutoRoutines {
         // TODO: Make an auto routine for scoring a cube
         })),
         BALANCE("Balance (Engaged score)", new Routine(new Action[] {
-        //   new DriveForwardsUntil(
-        //   navx -> navx.getPitch() >= 5,
-        //   0.3,
-        //             Duration.ofMillis(3500)),
-            new NaiveAutoBalance(),
+                        new DriveForwardsUntil(
+                                        navx -> navx.getPitch() >= 5,
+                                        0.5,
+                                        Duration.ofMillis(3500)),
+                        new DriveStraight(20, 0.4),
+                        new NaiveAutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(35, 0.5).withTurret(TurretPosition.INITIAL.withPivot(26)),
+                        new DriveStraight(120, 0.5),
+                        new ResetArm()
+        })),
+        TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {
+                        new DriveStraight(10, 0.2).withTurret(TurretPosition.INITIAL.withSwivel(
+                                        120)),
                         new ResetArm()
         })),
         TEST_CLAW("Move the claw", new Routine(new Action[] {

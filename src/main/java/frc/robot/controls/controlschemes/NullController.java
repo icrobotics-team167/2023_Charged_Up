@@ -35,21 +35,6 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return false;
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        return false;
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        return false;
-    }
-
-    @Override
     public double getArmSwivel() {
         return 0;
     }
@@ -71,14 +56,34 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean getBrake() {
+    public boolean doLimitOverride() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getLimitOverride'");
+        return false;
+    }
+
+    @Override
+    public boolean doResetTurret() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'doResetTurret'");
+        return false;
+    }
+
+    @Override
+    public boolean openClaw() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean getLimitOverride() {
+    public boolean closeClaw() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLimitOverride'");
+        return false;
+    }
+
+    @Override
+    public boolean slowDownTurn() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

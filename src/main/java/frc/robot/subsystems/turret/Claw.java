@@ -10,7 +10,6 @@ import frc.robot.Config;
 public class Claw {
 
     private Solenoid openClaw;
-    private Solenoid closeClaw;
 
     public static Claw instance;
 
@@ -33,8 +32,7 @@ public class Claw {
      * Since two pneumatic channels are used, one is for opening the claw and one is for closing the claw.
      */
     private Claw() {
-        openClaw = new Solenoid(Config.Ports.SparkTank.PH, PneumaticsModuleType.REVPH, Config.Ports.Arm.OPEN_CLAW);
-        closeClaw = new Solenoid(Config.Ports.SparkTank.PH, PneumaticsModuleType.REVPH, Config.Ports.Arm.CLOSE_CLAW);
+        openClaw = new Solenoid(Config.Ports.SparkTank.PH, PneumaticsModuleType.REVPH, Config.Ports.Arm.CLAW);
     }
 
     /**
@@ -42,7 +40,6 @@ public class Claw {
      */
     public void openClaw() {
         openClaw.set(true);
-        closeClaw.set(false);
         open = true;
     }
 
@@ -51,13 +48,11 @@ public class Claw {
      */
     public void closeClaw() {
         openClaw.set(false);
-        closeClaw.set(true);
         open = false;
     }
 
     public void stopSolenoid() {
         openClaw.set(false);
-        closeClaw.set(false);
     }
 
     public boolean isOpen() {

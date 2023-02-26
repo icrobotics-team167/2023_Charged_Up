@@ -9,12 +9,12 @@ import frc.robot.subsystems.drive.TankDriveBase;
 import frc.robot.subsystems.turret.*;
 
 public class Teleop {
-
-    private PIDAutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
     private Turret turret;
     private Claw claw;
+
+    private final double slowTurnMult = 0.5;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -25,20 +25,9 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
-        autoBalance = new PIDAutoBalance(true, controls);
     }
 
     public void periodic() {
-        Subsystems.driveBase.setBrake(); // this doesn't work :(
-
-        if (controls.getBrake()) {
-            Subsystems.driveBase.setCoast();
-            SmartDashboard.putBoolean("test", true);
-        } else {
-            SmartDashboard.putBoolean("test", false);
-
-        }
-
 
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
@@ -47,33 +36,40 @@ public class Teleop {
         }
 
         driveBase.setLowerGear(controls.doLowerGear());
-        if (controls.doAutoBalance()) {
-            autoBalance.exec();
+        if (Config.Settings.TANK_DRIVE) {
+            driveBase.tankDrive(controls.getTankLeftSpeed(),
+                    controls.getTankRightSpeed());
         } else {
-            if (Config.Settings.TANK_DRIVE) {
-                driveBase.tankDrive(controls.getTankLeftSpeed(),
-                        controls.getTankRightSpeed());
+            if (controls.slowDownTurn()) {
+                driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                        controls.getArcadeWheel() * slowTurnMult);
             } else {
                 driveBase.arcadeDrive(controls.getArcadeThrottle(),
                         controls.getArcadeWheel());
             }
+
         }
-        turret.setLimitOverride(controls.getLimitOverride());
-        turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+        if (controls.doResetTurret()) {
+            SmartDashboard.putBoolean("Teleop.turretResetDone", turret.moveTo(TurretPosition.INITIAL));
+            SmartDashboard.putBoolean("Teleop.resettingTurret", true);
+        } else {
+            turret.setLimitOverride(controls.doLimitOverride());
+            turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+            SmartDashboard.putBoolean("Teleop.resettingTurret", false);
+        }
+        turret.setLimitOverride(controls.doLimitOverride());
+        turret.move(-controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
 
-        claw.stopSolenoid();
-        // if (controls.doOpenClaw()) {
-        // claw.stopSolenoid();
-        // }
-        // else if (controls.doCloseClaw()) {
-        // claw.closeClaw();
-        // }
+        if (controls.openClaw()) {
+            claw.openClaw();
+        } else if (controls.closeClaw()) {
+            claw.closeClaw();
+        }
 
-        // SmartDashboard.putNumber("turretExtendRetract.posInch",
-        // turretExtendRetract.getPositionInches());
-
-        SmartDashboard.putBoolean("turret.swivelCentered", turret.isSwivelCentered());
-        SmartDashboard.putBoolean("turret.isRetracted", turret.isFullyRetracted());
+        // PUT DEBUG STATEMENTS HERE
+        SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
+        SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
+        SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
     }
 
 }

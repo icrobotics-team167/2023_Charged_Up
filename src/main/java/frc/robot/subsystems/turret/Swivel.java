@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Config;
 
@@ -24,10 +25,12 @@ public class Swivel {
 
     private double initialEncoderPosition;
 
-    private final double MAX_TURN_ANGLE = 60;
-    private final double MAX_TURN_SPEED = 0.4;
+    private final double MAX_TURN_ANGLE = 100;
+    private final double MAX_TURN_SPEED = 0.8;
 
-    // private DigitalInput swivelSwitch;
+    private ExtendRetract extendRetract;
+
+    private DigitalInput swivelSwitch;
 
     private boolean overrideAngleLimits = false;
 
@@ -64,7 +67,9 @@ public class Swivel {
         // Set up positon (Assuming it's centered when powered on)
         initialEncoderPosition = swivelEncoder.getPosition();
 
-        // swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
+        extendRetract = ExtendRetract.getInstance();
+
+        swivelSwitch = new DigitalInput(Config.Ports.Arm.SWIVEL_SWITCH);
     }
 
     /**
@@ -77,8 +82,8 @@ public class Swivel {
      *              negative values swivels counterclockwise.
      */
     public void move(double speed) {
-        speed *= -1; // Left-right inputs were backwards
-        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
+        double speedMult = extensionSpeedMultiplier();
+        speed *= -speedMult; // Left-right inputs were backwards
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
             swivelMotor.set(-motorOutput);
@@ -98,7 +103,13 @@ public class Swivel {
      */
     public double getPositionDegrees() {
         double scalar = 0.782;
-        return (swivelEncoder.getPosition() - initialEncoderPosition) * -scalar;
+
+        if (!swivelSwitch.get()) {
+            initialEncoderPosition = swivelEncoder.getPosition();
+        }
+        double position = (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
+        // return MathUtil.clamp(position, -MAX_TURN_ANGLE, MAX_TURN_ANGLE);
+        return position;
     }
 
     /**
@@ -107,6 +118,7 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees counterclockwise
      */
     private boolean tooFarLeft() {
+        SmartDashboard.putBoolean("Swivel.tooFarLeft", getPositionDegrees() < -MAX_TURN_ANGLE);
         if (overrideAngleLimits) {
             return false;
         }
@@ -119,6 +131,7 @@ public class Swivel {
      * @return If the joint is more than MAX_TURN_ANGLE degrees clockwise
      */
     private boolean tooFarRight() {
+        SmartDashboard.putBoolean("Swivel.tooFarRight", getPositionDegrees() > MAX_TURN_ANGLE);
         if (overrideAngleLimits) {
             return false;
         }
@@ -134,5 +147,19 @@ public class Swivel {
 
     public void setLimitOverride(boolean newValue) {
         overrideAngleLimits = newValue;
+    }
+
+    private double extensionSpeedMultiplier() {
+        double low = 0.25;
+        double extensionPosition = extendRetract.getPositionInches();
+        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
+                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        multiplier = MathUtil.clamp(multiplier, low, 1);
+        if (overrideAngleLimits) {
+            multiplier = 1;
+        }
+        // SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
+        return multiplier;
     }
 }

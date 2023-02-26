@@ -18,18 +18,17 @@ public abstract class ControlScheme {
     public abstract boolean doSwitchLowGear();
 
     public abstract boolean doSwitchHighGear();
-    
+
     public abstract boolean doLowerGear();
 
-    // Autobalance
-    public abstract boolean doAutoBalance();
+    public abstract boolean slowDownTurn();
 
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean doOpenClaw();
+    public abstract boolean openClaw();
 
-    public abstract boolean doCloseClaw();
+    public abstract boolean closeClaw();
 
     // Arm controls
     public abstract double getArmSwivel();
@@ -38,8 +37,7 @@ public abstract class ControlScheme {
 
     public abstract double getArmExtend();
 
-    // add brake
-    public abstract boolean getBrake();
-    
-    public abstract boolean getLimitOverride();
+    public abstract boolean doLimitOverride();
+
+    public abstract boolean doResetTurret();
 }
