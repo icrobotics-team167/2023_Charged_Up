@@ -11,12 +11,6 @@ import frc.robot.Config;
 /**
  * Turns the turret on the robot, for up to MAX_TURN_ANGLE degrees on both
  * sides.
- * Disregard TODOs for now as we will be working with only encoder values for
- * the time being
- * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting.
- * One limit switch is triggered by both ends so we need a method to figure out
- * which one we are hitting.
  */
 public class Swivel {
 
@@ -25,7 +19,7 @@ public class Swivel {
 
     private double initialEncoderPosition;
 
-    private final double MAX_TURN_ANGLE = 100;
+    private final double MAX_TURN_ANGLE = 100; //TODO: Switch to 225 degrees
     private final double MAX_TURN_SPEED = 0.8;
 
     private ExtendRetract extendRetract;
@@ -34,9 +28,14 @@ public class Swivel {
 
     private boolean overrideAngleLimits = false;
 
-    private double fastSpeed = 1;
-    private double slowSpeed = 0.5;
-    private double speedMult = fastSpeed;
+    private boolean swivelLocked = false;
+    
+    private final double SLOW_TURN_MULT = 0.5;
+    private boolean slowMode = false;
+
+    // private double fastSpeed = 1;
+    // private double slowSpeed = 0.5;
+    // private double speedMult = fastSpeed;
 
     // Singleton
     public static Swivel instance;
@@ -86,13 +85,23 @@ public class Swivel {
      *              negative values swivels counterclockwise.
      */
     public void move(double speed) {
+        if (!swivelSwitch.get()) {
+            initialEncoderPosition = swivelEncoder.getPosition();
+        }
+        if(swivelLocked) {
+            return;
+        }
         double extensionSpeedMult = extensionSpeedMultiplier();
-        speed *= -extensionSpeedMult * speedMult; // Left-right inputs were backwards
+        // speed *= -extensionSpeedMult * speedMult; // Left-right inputs were backwards
+        speed *= extensionSpeedMult;
+        if (slowMode) {
+            speed *= SLOW_TURN_MULT;
+        }
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         if (speed > 0 && !tooFarRight()) {
-            swivelMotor.set(-motorOutput);
-        } else if (speed < 0 && !tooFarLeft()) {
             swivelMotor.set(motorOutput);
+        } else if (speed < 0 && !tooFarLeft()) {
+            swivelMotor.set(-motorOutput);
         } else {
             swivelMotor.stopMotor();
         }
@@ -107,10 +116,6 @@ public class Swivel {
      */
     public double getPositionDegrees() {
         double scalar = 0.782;
-
-        if (!swivelSwitch.get()) {
-            initialEncoderPosition = swivelEncoder.getPosition();
-        }
         double position = (swivelEncoder.getPosition() - initialEncoderPosition) * scalar;
         // return MathUtil.clamp(position, -MAX_TURN_ANGLE, MAX_TURN_ANGLE);
         return position;
@@ -153,13 +158,13 @@ public class Swivel {
         overrideAngleLimits = newValue;
     }
 
-    public void setSlowerTurn(boolean slower) {
-        if (slower) {
-            speedMult = slowSpeed;
-        } else {
-            speedMult = fastSpeed;
-        }
-    }
+    // public void setSlowerTurn(boolean slower) {
+    //     if (slower) {
+    //         speedMult = slowSpeed;
+    //     } else {
+    //         speedMult = fastSpeed;
+    //     }
+    // }
     private double extensionSpeedMultiplier() {
         double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();
@@ -172,5 +177,13 @@ public class Swivel {
         }
         // SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
         return multiplier;
+    }
+
+    public void lockSwivel(boolean lock) {
+        swivelLocked = lock;
+    }
+
+    public void setSlowMode(boolean slow) {
+        slowMode = slow;
     }
 }

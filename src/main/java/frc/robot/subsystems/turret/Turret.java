@@ -8,7 +8,6 @@ public class Turret {
     private Pivot pivot;
     private Swivel swivel;
     private ExtendRetract extendRetract;
-    private Claw claw;
 
     private static Turret instance;
 
@@ -27,7 +26,6 @@ public class Turret {
         pivot = Pivot.getInstance();
         swivel = Swivel.getInstance();
         extendRetract = ExtendRetract.getInstance();
-        claw = Claw.getInstance();
     }
 
     /**
@@ -41,7 +39,7 @@ public class Turret {
         pivot.move(pivotSpeed);
         swivel.move(swivelSpeed);
         extendRetract.move(extendRetractSpeed);
-    }
+    }   
 
     /**
      * Moves multiple parts of the turret at the same time.
@@ -113,5 +111,17 @@ public class Turret {
         pivot.setLimitOverride(newVal);
         swivel.setLimitOverride(newVal);
         extendRetract.setLimitOverride(newVal);
+    }
+
+    /**
+     * Toggles locking the turret, making it impossible to move
+     */
+    public void lockSwivel(boolean lock) {
+        swivel.lockSwivel(lock);
+    }
+
+    public void setSlowMode(boolean slow) {
+        swivel.setSlowMode(slow);
+        pivot.setSlowMode(slow);
     }
 }

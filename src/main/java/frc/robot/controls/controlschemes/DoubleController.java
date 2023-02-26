@@ -111,23 +111,53 @@ public class DoubleController extends ControlScheme {
         return extend;
     }
 
-    @Override
-    public boolean doLimitOverride() {
-        return secondary.getBButton();
-    }
+    // @Override
+    // public boolean doLimitOverride() {
+    //     return secondary.getBButton();
+    // }
 
     @Override
     public boolean doResetTurret() {
+        return secondary.getMenuButton();
+    }
+
+    // @Override
+    // public boolean slowDownTurn() {
+    //     return primary.getLeftBumper();
+    // }
+
+    @Override
+    public boolean doSlowTurret() {
+        return secondary.getRightTrigger();
+    }
+
+    @Override
+    public boolean doLockSwivel() {
+        return secondary.getLeftTrigger();
+    }
+
+    @Override
+    public boolean doAutoHigh() {
+        return secondary.getYButton();
+    }
+
+    @Override
+    public boolean doAutoMid() {
         return secondary.getXButton();
     }
 
     @Override
-    public boolean slowDownTurn() {
-        return primary.getLeftBumper();
+    public boolean doAutoPickup() {
+        return secondary.getAButton();
     }
 
     @Override
-    public boolean doSlowerSwivel() {
-        return primary.getLeftTrigger();
+    public boolean doPlayerStation() {
+        return secondary.getBButton();
+    }
+
+    @Override
+    public boolean doSwivel180() {
+        return secondary.getViewButton();
     }
 }

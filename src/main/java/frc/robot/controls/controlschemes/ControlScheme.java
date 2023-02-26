@@ -21,7 +21,7 @@ public abstract class ControlScheme {
 
     public abstract boolean doLowerGear();
 
-    public abstract boolean slowDownTurn();
+    // public abstract boolean slowDownTurn();
 
     // Turret (Secondary controller)
 
@@ -37,9 +37,22 @@ public abstract class ControlScheme {
 
     public abstract double getArmExtend();
 
-    public abstract boolean doLimitOverride();
+    // public abstract boolean doLimitOverride();
 
     public abstract boolean doResetTurret();
 
-    public abstract boolean doSlowerSwivel();
+    public abstract boolean doSlowTurret();
+
+    public abstract boolean doLockSwivel();
+    
+    public abstract boolean doAutoHigh();
+
+    public abstract boolean doAutoMid();
+
+    public abstract boolean doAutoPickup();
+
+    public abstract boolean doPlayerStation();
+
+    public abstract boolean doSwivel180();
+
 }

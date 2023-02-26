@@ -94,7 +94,7 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
-        startAngle = navx.getYaw();
+        startAngle = navx.getAngle();
         SmartDashboard.putNumber("DriveStraight.targetAngle", startAngle);
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);

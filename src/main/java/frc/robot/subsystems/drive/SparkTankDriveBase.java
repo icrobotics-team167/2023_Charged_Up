@@ -162,6 +162,7 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
+
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
@@ -355,5 +356,4 @@ public class SparkTankDriveBase implements TankDriveBase {
         SmartDashboard.putNumber("SparkTankDriveBase.voltageMultiplier", output);
         return output;
     }
-
 }

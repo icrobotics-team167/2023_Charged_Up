@@ -11,12 +11,6 @@ import frc.robot.Config;
 
 /**
  * Tilts the arm up and down
- * Disregard TODOs for now as we will be working with only encoder values for
- * the time being
- * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting.
- * One limit switch is triggered by both ends so we need a method to figure out
- * which one we are hitting.
  */
 public class Pivot {
 
@@ -33,6 +27,9 @@ public class Pivot {
     private static final double MIN_PIVOT_ANGLE = -35;
 
     private boolean overrideAngleLimits = false;
+
+    private final double SLOW_TURN_MULT = 0.5;
+    private boolean slowMode = false;
 
     // Singleton
     public static Pivot instance;
@@ -94,7 +91,10 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
-        speed *= -extensionSpeedMultiplier();
+        speed *= extensionSpeedMultiplier();
+        if (slowMode) {
+            speed *= SLOW_TURN_MULT;
+        }
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
         if (speed > 0 && !tooFarUp()) {
@@ -162,5 +162,9 @@ public class Pivot {
         }
         SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
         return multiplier;
+    }
+
+    public void setSlowMode(boolean slow) {
+        slowMode = slow;
     }
 }
