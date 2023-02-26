@@ -31,7 +31,7 @@ public enum AutoRoutines {
                         new NaiveAutoBalance(),
         })),
         GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        new DriveStraight(120, 0.5),
+                        new DriveStraight(150, 0.5),
                         new ResetArm()
         })),
         TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {

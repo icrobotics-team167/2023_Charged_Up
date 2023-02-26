@@ -115,6 +115,8 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         );
 
+        setLowGear();
+
         voltageFilter = new MovingAverage(25, true);
     }
 
@@ -174,6 +176,7 @@ public class SparkTankDriveBase implements TankDriveBase {
         } else {
             setHighGear();
         }
+        SmartDashboard.putBoolean("SparkTankDriveBase.highGear", highGear);
     }
 
     /**
@@ -247,6 +250,7 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getLeftEncoderPosition() {
+        SmartDashboard.putNumber("SparkTankDriveBase.leftEncoderRotations", leftEncoder.getPosition());
         return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
@@ -255,6 +259,7 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getRightEncoderPosition() {
+        SmartDashboard.putNumber("SparkTankDriveBase.rightEncoderRotations", rightEncoder.getPosition());
         return encoderDistanceToMeters(rightEncoder.getPosition());
     }
 
@@ -266,9 +271,9 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 5.1 : 13.5;
-        double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI * 2;
-        double scalar = 0.98;
-        return Units.inchesToMeters(encoderValue * wheelCircumferenceInches / gearRatio / scalar);
+        double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI;
+        double scalar = 2.622;
+        return Units.inchesToMeters(encoderValue * (wheelCircumferenceInches / gearRatio) / scalar);
     }
 
     /**
