@@ -61,7 +61,7 @@ public class Teleop {
         // else if (controls.doPlayerStation()) {
         //     turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doSwivel180()) {
-            turret.moveTo(TurretPosition.INITIAL.withSwivel(180));
+            turret.moveTo(turret.getPosition().withSwivel(180));
         } else {
             // turret.setLimitOverride(controls.doLimitOverride();
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
