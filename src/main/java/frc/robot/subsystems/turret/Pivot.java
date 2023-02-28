@@ -50,8 +50,8 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 65 degree angle up relative to the drive base on code
-     * boot.
+     * Assumes the arm is at a set degree angle up relative to the drive base on code
+     * boot. See TurretPosition.INITIAL for where that set degree is.
      */
     private Pivot() {
         // Set up motors
