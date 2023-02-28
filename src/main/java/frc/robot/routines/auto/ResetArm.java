@@ -2,37 +2,39 @@ package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.turret.*;
 import frc.robot.util.PeriodicTimer;
 
-public class Wait extends Action {
+public class ResetArm extends Action {
 
-    private PeriodicTimer timer;
-    private double seconds;
+    boolean done;
+    PeriodicTimer timer;
 
-    public Wait(double seconds) {
-        super();
+    public ResetArm() {
+        this(5);
+    }
+
+    public ResetArm(double timeout) {
         timer = new PeriodicTimer();
-        this.seconds = seconds;
     }
 
     @Override
     public void init() {
-        timer.reset();
     }
 
     @Override
     public void periodic() {
-        Subsystems.driveBase.stop();
+        done = Subsystems.turret.moveTo(TurretPosition.INITIAL);
     }
 
     @Override
     public boolean isDone() {
-        return timer.hasElapsed(seconds);
+        return done;
     }
 
     @Override
     public void done() {
-
+        Subsystems.turret.stop();
     }
 
 }

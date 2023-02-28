@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.turret.TurretPosition;
 import frc.robot.util.PeriodicTimer;
+import frc.robot.util.MovingAverage;
 import frc.robot.util.PID;
 
 public class DriveStraight extends Action {
@@ -20,16 +22,22 @@ public class DriveStraight extends Action {
     private double leftEncoderInitialPosition;
     private double rightEncoderInitialPosition;
 
+    private boolean turretDone = true;
+    private boolean driveDone;
+
     private PeriodicTimer timer;
     private double startAngle;
 
     private PID pidController;
     private double P = 0.015;
     private double I = 0.0;
-    private double D = 0.0;
+    private double D = 0.008;
+
+    private TurretPosition targetState = null;
+
+    private MovingAverage angleFilter;
 
     private AHRS navx;
-
     /**
      * Constructs a new DriveStraight auto routine.
      * 
@@ -63,14 +71,30 @@ public class DriveStraight extends Action {
         } catch (Exception ex) {
             DriverStation.reportError("Error instantiating the navx, " + ex.getMessage(), true);
         }
+
+        angleFilter = new MovingAverage(25, false);
     }
+
+    /**
+     * Modifies DriveStraight to move the arm as well
+     * 
+     * @param target A turret position that the arm wants to move to
+     * @return Returns a new version of DriveStraight that wants to move the arm to the target.
+     */
+    public DriveStraight withTurret(TurretPosition target) {
+        targetState = target;
+        turretDone = false;
+        return this;
+    }
+
+
 
     @Override
     public void init() {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
-        startAngle = navx.getYaw() % 360;
+        startAngle = navx.getAngle();
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);
     }
@@ -85,16 +109,39 @@ public class DriveStraight extends Action {
         }
 
         // Compute the PID for keeping the robot straight
-        double pidOutput = pidController.compute(navx.getYaw(), timer.get());
+        angleFilter.add(navx.getAngle());
+        double angle = angleFilter.get();
+        double pidOutput = pidController.compute(angle, timer.get());
         // Clamp the PID output
         pidOutput = MathUtil.clamp(pidOutput, -1, 1);
 
         // Move the robot
-        Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
+        if(driveDone) {
+            Subsystems.driveBase.stop();
+        } else {
+            driveDone = isDistanceReached();
+            Subsystems.driveBase.tankDrive(speed - pidOutput, speed + pidOutput);
+        }
+
+        // Move the arm if specified to
+        if(targetState != null && !turretDone) {
+            turretDone = Subsystems.turret.moveTo(targetState);
+        }
     }
 
     @Override
     public boolean isDone() {
+        return driveDone && turretDone;
+    }
+
+    /**
+     * Calculates whether the drive base has stopped moving by checking how far it has driven compared 
+     * to how far it wants to drive
+     * @return The above
+     */
+    private boolean isDistanceReached() {
+        // Calculates whether the drive base has stopped moving by checking how far it has driven compared 
+        // to how far it wants to drive
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
         if (speed > 0) {
@@ -111,6 +158,7 @@ public class DriveStraight extends Action {
     @Override
     public void done() {
         Subsystems.driveBase.stop();
+        Subsystems.turret.stop();
     }
 
 }

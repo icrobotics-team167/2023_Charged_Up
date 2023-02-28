@@ -66,13 +66,13 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         return primary.getLeftTrigger();
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return primary.getYButton();
+    public boolean openClaw() {
+        return secondary.getRightBumper();
     }
 
     @Override
@@ -81,13 +81,8 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doOpenClaw() {
+    public boolean closeClaw() {
         return secondary.getLeftBumper();
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        return secondary.getRightBumper();
     }
 
     @Override
@@ -118,5 +113,50 @@ public class DoubleController extends ControlScheme {
             extend = 0;
         }
         return extend;
+    }
+
+    @Override
+    public boolean doLimitOverride() {
+        return secondary.getBButton();
+    }
+
+    @Override
+    public boolean doResetTurret() {
+        return secondary.getStartButton();
+    }
+
+    @Override
+    public boolean doSlowTurret() {
+        return secondary.getRightTrigger();
+    }
+
+    @Override
+    public boolean doLockSwivel() {
+        return secondary.getLeftTrigger();
+    }
+
+    @Override
+    public boolean doAutoHigh() {
+        return secondary.getDPadUp();
+    }
+
+    @Override
+    public boolean doAutoMid() {
+        return secondary.getDPadLeft();
+    }
+
+    @Override
+    public boolean doAutoPickup() {
+        return secondary.getDPadDown();
+    }
+
+    @Override
+    public boolean doPlayerStation() {
+        return secondary.getDPadRight();
+    }
+
+    @Override
+    public boolean doSwivel180() {
+        return secondary.getBackButton();
     }
 }

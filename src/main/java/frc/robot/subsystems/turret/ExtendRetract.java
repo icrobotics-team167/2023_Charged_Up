@@ -3,18 +3,12 @@ package frc.robot.subsystems.turret;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Config;
 
 /**
  * Extends and retracts the arm
- * Disregard TODOs for now as we will be working with only encoder values for
- * the time being
- * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting.
- * One limit switch is triggered by both ends so we need a method to figure out
- * which one we are hitting.
  */
 public class ExtendRetract {
 
@@ -23,13 +17,16 @@ public class ExtendRetract {
 
     private double initialEncoderPosition;
 
-    private static final double MAX_EXTEND_SPEED = 0.3;
+    private static final double MAX_EXTEND_SPEED = 0.8;
     private static final double START_EXTENSION = 3.5;
 
-    private static final double MAX_EXTENSION = 35;
-    private static final double MIN_EXTENSION = 3.5;
+    public static final double MAX_EXTENSION = 42;
+    public static final double MIN_EXTENSON = 3.5;
     private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
                                                       // to account for that
+    private boolean overridePositionLimits = false;
+
+    private DigitalInput retractSwitch;
 
     // private DigitalInput extendRetractSwitch;
 
@@ -67,8 +64,10 @@ public class ExtendRetract {
         extendRetractEncoder = extendRetractMotor.getEncoder();
         initialEncoderPosition = extendRetractEncoder.getPosition();
 
-        // extendRetractSwitch = new
-        // DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
+        retractSwitch = new DigitalInput(Config.Ports.Arm.EXTEND_RETRACT_SWITCH);
+        if (retractSwitch.get()) {
+            DriverStation.reportError("Retraction switch is not activated on boot", false);
+        }
     }
 
     /**
@@ -94,11 +93,15 @@ public class ExtendRetract {
      * 
      * @return If the arm is too far in.
      */
-    private boolean tooFarIn() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarIn() {
+        if (overridePositionLimits) {
             return false;
         }
-        return getPositionInches() <= MIN_EXTENSION + DECEL_DISTANCE;
+        if (!retractSwitch.get()) {
+            initialEncoderPosition = extendRetractEncoder.getPosition();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -106,8 +109,8 @@ public class ExtendRetract {
      * 
      * @return If the arm is too far out.
      */
-    private boolean tooFarOut() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarOut() {
+        if (overridePositionLimits) {
             return false;
         }
         return getPositionInches() >= MAX_EXTENSION - DECEL_DISTANCE;
@@ -137,5 +140,9 @@ public class ExtendRetract {
      */
     public void stop() {
         move(0);
+    }
+
+    public void setLimitOverride(boolean newValue) {
+        overridePositionLimits = newValue;
     }
 }

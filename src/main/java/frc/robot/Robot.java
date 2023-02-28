@@ -6,14 +6,10 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
-import frc.robot.controls.controllers.XBController;
-import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.controls.controlschemes.DoubleController;
-import frc.robot.controls.controlschemes.NullController;
-import frc.robot.controls.controlschemes.SingleController;
+import frc.robot.controls.controllers.*;
+import frc.robot.controls.controlschemes.*;
 import frc.robot.routines.Action;
+import frc.robot.routines.Routine;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
 import frc.robot.subsystems.Subsystems;
@@ -33,15 +29,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        // Auto routine chooser
-        // ROUTINE TEMPLATE:
-        // autoChooser.addOption(AutoRoutines.(ROUTINE).name, AutoRoutines.(ROUTINE));
-        autoChooser.setDefaultOption(AutoRoutines.SCORE_CONE.name, AutoRoutines.SCORE_CONE);
-        autoChooser.addOption(AutoRoutines.SCORE_CUBE.name, AutoRoutines.SCORE_CUBE);
-        autoChooser.addOption(AutoRoutines.BALANCE.name, AutoRoutines.BALANCE);
-        autoChooser.addOption(AutoRoutines.GO_STRAIGHT.name, AutoRoutines.GO_STRAIGHT);
-        autoChooser.addOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
-        autoChooser.addOption(AutoRoutines.TEST_PIVOT_ARM.name, AutoRoutines.TEST_PIVOT_ARM);
+        autoChooser.setDefaultOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        for (AutoRoutines routine : AutoRoutines.values()) {
+            if (routine != AutoRoutines.NOTHING) {
+                autoChooser.addOption(routine.name, routine);
+            }
+
+        }
         SmartDashboard.putData("Autonomous Routines", autoChooser);
 
         Controller primaryController = null;
@@ -84,15 +78,13 @@ public class Robot extends TimedRobot {
 
         try {
             phCompressor = new Compressor(2, PneumaticsModuleType.REVPH);
-            // phCompressor.enableAnalog(60, 65);
-            phCompressor.disable();
+            phCompressor.enableAnalog(100, 120);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */
-
         teleop = new Teleop(controls);
     }
 

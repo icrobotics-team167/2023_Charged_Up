@@ -4,16 +4,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
 /**
  * Tilts the arm up and down
- * Disregard TODOs for now as we will be working with only encoder values for the time being
- * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting. 
- * One limit switch is triggered by both ends so we need a method to figure out which one we are hitting.
  */
 public class Pivot {
 
@@ -24,13 +21,20 @@ public class Pivot {
     private double initialEncoderPosition;
 
     // private DigitalInput pivotSwitch;
-    private static final double MAX_TURN_SPEED = 0.3;
-    private static final double INITIAL_PIVOT_ANGLE = 65;
-    private static final double MAX_PIVOT_ANGLE = 65;
+    private static final double MAX_TURN_SPEED = 1;
+    private static final double INITIAL_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
+    private static final double MAX_PIVOT_ANGLE = 90;
     private static final double MIN_PIVOT_ANGLE = -35;
+
+    private boolean overrideAngleLimits = false;
+
+    private final double SLOW_TURN_MULT = 0.5;
+    private boolean slowMode = false;
 
     // Singleton
     public static Pivot instance;
+
+    private ExtendRetract extendRetract;
 
     /**
      * Allows only one instance of Pivot to exist at once.
@@ -46,7 +50,8 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 65 degree angle up relative to the drive base on code boot.
+     * Assumes the arm is at a 65 degree angle up relative to the drive base on code
+     * boot.
      */
     private Pivot() {
         // Set up motors
@@ -72,6 +77,8 @@ public class Pivot {
 
         initialEncoderPosition = pivotEncoder.getPosition();
 
+        extendRetract = ExtendRetract.getInstance();
+
         // pivotSwitch = new DigitalInput(Config.Ports.Arm.PIVOT_SWITCH);
     }
 
@@ -84,7 +91,10 @@ public class Pivot {
      *              negative values pivot down.
      */
     public void move(double speed) {
-        SmartDashboard.putNumber("Swivel.degrees", getPositionDegrees());
+        speed *= extensionSpeedMultiplier();
+        if (slowMode) {
+            speed *= SLOW_TURN_MULT;
+        }
         double motorOutput = MAX_TURN_SPEED * Math.abs(speed);
         // pivotMaster.set(-motorOutput*(Math.abs(speed)/speed));
         if (speed > 0 && !tooFarUp()) {
@@ -102,8 +112,8 @@ public class Pivot {
      * @return Whether or not the pivot's angle is greater than or equal to 45
      *         degrees
      */
-    private boolean tooFarUp() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarUp() {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() >= MAX_PIVOT_ANGLE;
@@ -114,8 +124,8 @@ public class Pivot {
      * 
      * @return Whether or not the pivot's angle is less than or equal to 0 degrees
      */
-    private boolean tooFarDown() {
-        if (Config.Settings.OVERRIDE_ARM_ANGLE_LIMITS) {
+    public boolean tooFarDown() {
+        if (overrideAngleLimits) {
             return false;
         }
         return getPositionDegrees() <= MIN_PIVOT_ANGLE;
@@ -132,8 +142,29 @@ public class Pivot {
     /**
      * Immediately stops the robot from pivoting
      */
-    public void stop()
-    {
+    public void stop() {
         move(0);
+    }
+
+    public void setLimitOverride(boolean newValue) {
+        overrideAngleLimits = newValue;
+    }
+
+    private double extensionSpeedMultiplier() {
+        double low = 0.25;
+        double extensionPosition = extendRetract.getPositionInches();
+        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
+                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        multiplier = MathUtil.clamp(multiplier, low, 1);
+        if (overrideAngleLimits) {
+            multiplier = 1;
+        }
+        SmartDashboard.putNumber("Turret.extensionSpeedMultiplier", multiplier);
+        return multiplier;
+    }
+
+    public void setSlowMode(boolean slow) {
+        slowMode = slow;
     }
 }

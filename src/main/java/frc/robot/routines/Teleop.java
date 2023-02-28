@@ -1,40 +1,29 @@
 package frc.robot.routines;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
-import frc.robot.routines.auto.AutoBalance;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.TankDriveBase;
-import frc.robot.subsystems.turret.Claw;
-import frc.robot.subsystems.turret.ExtendRetract;
-import frc.robot.subsystems.turret.Pivot;
-import frc.robot.subsystems.turret.Swivel;
+import frc.robot.subsystems.turret.*;
 
 public class Teleop {
-
-    private AutoBalance autoBalance;
     private ControlScheme controls;
     private TankDriveBase driveBase;
-    private ExtendRetract turretExtendRetract;
-    private Pivot turretPivot;
-    private Swivel turretSwivel;
-    private Claw turretClaw;
+    private Turret turret;
+    // private Swivel swivel;
+    private Claw claw;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
-        turretExtendRetract = ExtendRetract.getInstance();
-        turretPivot = Pivot.getInstance();
-        turretSwivel = Swivel.getInstance();
-        turretClaw = Claw.getInstance();
+        turret = Subsystems.turret;
+        // swivel = Swivel.getInstance();
+        claw = Subsystems.claw;
     }
 
     public void init() {
         driveBase.resetEncoders();
-        autoBalance = new AutoBalance(true, controls);
     }
 
     public void periodic() {
@@ -43,40 +32,43 @@ public class Teleop {
         } else if (controls.doSwitchLowGear()) {
             driveBase.setLowGear();
         }
-
-        driveBase.setLowerGear(controls.doLowerGear());
-        if (controls.doAutoBalance()) {
-            autoBalance.exec();
+        if (driveBase.isHighGear()) {
+            driveBase.setSlowMode(controls.doSlowMode());
+        }
+        if (Config.Settings.TANK_DRIVE) {
+            driveBase.tankDrive(controls.getTankLeftSpeed(),
+                    controls.getTankRightSpeed());
         } else {
-            if (Config.Settings.TANK_DRIVE) {
-                driveBase.tankDrive(controls.getTankLeftSpeed(),
-                        controls.getTankRightSpeed());
-            } else {
-                driveBase.arcadeDrive(controls.getArcadeThrottle(),
-                        controls.getArcadeWheel());
-            }
+            driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                    controls.getArcadeWheel());
         }
 
-        turretExtendRetract.move(controls.getArmExtend());
-        SmartDashboard.putNumber("inches", turretExtendRetract.getPositionInches());
-        SmartDashboard.putNumber("raw", turretExtendRetract.getRawPosition());
+        turret.setSlowMode(controls.doSlowTurret());
+        turret.lockSwivel(controls.doLockSwivel());
 
-        turretPivot.move(controls.getArmPivot());
+        if (controls.doResetTurret()) {
+            claw.closeClaw();
+            turret.moveTo(TurretPosition.INITIAL);
+        } else if (controls.doAutoHigh()) {
+            turret.moveTo(TurretPosition.HIGH_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doAutoMid()) {
+            turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doAutoPickup()) {
+            turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
+        } else {
+            turret.setLimitOverride(controls.doLimitOverride());
+            turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+        }
 
-        turretSwivel.move(controls.getArmSwivel());
+        if (controls.openClaw()) {
+            claw.openClaw();
+        } else if (controls.closeClaw()) {
+            claw.closeClaw();
+        }
 
-        turretClaw.stopSolenoid();
-        // if (controls.doOpenClaw()) {
-        //     turretClaw.stopSolenoid();
-        // }
-        // else if (controls.doCloseClaw()) {
-        // turretClaw.closeClaw();
-        // }
-
-        // SmartDashboard.putNumber("turretExtendRetract.posInch",
-        // turretExtendRetract.getPositionInches());
-        SmartDashboard.putNumber("turretPivot.posDegrees", turretPivot.getPositionDegrees());
-        SmartDashboard.putNumber("turretSwivel.posDegrees", turretSwivel.getPositionDegrees());
+        // PUT DEBUG STATEMENTS HERE
+        SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
+        SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
+        SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
     }
-
 }

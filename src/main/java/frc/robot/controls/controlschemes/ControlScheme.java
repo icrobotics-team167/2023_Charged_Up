@@ -18,20 +18,17 @@ public abstract class ControlScheme {
     public abstract boolean doSwitchLowGear();
 
     public abstract boolean doSwitchHighGear();
-    
-    public abstract boolean doLowerGear();
 
-    // Autobalance
-    public abstract boolean doAutoBalance();
+    public abstract boolean doSlowMode();
 
     public abstract boolean toggleCameraMode();
 
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean doOpenClaw();
+    public abstract boolean openClaw();
 
-    public abstract boolean doCloseClaw();
+    public abstract boolean closeClaw();
 
     // Arm controls
     public abstract double getArmSwivel();
@@ -39,4 +36,23 @@ public abstract class ControlScheme {
     public abstract double getArmPivot();
 
     public abstract double getArmExtend();
+
+    public abstract boolean doLimitOverride();
+
+    public abstract boolean doResetTurret();
+
+    public abstract boolean doSlowTurret();
+
+    public abstract boolean doLockSwivel();
+    
+    public abstract boolean doAutoHigh();
+
+    public abstract boolean doAutoMid();
+
+    public abstract boolean doAutoPickup();
+
+    public abstract boolean doPlayerStation();
+
+    public abstract boolean doSwivel180();
+
 }

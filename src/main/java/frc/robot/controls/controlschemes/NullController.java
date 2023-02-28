@@ -35,21 +35,6 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoBalance() {
-        return false;
-    }
-
-    @Override
-    public boolean doOpenClaw() {
-        return false;
-    }
-
-    @Override
-    public boolean doCloseClaw() {
-        return false;
-    }
-
-    @Override
     public double getArmSwivel() {
         return 0;
     }
@@ -65,7 +50,74 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    // @Override
+    public boolean doLimitOverride() {
+        return false;
+    }
+
+    @Override
+    public boolean doResetTurret() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'doResetTurret'");
+        return false;
+    }
+
+    @Override
+    public boolean openClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean closeClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doSlowTurret() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doLockSwivel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoHigh() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoMid() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoPickup() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doPlayerStation() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doSwivel180() {
         // TODO Auto-generated method stub
         return false;
     }
