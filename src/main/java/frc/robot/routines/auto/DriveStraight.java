@@ -38,6 +38,7 @@ public class DriveStraight extends Action {
     private MovingAverage angleFilter;
 
     private AHRS navx;
+
     /**
      * Constructs a new DriveStraight auto routine.
      * 
@@ -79,15 +80,14 @@ public class DriveStraight extends Action {
      * Modifies DriveStraight to move the arm as well
      * 
      * @param target A turret position that the arm wants to move to
-     * @return Returns a new version of DriveStraight that wants to move the arm to the target.
+     * @return Returns a new version of DriveStraight that wants to move the arm to
+     *         the target.
      */
     public DriveStraight withTurret(TurretPosition target) {
         targetState = target;
         turretDone = false;
         return this;
     }
-
-
 
     @Override
     public void init() {
@@ -116,7 +116,7 @@ public class DriveStraight extends Action {
         pidOutput = MathUtil.clamp(pidOutput, -1, 1);
 
         // Move the robot
-        if(driveDone) {
+        if (driveDone) {
             Subsystems.driveBase.stop();
         } else {
             driveDone = isDistanceReached();
@@ -124,7 +124,7 @@ public class DriveStraight extends Action {
         }
 
         // Move the arm if specified to
-        if(targetState != null && !turretDone) {
+        if (targetState != null && !turretDone) {
             turretDone = Subsystems.turret.moveTo(targetState);
         }
     }
@@ -135,12 +135,15 @@ public class DriveStraight extends Action {
     }
 
     /**
-     * Calculates whether the drive base has stopped moving by checking how far it has driven compared 
+     * Calculates whether the drive base has stopped moving by checking how far it
+     * has driven compared
      * to how far it wants to drive
-     * @return The above
+     * 
+     * @return If the target distance has been reached or not
      */
     private boolean isDistanceReached() {
-        // Calculates whether the drive base has stopped moving by checking how far it has driven compared 
+        // Calculates whether the drive base has stopped moving by checking how far it
+        // has driven compared
         // to how far it wants to drive
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
