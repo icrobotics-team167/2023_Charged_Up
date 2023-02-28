@@ -94,8 +94,7 @@ public class DriveStraight extends Action {
         Subsystems.driveBase.setBrake();
         leftEncoderInitialPosition = Subsystems.driveBase.getLeftEncoderPosition();
         rightEncoderInitialPosition = Subsystems.driveBase.getRightEncoderPosition();
-        startAngle = navx.getYaw();
-        SmartDashboard.putNumber("DriveStraight.targetAngle", startAngle);
+        startAngle = navx.getAngle();
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);
     }
@@ -112,8 +111,6 @@ public class DriveStraight extends Action {
         // Compute the PID for keeping the robot straight
         angleFilter.add(navx.getAngle());
         double angle = angleFilter.get();
-        SmartDashboard.putNumber("DriveStrsight.rawAngle", navx.getAngle());
-        SmartDashboard.putNumber("DriveStraight.CurrentAngle", angle);
         double pidOutput = pidController.compute(angle, timer.get());
         // Clamp the PID output
         pidOutput = MathUtil.clamp(pidOutput, -1, 1);
@@ -147,10 +144,6 @@ public class DriveStraight extends Action {
         // to how far it wants to drive
         double leftEncoderPosition = Subsystems.driveBase.getLeftEncoderPosition();
         double rightEncoderPosition = Subsystems.driveBase.getRightEncoderPosition();
-        SmartDashboard.putNumber("DriveStraight.leftEncoderPosition",Units.metersToInches(leftEncoderPosition));
-        SmartDashboard.putNumber("DriveStraight.rightEncoderPosition",Units.metersToInches(rightEncoderPosition));
-        SmartDashboard.putNumber("DriveStraight.initialRightEncoderPosition",Units.metersToInches(rightEncoderInitialPosition));
-        SmartDashboard.putNumber("DriveStraight.initialLeftEncoderPosition",Units.metersToInches(leftEncoderInitialPosition));
         if (speed > 0) {
             return leftEncoderPosition - leftEncoderInitialPosition >= meters
                     || rightEncoderPosition - rightEncoderInitialPosition >= meters;

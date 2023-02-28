@@ -9,12 +9,6 @@ import frc.robot.Config;
 
 /**
  * Extends and retracts the arm
- * Disregard TODOs for now as we will be working with only encoder values for
- * the time being
- * TODO: Find way to correct encoder values based off the limit switch
- * TODO: Find out which limit switch we are hitting.
- * One limit switch is triggered by both ends so we need a method to figure out
- * which one we are hitting.
  */
 public class ExtendRetract {
 
@@ -30,7 +24,6 @@ public class ExtendRetract {
     public static final double MIN_EXTENSON = 3.5;
     private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
                                                       // to account for that
-
     private boolean overridePositionLimits = false;
 
     private DigitalInput retractSwitch;
@@ -104,8 +97,8 @@ public class ExtendRetract {
         if (overridePositionLimits) {
             return false;
         }
-        if (getPositionInches() <= MIN_EXTENSON || !retractSwitch.get()) {
-            // initialEncoderPosition = extendRetractEncoder.getPosition();
+        if (!retractSwitch.get()) {
+            initialEncoderPosition = extendRetractEncoder.getPosition();
             return true;
         }
         return false;

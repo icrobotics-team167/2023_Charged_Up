@@ -50,22 +50,21 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    @Override
+    // @Override
     public boolean doLimitOverride() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'getLimitOverride'");
         return false;
     }
 
     @Override
     public boolean doResetTurret() {
         // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'doResetTurret'");
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'doResetTurret'");
         return false;
     }
 
@@ -82,7 +81,43 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean slowDownTurn() {
+    public boolean doSlowTurret() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doLockSwivel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoHigh() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoMid() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoPickup() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doPlayerStation() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doSwivel180() {
         // TODO Auto-generated method stub
         return false;
     }

@@ -33,6 +33,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     private final double WHEEL_DIAMETER = 6;
 
+    private boolean slowMode = false;
+    private final double SLOW_TURN_MULT = 0.5;
+
     // Singleton
     private static SparkTankDriveBase instance;
 
@@ -133,6 +136,11 @@ public class SparkTankDriveBase implements TankDriveBase {
     public void tankDrive(double leftSpeed, double rightSpeed) {
         double voltageMultiplier = adjustVoltage();
 
+        if (slowMode) {
+            leftSpeed *= SLOW_TURN_MULT;
+            rightSpeed *= SLOW_TURN_MULT;
+        }
+
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
@@ -162,6 +170,12 @@ public class SparkTankDriveBase implements TankDriveBase {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
         }
+
+        if (slowMode) {
+            leftSpeed *= SLOW_TURN_MULT;
+            rightSpeed *= SLOW_TURN_MULT;
+        }
+
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
@@ -207,10 +221,11 @@ public class SparkTankDriveBase implements TankDriveBase {
     public void setLowerGear(boolean lowerGear) {
         if (lowerGear) {
             speedMultiplier = slowSpeed;
+            setLowGear();
         } else {
             speedMultiplier = normalSpeed;
         }
-        SmartDashboard.putBoolean("lowerGear", lowerGear);
+        SmartDashboard.putBoolean("SparkTankDriveBase.lowerGear", lowerGear);
     }
 
     /**
@@ -250,7 +265,6 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getLeftEncoderPosition() {
-        SmartDashboard.putNumber("SparkTankDriveBase.leftEncoderRotations", leftEncoder.getPosition());
         return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
@@ -259,7 +273,6 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getRightEncoderPosition() {
-        SmartDashboard.putNumber("SparkTankDriveBase.rightEncoderRotations", rightEncoder.getPosition());
         return encoderDistanceToMeters(rightEncoder.getPosition());
     }
 
@@ -356,4 +369,14 @@ public class SparkTankDriveBase implements TankDriveBase {
         return output;
     }
 
+    @Override 
+    public void setSlowMode(boolean slow) {
+        if(slow) {
+            setLowGear();
+            slowMode = true;
+        } else {
+            slowMode = false;
+        }
+        
+    }
 }

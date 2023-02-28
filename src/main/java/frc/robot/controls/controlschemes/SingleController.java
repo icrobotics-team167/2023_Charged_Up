@@ -65,7 +65,7 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean doLowerGear() {
+    public boolean doSlowMode() {
         return primary.getLeftTrigger();
     }
 
@@ -111,7 +111,44 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean slowDownTurn() {
-        return primary.getLeftBumper();
+    public boolean doSlowTurret() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doLockSwivel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoHigh() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoMid() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doAutoPickup() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doPlayerStation() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doSwivel180() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

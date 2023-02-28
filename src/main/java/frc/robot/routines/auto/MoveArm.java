@@ -8,16 +8,20 @@ import frc.robot.subsystems.turret.*;
 public class MoveArm extends Action {
 
     private TurretPosition targetState;
-    private double timeoutSeconds;
+    private double timeOutSeconds = 0;
 
     private PeriodicTimer timer;
 
     private boolean doneMoving = false;
 
-    public MoveArm(TurretPosition targetState, double timeoutSeconds) {
+    public MoveArm(TurretPosition targetState, double timeOutSeconds) {
         this.targetState = targetState;
-        this.timeoutSeconds = timeoutSeconds;
+        this.timeOutSeconds = timeOutSeconds;
         timer = new PeriodicTimer();
+    }
+
+    public MoveArm(TurretPosition targetState) {
+        this(targetState, 0);
     }
 
     @Override
@@ -32,7 +36,11 @@ public class MoveArm extends Action {
 
     @Override
     public boolean isDone() {
-        return doneMoving || timer.hasElapsed(timeoutSeconds);
+        if (timeOutSeconds != 0) {
+            return doneMoving || timer.hasElapsed(timeOutSeconds);
+        } else {
+            return doneMoving;
+        }
     }
 
     @Override
