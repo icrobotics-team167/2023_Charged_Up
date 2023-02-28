@@ -4,25 +4,23 @@ public interface Controller {
 
     int getPort();
 
-    boolean isXBController();
-
-    boolean isPSController();
+    ControllerType getControllerType();
 
     double getLeftTriggerValue();
 
     boolean getLeftTrigger();
 
-    boolean getLeftTriggerToggled();
+    boolean getLeftTriggerPressed();
 
     boolean getLeftBumper();
 
-    boolean getLeftBumperToggled();
+    boolean getLeftBumperPressed();
 
     double getRightTriggerValue();
 
     boolean getRightTrigger();
 
-    boolean getRightTriggerToggled();
+    boolean getRightTriggerPressed();
 
     boolean getRightBumper();
 
@@ -34,7 +32,7 @@ public interface Controller {
 
     boolean getLeftStickButton();
 
-    boolean getLeftStickButtonToggled();
+    boolean getLeftStickButtonPressed();
 
     double getRightStickX();
 
@@ -42,31 +40,31 @@ public interface Controller {
 
     boolean getRightStickButton();
 
-    boolean getRightStickButtonToggled();
+    boolean getRightStickButtonPressed();
 
     boolean getAButton();
 
-    boolean getAButtonToggled();
+    boolean getAButtonPressed();
 
     boolean getBButton();
 
-    boolean getBButtonToggled();
+    boolean getBButtonPressed();
 
     boolean getXButton();
 
-    boolean getXButtonToggled();
+    boolean getXButtonPressed();
 
     boolean getYButton();
 
-    boolean getYButtonToggled();
+    boolean getYButtonPressed();
 
     boolean getBackButton();
 
-    boolean getBackButtonToggled();
+    boolean getBackButtonPressed();
 
     boolean getStartButton();
 
-    boolean getStartButtonToggled();
+    boolean getStartButtonPressed();
 
     boolean getDPadUp();
 
