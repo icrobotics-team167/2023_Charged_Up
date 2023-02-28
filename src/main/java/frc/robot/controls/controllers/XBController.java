@@ -2,6 +2,7 @@ package frc.robot.controls.controllers;
 
 // import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.util.MathUtils;
 
@@ -120,7 +121,7 @@ public class XBController implements Controller {
     @Override
     public double getLeftStickX() {
         if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
-            return Math.pow(controller.getLeftX(),2) * MathUtils.getSign(controller.getLeftX());
+            return Math.pow(controller.getLeftX(), 2) * MathUtils.getSign(controller.getLeftX());
         }
         return controller.getLeftX();
     }
@@ -128,7 +129,7 @@ public class XBController implements Controller {
     @Override
     public double getLeftStickY() {
         if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
-            return -Math.pow(controller.getLeftY(),2) * MathUtils.getSign(controller.getLeftY());
+            return -Math.pow(controller.getLeftY(), 2) * MathUtils.getSign(controller.getLeftY());
         }
         return -controller.getLeftY();
     }
@@ -151,7 +152,7 @@ public class XBController implements Controller {
     @Override
     public double getRightStickX() {
         if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
-            return Math.pow(controller.getRightX(),2) * MathUtils.getSign(controller.getRightX());
+            return Math.pow(controller.getRightX(), 2) * MathUtils.getSign(controller.getRightX());
         }
         return controller.getRightX();
     }
@@ -159,7 +160,7 @@ public class XBController implements Controller {
     @Override
     public double getRightStickY() {
         if (Config.Settings.EXPONENTIAL_JOYSTICKS) {
-            return -Math.pow(controller.getRightY(),2) * MathUtils.getSign(controller.getRightY());
+            return -Math.pow(controller.getRightY(), 2) * MathUtils.getSign(controller.getRightY());
         }
         return -controller.getRightY();
     }
@@ -220,23 +221,47 @@ public class XBController implements Controller {
     }
 
     @Override
-    public boolean getViewButton() {
+    public boolean getBackButton() {
         return controller.getBackButton();
     }
 
     @Override
-    public boolean getViewButtonToggled() {
+    public boolean getBackButtonToggled() {
         return controller.getBackButtonPressed();
     }
 
     @Override
-    public boolean getMenuButton() {
+    public boolean getStartButton() {
         return controller.getStartButton();
     }
 
     @Override
-    public boolean getMenuButtonToggled() {
+    public boolean getStartButtonToggled() {
         return controller.getStartButtonPressed();
+    }
+
+    @Override
+    public boolean getDPadUp() {
+        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
+        return controller.getPOV() == 0;
+    }
+
+    @Override
+    public boolean getDPadRight() {
+        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
+        return controller.getPOV() == 90;
+    }
+
+    @Override
+    public boolean getDPadDown() {
+        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
+        return controller.getPOV() == 180;
+    }
+
+    @Override
+    public boolean getDPadLeft() {
+        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
+        return controller.getPOV() == 270;
     }
 
 }

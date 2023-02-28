@@ -60,12 +60,20 @@ public interface Controller {
 
     boolean getYButtonToggled();
 
-    boolean getViewButton();
+    boolean getBackButton();
 
-    boolean getViewButtonToggled();
+    boolean getBackButtonToggled();
 
-    boolean getMenuButton();
+    boolean getStartButton();
 
-    boolean getMenuButtonToggled();
+    boolean getStartButtonToggled();
+
+    boolean getDPadUp();
+
+    boolean getDPadRight();
+
+    boolean getDPadDown();
+
+    boolean getDPadLeft();
 
 }
