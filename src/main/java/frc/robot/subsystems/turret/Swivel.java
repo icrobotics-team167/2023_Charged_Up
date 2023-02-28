@@ -155,9 +155,16 @@ public class Swivel {
     private double extensionSpeedMultiplier() {
         double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();
-        double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
-                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
-                + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
+        double multiplier = (low - 1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON) * extensionPosition
+                + 1
+                - ExtendRetract.MIN_EXTENSON * (low - 1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON);
+        // Math:
+        // a = MIN_EXTENSION
+        // b = MAX_EXTENSION
+        // c = low
+        // y = multiplier
+        // x = extensionPostion
+        // y = (c - 1) / (b - a) * x + 1 - a * (c - 1) / (b - a)
         multiplier = MathUtil.clamp(multiplier, low, 1);
         if (overrideAngleLimits) {
             multiplier = 1;
