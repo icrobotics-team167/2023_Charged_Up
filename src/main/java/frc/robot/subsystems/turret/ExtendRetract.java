@@ -101,7 +101,7 @@ public class ExtendRetract {
             initialEncoderPosition = extendRetractEncoder.getPosition();
             return true;
         }
-        return false;
+        return getPositionInches() <= MIN_EXTENSON;
     }
 
     /**
