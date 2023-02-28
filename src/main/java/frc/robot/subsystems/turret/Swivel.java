@@ -33,10 +33,6 @@ public class Swivel {
     private final double SLOW_TURN_MULT = 0.5;
     private boolean slowMode = false;
 
-    // private double fastSpeed = 1;
-    // private double slowSpeed = 0.5;
-    // private double speedMult = fastSpeed;
-
     // Singleton
     public static Swivel instance;
 
