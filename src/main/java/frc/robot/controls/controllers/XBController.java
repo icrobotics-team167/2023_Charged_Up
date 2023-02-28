@@ -242,25 +242,21 @@ public class XBController implements Controller {
 
     @Override
     public boolean getDPadUp() {
-        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
         return controller.getPOV() == 0;
     }
 
     @Override
     public boolean getDPadRight() {
-        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
         return controller.getPOV() == 90;
     }
 
     @Override
     public boolean getDPadDown() {
-        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
         return controller.getPOV() == 180;
     }
 
     @Override
     public boolean getDPadLeft() {
-        // SmartDashboard.putNumber("XBController.POV", controller.getPOV());
         return controller.getPOV() == 270;
     }
 

@@ -111,20 +111,15 @@ public class DoubleController extends ControlScheme {
         return extend;
     }
 
-    // @Override
-    // public boolean doLimitOverride() {
-    // return secondary.getBButton();
-    // }
+    @Override
+    public boolean doLimitOverride() {
+        return secondary.getBButton();
+    }
 
     @Override
     public boolean doResetTurret() {
         return secondary.getStartButton();
     }
-
-    // @Override
-    // public boolean slowDownTurn() {
-    // return primary.getLeftBumper();
-    // }
 
     @Override
     public boolean doSlowTurret() {

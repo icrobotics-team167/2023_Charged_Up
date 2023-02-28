@@ -95,7 +95,6 @@ public class NaiveAutoBalance extends Action {
                 stop = true;
                 timer.reset();
             } else {
-                SmartDashboard.putNumber("pitch", pitch);
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
                     Subsystems.driveBase.arcadeDrive(pitch / Math.abs(pitch) * speed, 0);
                 }

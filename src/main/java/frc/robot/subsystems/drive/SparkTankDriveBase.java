@@ -221,10 +221,11 @@ public class SparkTankDriveBase implements TankDriveBase {
     public void setLowerGear(boolean lowerGear) {
         if (lowerGear) {
             speedMultiplier = slowSpeed;
+            setLowGear();
         } else {
             speedMultiplier = normalSpeed;
         }
-        SmartDashboard.putBoolean("lowerGear", lowerGear);
+        SmartDashboard.putBoolean("SparkTankDriveBase.lowerGear", lowerGear);
     }
 
     /**
@@ -264,7 +265,6 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getLeftEncoderPosition() {
-        SmartDashboard.putNumber("SparkTankDriveBase.leftEncoderRotations", leftEncoder.getPosition());
         return encoderDistanceToMeters(leftEncoder.getPosition());
     }
 
@@ -273,7 +273,6 @@ public class SparkTankDriveBase implements TankDriveBase {
      */
     @Override
     public double getRightEncoderPosition() {
-        SmartDashboard.putNumber("SparkTankDriveBase.rightEncoderRotations", rightEncoder.getPosition());
         return encoderDistanceToMeters(rightEncoder.getPosition());
     }
 

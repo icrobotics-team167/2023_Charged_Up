@@ -56,16 +56,15 @@ public class NullController extends ControlScheme {
     }
 
     // @Override
-    // public boolean doLimitOverride() {
-    //     // TODO Auto-generated method stub
-    //     // throw new UnsupportedOperationException("Unimplemented method 'getLimitOverride'");
-    //     return false;
-    // }
+    public boolean doLimitOverride() {
+        return false;
+    }
 
     @Override
     public boolean doResetTurret() {
         // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'doResetTurret'");
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'doResetTurret'");
         return false;
     }
 
@@ -80,12 +79,6 @@ public class NullController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
-
-    // @Override
-    // public boolean slowDownTurn() {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
 
     @Override
     public boolean doSlowTurret() {

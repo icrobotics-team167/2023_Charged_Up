@@ -48,22 +48,16 @@ public class Teleop {
 
         if (controls.doResetTurret()) {
             claw.closeClaw();
-            SmartDashboard.putBoolean("Teleop.turretResetDone", turret.moveTo(TurretPosition.INITIAL));
-            SmartDashboard.putBoolean("Teleop.resettingTurret", true);
+            turret.moveTo(TurretPosition.INITIAL);
         } else if (controls.doAutoHigh()) {
             turret.moveTo(TurretPosition.HIGH_GOAL.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doAutoMid()) {
             turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doAutoPickup()) {
             turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
-            // } else if (controls.doPlayerStation()) {
-            // turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
-            // } else if (controls.doSwivel180()) {
-            // turret.moveTo(turret.getPosition().withSwivel(180));
         } else {
-            // turret.setLimitOverride(controls.doLimitOverride();
+            turret.setLimitOverride(controls.doLimitOverride());
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
-            SmartDashboard.putBoolean("Teleop.resettingTurret", false);
         }
 
         if (controls.openClaw()) {

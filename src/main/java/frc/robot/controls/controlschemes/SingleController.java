@@ -87,10 +87,10 @@ public class SingleController extends ControlScheme {
         return 0;
     }
 
-    // @Override
-    // public boolean doLimitOverride() {
-    //     return false;
-    // }
+    @Override
+    public boolean doLimitOverride() {
+        return false;
+    }
 
     @Override
     public boolean doResetTurret() {
@@ -109,11 +109,6 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
-
-    // @Override
-    // public boolean slowDownTurn() {
-    //     return primary.getLeftBumper();
-    // }
 
     @Override
     public boolean doSlowTurret() {

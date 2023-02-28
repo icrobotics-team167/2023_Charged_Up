@@ -21,8 +21,6 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowMode();
 
-    // public abstract boolean slowDownTurn();
-
     // Turret (Secondary controller)
 
     // Claw
@@ -37,7 +35,7 @@ public abstract class ControlScheme {
 
     public abstract double getArmExtend();
 
-    // public abstract boolean doLimitOverride();
+    public abstract boolean doLimitOverride();
 
     public abstract boolean doResetTurret();
 
