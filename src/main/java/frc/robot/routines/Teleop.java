@@ -32,36 +32,34 @@ public class Teleop {
         } else if (controls.doSwitchLowGear()) {
             driveBase.setLowGear();
         }
-        if(driveBase.isHighGear()) {
+        if (driveBase.isHighGear()) {
             driveBase.setSlowMode(controls.doSlowMode());
         }
         if (Config.Settings.TANK_DRIVE) {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
         } else {
-                driveBase.arcadeDrive(controls.getArcadeThrottle(),
-                        controls.getArcadeWheel());
+            driveBase.arcadeDrive(controls.getArcadeThrottle(),
+                    controls.getArcadeWheel());
         }
 
         turret.setSlowMode(controls.doSlowTurret());
         turret.lockSwivel(controls.doLockSwivel());
 
         if (controls.doResetTurret()) {
+            claw.closeClaw();
             SmartDashboard.putBoolean("Teleop.turretResetDone", turret.moveTo(TurretPosition.INITIAL));
             SmartDashboard.putBoolean("Teleop.resettingTurret", true);
-        // } else if (controls.doAutoHigh()) {
-        //     turret.moveTo(TurretPosition.HIGH_GOAL.withSwivel(turret.getPosition().swivelAngle()));
-        // }
-        // else if (controls.doAutoMid()) {
-        //     turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
-        // }
-        // else if (controls.doAutoPickup()) {
-        //     turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
-        // }
-        // else if (controls.doPlayerStation()) {
-        //     turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
-        } else if (controls.doSwivel180()) {
-            turret.moveTo(turret.getPosition().withSwivel(180));
+        } else if (controls.doAutoHigh()) {
+            turret.moveTo(TurretPosition.HIGH_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doAutoMid()) {
+            turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doAutoPickup()) {
+            turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
+            // } else if (controls.doPlayerStation()) {
+            // turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
+            // } else if (controls.doSwivel180()) {
+            // turret.moveTo(turret.getPosition().withSwivel(180));
         } else {
             // turret.setLimitOverride(controls.doLimitOverride();
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
