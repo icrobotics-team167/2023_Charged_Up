@@ -69,6 +69,16 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
+    public boolean setVisionMode() {
+        return primary.getDPadUp();
+    }
+
+    @Override
+    public boolean setCameraMode() {
+        return primary.getDPadDown();
+    }
+
+    @Override
     public double getArmSwivel() {
         // TODO Auto-generated method stub
         return 0;
@@ -149,11 +159,5 @@ public class SingleController extends ControlScheme {
     public boolean doSwivel180() {
         // TODO Auto-generated method stub
         return false;
-    }
-
-    @Override
-    public boolean toggleCameraMode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toggleCameraMode'");
     }
 }

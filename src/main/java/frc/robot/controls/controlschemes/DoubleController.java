@@ -71,13 +71,18 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean openClaw() {
-        return secondary.getRightBumper();
+    public boolean setVisionMode() {
+        return primary.getDPadUp();
     }
 
     @Override
-    public boolean toggleCameraMode() {
-        return primary.getLeftBumperToggled();
+    public boolean setCameraMode() {
+        return primary.getDPadDown();
+    }
+
+    @Override
+    public boolean openClaw() {
+        return secondary.getRightBumper();
     }
 
     @Override
