@@ -121,4 +121,16 @@ public class NullController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean setCameraMode() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean setVisionMode() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
