@@ -73,9 +73,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean toggleLimelightMode() {
-        boolean pressed = primary.getLeftBumperPressed();
-        SmartDashboard.putBoolean("DoubleController.primary.leftBumperPressed", pressed);
-        return pressed;
+        return primary.getLeftBumperPressed();
     }
 
     @Override
