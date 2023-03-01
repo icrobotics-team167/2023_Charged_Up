@@ -30,14 +30,6 @@ public enum AutoRoutines {
                         new Wait(1),
                         new NaiveAutoBalance()
         })),
-        BALANCE_GREEDY("Balance Greedy", new Routine(new Action[] {
-                        new DriveForwardsUntil(
-                                        navx -> navx.getPitch() >= 5,
-                                        0.5,
-                                        Duration.ofMillis(3500)),
-                        new DriveStraight(20, 0.4),
-                        new NaiveAutoBalance(),
-        })),
         GO_FORWARD_BACK("Go forward and back", new Routine(new Action[] {
                         new DriveStraight(180, -0.2),
                         new DriveStraight(180, 0.2)
@@ -46,11 +38,6 @@ public enum AutoRoutines {
                         // 180 inches for getting to cones
                         new DriveStraight(180, 0.2),
         // new ResetArm()
-        })),
-        TEST_DRIVE_STRAIGHT_WITH_ARM("Drive straight with the arm", new Routine(new Action[] {
-                        new DriveStraight(10, 0.2).withTurret(TurretPosition.INITIAL.withSwivel(
-                                        120)),
-                        new ResetArm()
         })),
         TEST_CLAW("Move the claw", new Routine(new Action[] {
                         new OpenClaw(),
