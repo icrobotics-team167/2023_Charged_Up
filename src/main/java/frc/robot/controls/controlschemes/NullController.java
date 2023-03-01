@@ -123,13 +123,7 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean setCameraMode() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean setVisionMode() {
+    public boolean toggleLimelightMode() {
         // TODO Auto-generated method stub
         return false;
     }

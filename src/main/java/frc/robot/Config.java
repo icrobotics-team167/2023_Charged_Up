@@ -10,6 +10,7 @@ public class Config {
         public static final boolean TANK_DRIVE = false;
 
         public static final boolean EXPONENTIAL_JOYSTICKS = false;
+        public static final double JOYSTICKS_EXPONENT = 2;
 
         // Controllers
         public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
@@ -27,7 +28,7 @@ public class Config {
 
         // Threshold for a controller trigger to count as pressed (on XB controllers
         // only)
-        public static final double TRIGGER_PRESSED_THRESHOLD = 0.2;
+        public static final double XB_TRIGGER_PRESSED_THRESHOLD = 0.5;
 
         // Primary controller deadzone size
         public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.15;

@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         auto = autoChooser.getSelected().actions;
+        limeLight.setVisionMode();
         Subsystems.driveBase.resetEncoders();
         Subsystems.driveBase.setHighGear();
         auto.exec();
@@ -112,6 +113,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        limeLight.setCameraMode();
         teleop.init();
     }
 
