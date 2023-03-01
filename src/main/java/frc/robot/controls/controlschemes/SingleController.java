@@ -69,13 +69,8 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean setVisionMode() {
-        return primary.getDPadUp();
-    }
-
-    @Override
-    public boolean setCameraMode() {
-        return primary.getDPadDown();
+    public boolean toggleLimelightMode() {
+        return primary.getLeftBumperPressed();
     }
 
     @Override

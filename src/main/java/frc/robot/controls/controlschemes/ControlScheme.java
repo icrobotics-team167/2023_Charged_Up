@@ -23,9 +23,7 @@ public abstract class ControlScheme {
 
     // Limelight
 
-    public abstract boolean setCameraMode();
-
-    public abstract boolean setVisionMode();
+    public abstract boolean toggleLimelightMode();
 
     // Turret (Secondary controller)
 
