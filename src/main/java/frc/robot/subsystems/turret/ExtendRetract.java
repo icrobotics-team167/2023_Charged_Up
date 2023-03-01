@@ -97,7 +97,7 @@ public class ExtendRetract {
         if (overridePositionLimits) {
             return false;
         }
-        if (!retractSwitch.get()) {
+        if (!retractSwitch.get() || getPositionInches() <= MIN_EXTENSON) {
             initialEncoderPosition = extendRetractEncoder.getPosition();
             return true;
         }

@@ -15,7 +15,7 @@ public class NaiveAutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
 
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
@@ -39,15 +39,6 @@ public class NaiveAutoBalance extends Action {
      */
     public NaiveAutoBalance() {
         super();
-
-        // Initialize the navX
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-            // DriverStation.reportError("Not really an error, successfully loaded navX",
-            // true);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
 
         // Set variables
 
