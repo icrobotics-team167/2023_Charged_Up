@@ -97,7 +97,7 @@ public class XBController implements Controller {
      */
     @Override
     public boolean getLeftBumperPressed() {
-        return controller.getRightBumperPressed();
+        return controller.getLeftBumperPressed();
     }
 
     /**
