@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SPI;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.util.MathUtils;
 import frc.robot.util.PeriodicTimer;
 // import frc.robot.subsystems.drive.TankDriveBase;
 
@@ -87,7 +88,7 @@ public class NaiveAutoBalance extends Action {
                 timer.reset();
             } else {
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
-                    Subsystems.driveBase.arcadeDrive(pitch / Math.abs(pitch) * speed, 0);
+                    Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * speed, 0);
                 }
             }
         }

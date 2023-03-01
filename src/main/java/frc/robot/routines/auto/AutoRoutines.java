@@ -18,16 +18,17 @@ public enum AutoRoutines {
         // })),
 
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
-                        new MoveArm(TurretPosition.HIGH_GOAL),
+                        // new MoveArm(TurretPosition.HIGH_GOAL),
                         new OpenClaw(),
-                        new MoveArm(TurretPosition.INTAKE),
-                        new DriveStraight(100, -1),
+                        new DriveStraight(150, -0.2),
+                        new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
                         new DriveForwardsUntil(
-                                        navx -> navx.getPitch() >= 5,
-                                        0.5,
+                                        navx -> navx.getPitch() >= 8,
+                                        0.2,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(20, 0.4),
-                        new NaiveAutoBalance(),
+                        new DriveStraight(30, 0.2),
+                        new Wait(1),
+                        new NaiveAutoBalance()
         })),
         BALANCE_GREEDY("Balance Greedy", new Routine(new Action[] {
                         new DriveForwardsUntil(

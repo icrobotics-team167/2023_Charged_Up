@@ -79,5 +79,7 @@ public class Teleop {
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
         SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
         SmartDashboard.putNumber("Navx.yaw", navx.getAngle());
+        SmartDashboard.putNumber("Navx.pitch", navx.getPitch());
+
     }
 }

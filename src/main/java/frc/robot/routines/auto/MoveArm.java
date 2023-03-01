@@ -1,6 +1,7 @@
 package frc.robot.routines.auto;
 
 import frc.robot.util.PeriodicTimer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.turret.*;
@@ -32,6 +33,7 @@ public class MoveArm extends Action {
     @Override
     public void periodic() {
         doneMoving = Subsystems.turret.moveTo(targetState);
+        SmartDashboard.putBoolean("MoveArm.doneMoving", doneMoving);
     }
 
     @Override
