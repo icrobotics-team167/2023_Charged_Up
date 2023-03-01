@@ -13,6 +13,7 @@ public class Teleop {
     private Turret turret;
     // private Swivel swivel;
     private Claw claw;
+    private LimeLight limeLight;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -20,6 +21,7 @@ public class Teleop {
         turret = Subsystems.turret;
         // swivel = Swivel.getInstance();
         claw = Subsystems.claw;
+        limeLight = LimeLight.getInstance();
     }
 
     public void init() {
@@ -66,6 +68,11 @@ public class Teleop {
             claw.closeClaw();
         }
 
+        if (controls.setCameraMode()) {
+            limeLight.setCameraMode();
+        } else if (controls.setVisionMode()) {
+            limeLight.setVisionMode();
+        }
         // PUT DEBUG STATEMENTS HERE
         SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());

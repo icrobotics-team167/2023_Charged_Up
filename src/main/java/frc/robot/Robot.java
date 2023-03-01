@@ -12,6 +12,7 @@ import frc.robot.routines.Action;
 import frc.robot.routines.Routine;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Teleop;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Subsystems;
 import java.time.Duration;
 
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
     private Action auto;
     private Teleop teleop;
     private Compressor phCompressor;
+    private LimeLight limeLight;
 
     public Robot() {
         super(Config.Settings.CPU_PERIOD);
@@ -82,6 +84,8 @@ public class Robot extends TimedRobot {
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating compressor: " + ex.getMessage(), true);
         }
+
+        limeLight = LimeLight.getInstance();
 
         Subsystems.setInitialStates();
         // ******************AUTO********************* */

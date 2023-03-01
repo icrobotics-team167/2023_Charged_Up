@@ -21,6 +21,12 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowMode();
 
+    // Limelight
+
+    public abstract boolean setCameraMode();
+
+    public abstract boolean setVisionMode();
+
     // Turret (Secondary controller)
 
     // Claw

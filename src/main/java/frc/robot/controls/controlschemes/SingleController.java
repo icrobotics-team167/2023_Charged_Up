@@ -2,7 +2,6 @@ package frc.robot.controls.controlschemes;
 
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
-import frc.robot.controls.controllers.PSController;
 
 public class SingleController extends ControlScheme {
 
@@ -67,6 +66,16 @@ public class SingleController extends ControlScheme {
     @Override
     public boolean doSlowMode() {
         return primary.getLeftTrigger();
+    }
+
+    @Override
+    public boolean setVisionMode() {
+        return primary.getDPadUp();
+    }
+
+    @Override
+    public boolean setCameraMode() {
+        return primary.getDPadDown();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package frc.robot.routines.auto;
 
 import frc.robot.routines.Action;
+import frc.robot.routines.auto.*;
 import frc.robot.routines.Routine;
 import frc.robot.subsystems.turret.TurretPosition;
 
