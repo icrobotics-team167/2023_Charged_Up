@@ -1,5 +1,6 @@
 package frc.robot.controls.controlschemes;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
 
@@ -71,13 +72,10 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean setVisionMode() {
-        return primary.getDPadUp();
-    }
-
-    @Override
-    public boolean setCameraMode() {
-        return primary.getDPadDown();
+    public boolean toggleLimelightMode() {
+        boolean pressed = primary.getLeftBumperPressed();
+        SmartDashboard.putBoolean("DoubleController.primary.leftBumperPressed", pressed);
+        return pressed;
     }
 
     @Override

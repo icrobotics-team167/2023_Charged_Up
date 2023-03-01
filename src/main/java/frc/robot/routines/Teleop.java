@@ -68,10 +68,8 @@ public class Teleop {
             claw.closeClaw();
         }
 
-        if (controls.setCameraMode()) {
-            limeLight.setCameraMode();
-        } else if (controls.setVisionMode()) {
-            limeLight.setVisionMode();
+        if (controls.toggleLimelightMode()) {
+            limeLight.toggleMode();
         }
         // PUT DEBUG STATEMENTS HERE
         SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());

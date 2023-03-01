@@ -41,7 +41,6 @@ public class LimeLight {
         limeLight = NetworkTableInstance.getDefault().getTable("limelight");
         limeLightFeed = new HttpCamera("LimeLight", "http://10.1.67.38:5800");
         CameraServer.startAutomaticCapture(limeLightFeed);
-        setVisionMode();
         update();
     }
 
@@ -85,6 +84,17 @@ public class LimeLight {
                                                     // decrease exposure)
         limeLight.getEntry("ledMode").setDouble(0); // Turn on the LEDs
         cameraMode = false;
+    }
+
+    /**
+     * Toggles between the two modes.
+     */
+    public void toggleMode() {
+        if (cameraMode) {
+            setVisionMode();
+        } else {
+            setCameraMode();
+        }
     }
 
     /**
