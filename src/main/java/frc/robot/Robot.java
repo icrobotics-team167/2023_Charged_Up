@@ -31,9 +31,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        autoChooser.setDefaultOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        AutoRoutines defaultRoutine = AutoRoutines.GO_STRAIGHT;
+        autoChooser.setDefaultOption(defaultRoutine.name, defaultRoutine);
         for (AutoRoutines routine : AutoRoutines.values()) {
-            if (routine != AutoRoutines.NOTHING) {
+            if (routine != defaultRoutine) {
                 autoChooser.addOption(routine.name, routine);
             }
 
