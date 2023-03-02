@@ -34,12 +34,12 @@ public class Teleop {
     public void periodic() {
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
+            driveBase.setNonSlowHighGear(true);
         } else if (controls.doSwitchLowGear()) {
             driveBase.setLowGear();
+            driveBase.setNonSlowHighGear(false);
         }
-        if (driveBase.isHighGear()) {
-            driveBase.setSlowMode(controls.doSlowMode());
-        }
+        driveBase.setLowerGear(controls.doSlowMode());
         if (Config.Settings.TANK_DRIVE) {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());

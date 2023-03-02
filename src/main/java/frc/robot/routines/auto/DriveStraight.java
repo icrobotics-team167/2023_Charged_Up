@@ -120,6 +120,8 @@ public class DriveStraight extends Action {
         // Move the arm if specified to
         if(targetState != null && !turretDone) {
             turretDone = Subsystems.turret.moveTo(targetState);
+        } else {
+            Subsystems.turret.stop();
         }
     }
 
