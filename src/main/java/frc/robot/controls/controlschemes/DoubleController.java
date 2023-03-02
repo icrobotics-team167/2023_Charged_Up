@@ -58,12 +58,12 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doSwitchHighGear() {
-        return primary.getRightBumper();
+        return primary.getRightTrigger();
     }
 
     @Override
     public boolean doSwitchLowGear() {
-        return primary.getRightTrigger();
+        return primary.getRightBumper();
     }
 
     @Override
