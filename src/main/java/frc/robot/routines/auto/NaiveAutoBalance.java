@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SPI;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.util.MathUtils;
 import frc.robot.util.PeriodicTimer;
 // import frc.robot.subsystems.drive.TankDriveBase;
 
@@ -15,7 +16,7 @@ public class NaiveAutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
 
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
@@ -39,15 +40,6 @@ public class NaiveAutoBalance extends Action {
      */
     public NaiveAutoBalance() {
         super();
-
-        // Initialize the navX
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-            // DriverStation.reportError("Not really an error, successfully loaded navX",
-            // true);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
 
         // Set variables
 
@@ -96,7 +88,7 @@ public class NaiveAutoBalance extends Action {
                 timer.reset();
             } else {
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
-                    Subsystems.driveBase.arcadeDrive(pitch / Math.abs(pitch) * speed, 0);
+                    Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * speed, 0);
                 }
             }
         }

@@ -26,7 +26,7 @@ public class OpenClaw extends Action {
 
     @Override
     public void periodic() {
-        Subsystems.claw.closeClaw();
+        Subsystems.claw.openClaw();
     }
 
     @Override

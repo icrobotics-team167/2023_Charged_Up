@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.util.MathUtils;
 
@@ -54,6 +55,9 @@ public class Turret {
         boolean pivot = pivotToAngle(targetState.pivotAngle());
         boolean swivel = swivelToAngle(targetState.swivelAngle());
         boolean extend = extendToPosition(targetState.extensionPosition());
+        SmartDashboard.putBoolean("Turret.moveTo.pivot", pivot);
+        SmartDashboard.putBoolean("Turret.moveTo.swivel", swivel);
+        SmartDashboard.putBoolean("Turret.moveTo.extend", extend);
         return pivot && swivel && extend;
     }
 

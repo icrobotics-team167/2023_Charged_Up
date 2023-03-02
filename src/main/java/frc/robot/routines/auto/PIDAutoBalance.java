@@ -14,7 +14,7 @@ public class PIDAutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
     private PID pidController;
     private MovingAverage pitchFilter;
 
@@ -34,15 +34,6 @@ public class PIDAutoBalance extends Action {
      */
     public PIDAutoBalance() {
         super();
-
-        // Initialize the navX
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-            // DriverStation.reportError("Not really an error, successfully loaded navX",
-            // true);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
 
         // Set variables
 

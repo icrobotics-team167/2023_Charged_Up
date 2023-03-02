@@ -29,7 +29,7 @@ public class DriveStraight extends Action {
     private double startAngle;
 
     private PID pidController;
-    private double P = 0.015;
+    private double P = 0.01;
     private double I = 0.0;
     private double D = 0.008;
 
@@ -37,7 +37,7 @@ public class DriveStraight extends Action {
 
     private MovingAverage angleFilter;
 
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
     /**
      * Constructs a new DriveStraight auto routine.
      * 
@@ -65,12 +65,6 @@ public class DriveStraight extends Action {
         rightEncoderInitialPosition = 0;
 
         timer = new PeriodicTimer();
-
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-        } catch (Exception ex) {
-            DriverStation.reportError("Error instantiating the navx, " + ex.getMessage(), true);
-        }
 
         angleFilter = new MovingAverage(25, false);
     }

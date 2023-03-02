@@ -1,5 +1,7 @@
 package frc.robot.routines;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.controls.controlschemes.ControlScheme;
@@ -14,6 +16,7 @@ public class Teleop {
     // private Swivel swivel;
     private Claw claw;
     private LimeLight limeLight;
+    private AHRS navx = Subsystems.navx;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -75,5 +78,8 @@ public class Teleop {
         SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
         SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
+        SmartDashboard.putNumber("Navx.yaw", navx.getAngle());
+        SmartDashboard.putNumber("Navx.pitch", navx.getPitch());
+
     }
 }
