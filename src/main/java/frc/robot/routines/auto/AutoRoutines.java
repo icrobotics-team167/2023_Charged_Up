@@ -18,7 +18,7 @@ public enum AutoRoutines {
         // })),
 
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
-                        // new MoveArm(TurretPosition.HIGH_GOAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL),
                         new OpenClaw(),
                         new DriveStraight(150, -0.2),
                         new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
@@ -34,9 +34,10 @@ public enum AutoRoutines {
                         new DriveStraight(180, -0.2),
                         new DriveStraight(180, 0.2)
         })),
-        GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        // 180 inches for getting to cones
-                        new DriveStraight(180, 0.2),
+        GO_STRAIGHT("Score and go straight (Out of community score)", new Routine(new Action[] {
+                        new MoveArm(TurretPosition.HIGH_GOAL),
+                        new OpenClaw(),
+                        new DriveStraight(150, -0.2),
         // new ResetArm()
         })),
         TEST_CLAW("Move the claw", new Routine(new Action[] {
