@@ -50,7 +50,7 @@ public class Teleop {
 
         turret.setSlowMode(controls.doSlowTurret());
         if (controls.doSwivel180()) {
-            turret.swivelToAngle(180);
+            turret.moveTo(turret.getPosition().withSwivel(180));
         }
 
         if (controls.doResetTurret()) {
