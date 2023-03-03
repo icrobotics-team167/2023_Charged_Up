@@ -32,10 +32,6 @@ public enum AutoRoutines {
                         new Wait(1),
                         new NaiveAutoBalance()
         })),
-        GO_FORWARD_BACK("Go forward and back", new Routine(new Action[] {
-                        new DriveStraight(180, -0.2),
-                        new DriveStraight(180, 0.2)
-        })),
         GO_STRAIGHT("Score and go straight (Out of community score)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL),
                         new OpenClaw(),
@@ -43,15 +39,6 @@ public enum AutoRoutines {
                                         .withTurret(TurretPosition.INTAKE.withExtension(3.5).withSwivel(180)),
                         new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20).withSwivel(180)),
                         new CloseClaw(),
-        // new ResetArm()
-        })),
-        TEST_CLAW("Move the claw", new Routine(new Action[] {
-                        new OpenClaw(),
-                        new Wait(5),
-                        new CloseClaw()
-        })),
-        DRIVE_BACKWARDS("drive backwards", new Routine(new Action[] {
-                        new DriveStraight(50, -0.5)
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),
