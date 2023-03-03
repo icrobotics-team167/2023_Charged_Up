@@ -118,7 +118,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doLimitOverride() {
-        return secondary.getBButton();
+        return secondary.getDPadRight();
     }
 
     @Override
@@ -138,22 +138,22 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        return secondary.getDPadUp();
+        return secondary.getYButton();
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getDPadLeft();
+        return secondary.getBButton();
     }
 
     @Override
     public boolean doAutoPickup() {
-        return secondary.getDPadDown();
+        return secondary.getAButton();
     }
 
     @Override
     public boolean doPlayerStation() {
-        return secondary.getDPadRight();
+        return secondary.getXButton();
     }
 
     @Override
