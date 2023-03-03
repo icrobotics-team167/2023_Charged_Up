@@ -88,10 +88,11 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmSwivel() {
-        double swivel = secondary.getLeftStickX();
-        if (Config.Settings.SECONDARY_DEADZONE_ENABLED
-                && Math.abs(swivel) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
-            swivel = 0;
+        double swivel;
+        if (secondary.getRightTriggerValue() > secondary.getLeftTriggerValue()) {
+            swivel = secondary.getRightTriggerValue();
+        } else {
+            swivel = -secondary.getLeftTriggerValue();
         }
         return swivel;
     }

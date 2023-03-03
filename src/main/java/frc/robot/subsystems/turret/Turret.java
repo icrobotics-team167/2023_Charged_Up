@@ -80,7 +80,7 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 0.6;
+        speed *= 1;
         pivot.move(speed);
         return speed == 0;
     }
@@ -93,7 +93,7 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 0.6;
+        speed *= 1;
         swivel.move(speed);
         return speed == 0;
     }
@@ -106,7 +106,7 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 0.6;
+        speed *= 1;
         extendRetract.move(speed);
         return speed == 0;
     }
