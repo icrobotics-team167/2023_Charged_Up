@@ -19,8 +19,8 @@ public class Swivel {
 
     private double initialEncoderPosition;
 
-    private final double MAX_TURN_ANGLE = 225; //TODO: Switch to 225 degrees
-    private final double MAX_TURN_SPEED = 0.8;
+    private final double MAX_TURN_ANGLE = 225;
+    private final double MAX_TURN_SPEED = 1;
 
     private ExtendRetract extendRetract;
 
