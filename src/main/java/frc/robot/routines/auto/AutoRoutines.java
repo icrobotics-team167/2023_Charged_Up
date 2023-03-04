@@ -52,7 +52,7 @@ public enum AutoRoutines {
                         new OpenClaw(),
                         new DriveStraight(180, -0.5)
                                         .withTurret(TurretPosition.INITIAL),
-                                        new MoveArm(new TurretPosition(-20, -180, 3.5)),
+                        new MoveArm(new TurretPosition(-20, -180, 3.5)),
                         new CloseClaw(),
         })),
         TEST_CONE_SCORE("Test:Score cone", new Routine(new Action[] {
