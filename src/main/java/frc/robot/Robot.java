@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.*;
 import frc.robot.controls.controlschemes.*;
@@ -31,15 +32,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        AutoRoutines defaultRoutine = AutoRoutines.GO_STRAIGHT;
-        autoChooser.setDefaultOption(defaultRoutine.name, defaultRoutine);
+        AutoRoutines defaultRoutine = AutoRoutines.BALANCE_CAUTIOUS;
         for (AutoRoutines routine : AutoRoutines.values()) {
             if (routine != defaultRoutine) {
                 autoChooser.addOption(routine.name, routine);
+            } else {
+                autoChooser.setDefaultOption(defaultRoutine.name, defaultRoutine);
             }
 
         }
         SmartDashboard.putData("Autonomous Routines", autoChooser);
+
+        Subsystems.driveBase.setLowGear();
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -95,6 +99,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("Robot.phCompressor.pressure", phCompressor.getPressure());
+        SmartDashboard.putNumber("Robot.batteryVoltage", RobotController.getBatteryVoltage());
     }
 
     @Override
