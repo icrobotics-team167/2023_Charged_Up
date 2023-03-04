@@ -338,13 +338,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         double voltage = RobotController.getBatteryVoltage();
 
-        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
-
         // Moving average filter
         voltageFilter.add(voltage);
         double filteredVoltage = voltageFilter.get();
-
-        SmartDashboard.putNumber("SparkTankDriveBase.filteredVoltage", filteredVoltage);
 
         if (filteredVoltage < MIN_VOLTAGE) {
             output = MIN_MULTIPLIER;
