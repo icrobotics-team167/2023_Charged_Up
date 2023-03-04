@@ -24,7 +24,7 @@ public enum AutoRoutines {
                         new Wait(0.25),
                         new DriveStraight(180, -0.3)
                                         .withTurret(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
-                        // new MoveArm(TurretPo6sition.INTAKE.withExtension(3.5).withPivot(-20)),
+                        // new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
                         new CloseClaw(),
                         new DriveForwardsUntil(
                                         navx -> navx.getPitch() >= 8,
