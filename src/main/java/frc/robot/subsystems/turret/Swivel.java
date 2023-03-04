@@ -30,7 +30,7 @@ public class Swivel {
 
     private boolean swivelLocked = false;
     
-    private final double SLOW_TURN_MULT = 0.5;
+    private final double SLOW_TURN_MULT = 0.3;
     private boolean slowMode = false;
 
     // Singleton
