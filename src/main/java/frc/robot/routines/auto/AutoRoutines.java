@@ -42,6 +42,9 @@ public enum AutoRoutines {
                                         .withTurret(TurretPosition.INITIAL),
                         new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20).withSwivel(180)),
                         new CloseClaw(),
+                        // new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        // new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
+                        // new OpenClaw(),
         })),
         GO_STRAIGHT_RED("Score cube then cone (Red Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
