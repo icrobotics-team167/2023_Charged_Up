@@ -124,12 +124,12 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doResetTurret() {
-        return secondary.getStartButton();
+        return secondary.getXButton() || secondary.getStartButton();
     }
 
     @Override
     public boolean doSlowTurret() {
-        return secondary.getRightTrigger();
+        return secondary.getBButton();
     }
 
     @Override
@@ -139,12 +139,12 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        return secondary.getYButton();
+        return false;
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getBButton();
+        return secondary.getYButton();
     }
 
     @Override
@@ -154,7 +154,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doPlayerStation() {
-        return secondary.getXButton();
+        return false;
     }
 
     @Override
