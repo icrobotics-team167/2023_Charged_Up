@@ -21,5 +21,5 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     public static final TurretPosition HIGH_GOAL_CONE_RED = HIGH_GOAL_CENTER.withSwivel(12.5);
     public static final TurretPosition MID_GOAL = new TurretPosition(36, 0, 20.1);
     public static final TurretPosition INTAKE = new TurretPosition(-33, 0, 8);
-    public static final TurretPosition PLAYER_STATION = new TurretPosition(36, 0, 7); // TODO: Measure angles
+    public static final TurretPosition PLAYER_STATION = new TurretPosition(50, 0, 7); // TODO: Measure angles
 }

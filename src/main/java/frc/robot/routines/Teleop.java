@@ -59,6 +59,8 @@ public class Teleop {
             turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doAutoPickup()) {
             turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doPlayerStation()) {
+            turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
         } else {
             // turret.setLimitOverride(controls.doLimitOverride());
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
