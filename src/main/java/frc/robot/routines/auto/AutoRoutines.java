@@ -31,8 +31,8 @@ public enum AutoRoutines {
                                         0.2,
                                         Duration.ofMillis(3500)),
                         new DriveStraight(48, 0.4),
-                        // new Wait(1),
-                        // new NaiveAutoBalance()
+        // new Wait(1),
+        // new NaiveAutoBalance()
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
@@ -40,11 +40,11 @@ public enum AutoRoutines {
                         new OpenClaw(),
                         new DriveStraight(180, -0.5)
                                         .withTurret(TurretPosition.INITIAL),
-                        new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20).withSwivel(180)),
+                        new MoveArm(new TurretPosition(-20, 180, 3.5)),
                         new CloseClaw(),
-                        // new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
-                        // new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
-                        // new OpenClaw(),
+        // new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+        // new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
+        // new OpenClaw(),
         })),
         GO_STRAIGHT_RED("Score cube then cone (Red Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
@@ -52,20 +52,20 @@ public enum AutoRoutines {
                         new OpenClaw(),
                         new DriveStraight(180, -0.5)
                                         .withTurret(TurretPosition.INITIAL),
-                        new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20).withSwivel(-180)),
+                                        new MoveArm(new TurretPosition(-20, -180, 3.5)),
                         new CloseClaw(),
         })),
         TEST_CONE_SCORE("Test:Score cone", new Routine(new Action[] {
-                new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
-                new OpenClaw(),
-                new DriveStraight(160, -0.5).withTurret(TurretPosition.HIGH_GOAL_CONE_BLUE.withExtension(3.5)),
-                new MoveArm(TurretPosition.INTAKE.withSwivel(180), 0.8)
+                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
+                        new OpenClaw(),
+                        new DriveStraight(160, -0.5).withTurret(TurretPosition.HIGH_GOAL_CONE_BLUE.withExtension(3.5)),
+                        new MoveArm(TurretPosition.INTAKE.withSwivel(180), 0.8)
         })),
         TEST_INTAKE_CONE("Test:Intake cone from behind", new Routine(new Action[] {
-                new OpenClaw(),
-                new MoveArm(TurretPosition.INTAKE.withSwivel(180)),
-                new CloseClaw(),
-                new ResetArm(),
+                        new OpenClaw(),
+                        new MoveArm(TurretPosition.INTAKE.withSwivel(180)),
+                        new CloseClaw(),
+                        new ResetArm(),
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),
