@@ -40,24 +40,31 @@ public class Turret {
         pivot.move(pivotSpeed);
         swivel.move(swivelSpeed);
         extendRetract.move(extendRetractSpeed);
-    }   
+    }
 
     /**
      * Moves multiple parts of the turret at the same time.
      * 
-     * @param pivotTarget     The target pivot angle
-     * @param swivelTarget    The target swivel angle
-     * @param extensionTarget The target extension position
+     * @param targetState The target turret state.
      * 
      * @return If it has finished moving (AKA when all the targets are met)
      */
     public boolean moveTo(TurretPosition targetState) {
-        boolean pivot = pivotToAngle(targetState.pivotAngle());
-        boolean swivel = swivelToAngle(targetState.swivelAngle());
+        return moveTo(targetState, 1);
+    }
+
+    /**
+     * Moves multiple parts of the turret at the same time.
+     * 
+     * @param targetState The target turret state.
+     * @param speed       The turret movement speed.
+     * 
+     * @return If it has finished moving (AKA when all the targets are met)
+     */
+    public boolean moveTo(TurretPosition targetState, double speed) {
+        boolean pivot = pivotToAngle(targetState.pivotAngle(), speed);
+        boolean swivel = swivelToAngle(targetState.swivelAngle(), speed);
         boolean extend = extendToPosition(targetState.extensionPosition());
-        SmartDashboard.putBoolean("Turret.moveTo.pivot", pivot);
-        SmartDashboard.putBoolean("Turret.moveTo.swivel", swivel);
-        SmartDashboard.putBoolean("Turret.moveTo.extend", extend);
         return pivot && swivel && extend;
     }
 
@@ -73,6 +80,10 @@ public class Turret {
     }
 
     public boolean pivotToAngle(double target) {
+        return pivotToAngle(target, 1);
+    }
+
+    public boolean pivotToAngle(double target, double moveSpeed) {
         double speed;
         double error = target - pivot.getPositionDegrees();
         if (Math.abs(error) < PIVOT_SENSITIVITY_THRESHOLD) {
@@ -80,12 +91,16 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 1;
+        speed *= moveSpeed;
         pivot.move(speed);
         return speed == 0;
     }
 
     public boolean swivelToAngle(double target) {
+        return swivelToAngle(target, 1);
+    }
+
+    public boolean swivelToAngle(double target, double moveSpeed) {
         double speed;
         double error = target - swivel.getPositionDegrees();
         if (Math.abs(error) < SWIVEL_SENSITIVITY_THRESHOLD) {
@@ -93,12 +108,16 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 1;
+        speed *= moveSpeed;
         swivel.move(speed);
         return speed == 0;
     }
 
     public boolean extendToPosition(double target) {
+        return extendToPosition(target, 1);
+    }
+
+    public boolean extendToPosition(double target, double moveSpeed) {
         double speed;
         double error = target - extendRetract.getPositionInches();
         if (Math.abs(error) < EXTENSION_SENSITIVITY_THRESHOLD) {
@@ -106,7 +125,7 @@ public class Turret {
         } else {
             speed = MathUtils.getSign(error);
         }
-        speed *= 1;
+        speed *= moveSpeed;
         extendRetract.move(speed);
         return speed == 0;
     }
