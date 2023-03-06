@@ -28,7 +28,7 @@ public enum AutoRoutines {
                                         Duration.ofMillis(3500)),
                         new DriveStraight(30, 0.2),
                         new Wait(1),
-                        new NaiveAutoBalance()
+                        new DumbAutoBalance()
         })),
         GO_FORWARD_BACK("Go forward and back", new Routine(new Action[] {
                         new DriveStraight(180, -0.2),

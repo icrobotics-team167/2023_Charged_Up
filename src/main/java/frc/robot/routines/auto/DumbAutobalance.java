@@ -8,7 +8,7 @@ import frc.robot.util.MathUtils;
 import frc.robot.util.MovingAverage;
 import frc.robot.util.PeriodicTimer;
 
-public class DumbAutobalance extends Action {
+public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
     private PeriodicTimer timer;
     private MovingAverage pitchFilter;
@@ -19,7 +19,7 @@ public class DumbAutobalance extends Action {
     /**
      * Constructs a new DumbAutobalance auto routine.
      */
-    public DumbAutobalance() {
+    public DumbAutoBalance() {
         super();
         timer = new PeriodicTimer();
         pitchFilter = new MovingAverage(25, true);
