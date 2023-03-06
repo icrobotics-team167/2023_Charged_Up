@@ -10,7 +10,6 @@ import frc.robot.util.PeriodicTimer;
 
 public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
-    private PeriodicTimer timer;
     private MovingAverage pitchFilter;
 
     private static final double SPEED = 0.5;
@@ -21,7 +20,6 @@ public class DumbAutoBalance extends Action {
      */
     public DumbAutoBalance() {
         super();
-        timer = new PeriodicTimer();
         pitchFilter = new MovingAverage(25, true);
     }
 
@@ -30,7 +28,6 @@ public class DumbAutoBalance extends Action {
      */
     @Override
     public void init() {
-        timer.reset();
         pitchFilter.clear();
     }
 
@@ -51,7 +48,8 @@ public class DumbAutoBalance extends Action {
     }
 
     /**
-     * Returns if the routine is done or not. Always returns false as it is expected that
+     * Returns if the routine is done or not. Always returns false as it is expected
+     * that
      * the routine is the last one in the list of actions and thus will run until
      * the end of the auto period.
      * 
