@@ -29,8 +29,8 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     public static final TurretPosition MID_RIGHT  = new TurretPosition(35,  28, 28);
     
     //max extension can reach 2 more mid scoring positions PLEASE TEST THESE TOO (LOW PRIORITY)
-    public static final TurretPosition FAR_ MID_LEFT   = new TurretPosition(35, -46, 28);
-    public static final TurretPosition FAR_ MID_RIGHT  = new TurretPosition(35,  46, 28);
+    public static final TurretPosition FAR_MID_LEFT   = new TurretPosition(35, -46, 42);
+    public static final TurretPosition FAR_MID_RIGHT  = new TurretPosition(35,  46, 42);
     
     //positions for auto only
     public static final TurretPosition HIGH_GOAL_CUBE_BLUE = HIGH_GOAL_CENTER.withSwivel( 9.6);  // positioning for auto
