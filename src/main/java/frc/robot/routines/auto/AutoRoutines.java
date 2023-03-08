@@ -3,6 +3,7 @@ package frc.robot.routines.auto;
 import frc.robot.routines.Action;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Routine;
+import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretPosition;
 
 import java.time.Duration;
@@ -30,7 +31,7 @@ public enum AutoRoutines {
                                         navx -> navx.getPitch() >= 8,
                                         0.2,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(48, 0.4),
+                        new DriveStraight(49, 0.4),
         // new Wait(1),
         // new NaiveAutoBalance()
         })),
@@ -39,21 +40,26 @@ public enum AutoRoutines {
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new OpenClaw(),
                         new DriveStraight(180, -0.5)
-                                        .withTurret(TurretPosition.INITIAL),
-                        new MoveArm(new TurretPosition(-20, 180, 3.5)),
+                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_BLUE.pivotAngle(),
+                                                        180, 3.5)),
+                        new MoveArm(new TurretPosition(-30, 180, 3.5)),
                         new CloseClaw(),
-        // new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
-        // new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
-        // new OpenClaw(),
+                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
+                        new OpenClaw(),
         })),
         GO_STRAIGHT_RED("Score cube then cone (Red Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new OpenClaw(),
                         new DriveStraight(180, -0.5)
-                                        .withTurret(TurretPosition.INITIAL),
-                        new MoveArm(new TurretPosition(-20, -180, 3.5)),
+                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_RED.pivotAngle(),
+                                                        -180, 3.5)),
+                        new MoveArm(new TurretPosition(-30, -180, 3.5)),
                         new CloseClaw(),
+                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
+                        new OpenClaw(),
         })),
         TEST_CONE_SCORE("Test:Score cone", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
