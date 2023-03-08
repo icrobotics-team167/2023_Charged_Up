@@ -38,6 +38,8 @@ public interface TankDriveBase {
     // Utility
     double metersPerSecondToRPM(double metersPerSecond);
     
-    void setNonSlowHighGear(boolean highGear);
+    void setNonSlowHighGear();
+
+    void setNonSlowLowGear();
 
 }

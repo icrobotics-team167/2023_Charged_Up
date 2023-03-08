@@ -360,7 +360,12 @@ public class SparkTankDriveBase implements TankDriveBase {
     }
 
     @Override
-    public void setNonSlowHighGear(boolean highGear) {
-        nonSlowHighGear = highGear;
+    public void setNonSlowHighGear() {
+        nonSlowHighGear = true;
+    }
+
+    @Override
+    public void setNonSlowLowGear() {
+        nonSlowHighGear = false;
     }
 }
