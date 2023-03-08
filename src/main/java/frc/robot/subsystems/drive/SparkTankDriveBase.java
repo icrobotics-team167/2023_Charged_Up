@@ -33,7 +33,7 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     private final double WHEEL_DIAMETER = 6;
 
-    private boolean nonSlowHighGear = false; //i do not believe this is needed anymore "slow mode" forces low gear.
+    private boolean nonSlowHighGear = false;
 
     // Singleton
     private static SparkTankDriveBase instance;
