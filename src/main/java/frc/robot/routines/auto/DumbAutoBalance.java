@@ -11,7 +11,6 @@ public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
     private MovingAverage pitchFilter;
 
-    
     private static final double SPEED = 0.5;
     private static final double SENSITIVITY_THRESHOLD = 8;
 
@@ -33,9 +32,10 @@ public class DumbAutoBalance extends Action {
 
     /**
      * Runs every robot tick.
-     * Smooths out the pitch value and if that smoothed pitch value is less than the
-     * sensitivity threshold, stops the robot as it is balanced. Otherwise, uses the
-     * sign of the pitch value to move the robot to try and balance.
+     * Smooths out the pitch value and if the absolute value of that smoothed pitch
+     * value is less than the sensitivity threshold, stops the robot as it is
+     * balanced. Otherwise, uses the sign of the pitch value to move the robot to
+     * try and balance.
      */
     @Override
     public void periodic() {
