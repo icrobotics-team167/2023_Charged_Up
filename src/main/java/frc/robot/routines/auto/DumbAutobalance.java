@@ -6,7 +6,6 @@ import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MathUtils;
 import frc.robot.util.MovingAverage;
-import frc.robot.util.PeriodicTimer;
 
 public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
