@@ -12,6 +12,7 @@ public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
     private MovingAverage pitchFilter;
 
+    
     private static final double SPEED = 0.5;
     private static final double SENSITIVITY_THRESHOLD = 8;
 
