@@ -27,10 +27,10 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     // 6 positions for single grid section PLEASE TEST THESE
     public static final TurretPosition HIGH_RIGHT = new TurretPosition(35, 20, 42);
     public static final TurretPosition HIGH_LEFT = HIGH_RIGHT.flipSwivelSign();
-    public static final TurretPosition HIGH_MID = new TurretPosition(35, 0, 40);
+    public static final TurretPosition HIGH_MID = new TurretPosition(25, 0, 50);
     public static final TurretPosition MID_RIGHT = new TurretPosition(35, 28, 28);
     public static final TurretPosition MID_LEFT = MID_RIGHT.flipSwivelSign();
-    public static final TurretPosition MID_MID = new TurretPosition(35, 0, 21);
+    public static final TurretPosition MID_MID = new TurretPosition(14.7, 0, 28);
 
     // max extension can reach 2 more mid scoring positions PLEASE TEST THESE TOO
     // (LOW PRIORITY)
