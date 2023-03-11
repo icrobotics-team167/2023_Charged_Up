@@ -69,11 +69,6 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean toggleLimelightMode() {
-        return primary.getLeftBumperPressed();
-    }
-
-    @Override
     public double getArmSwivel() {
         // TODO Auto-generated method stub
         return 0;

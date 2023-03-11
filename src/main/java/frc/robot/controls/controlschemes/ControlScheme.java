@@ -21,10 +21,6 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowMode();
 
-    // Limelight
-
-    public abstract boolean toggleLimelightMode();
-
     // Turret (Secondary controller)
 
     // Claw

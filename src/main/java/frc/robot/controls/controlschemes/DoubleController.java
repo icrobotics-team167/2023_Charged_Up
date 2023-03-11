@@ -72,11 +72,6 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean toggleLimelightMode() {
-        return primary.getLeftBumperPressed();
-    }
-
-    @Override
     public boolean openClaw() {
         return secondary.getRightBumper();
     }

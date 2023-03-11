@@ -121,10 +121,4 @@ public class NullController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
-
-    @Override
-    public boolean toggleLimelightMode() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }

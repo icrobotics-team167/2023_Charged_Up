@@ -71,10 +71,6 @@ public class Teleop {
         } else if (controls.closeClaw()) {
             claw.closeClaw();
         }
-
-        if (controls.toggleLimelightMode()) {
-            limeLight.toggleMode();
-        }
         // PUT DEBUG STATEMENTS HERE
         SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
         SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
