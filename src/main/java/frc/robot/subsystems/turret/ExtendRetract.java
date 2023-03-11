@@ -21,7 +21,7 @@ public class ExtendRetract {
     private static final double MAX_EXTEND_SPEED = 1;
     private static final double START_EXTENSION = 17;
 
-    public static final double MAX_EXTENSION = 42;
+    public static final double MAX_EXTENSION = 56;
     public static final double MIN_EXTENSON = START_EXTENSION;
     private static final double DECEL_DISTANCE = 0.25; // The extension has some interia before it fully stops so this is
                                                       // to account for that
