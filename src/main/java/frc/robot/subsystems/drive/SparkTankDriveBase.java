@@ -33,8 +33,7 @@ public class SparkTankDriveBase implements TankDriveBase {
 
     private final double WHEEL_DIAMETER = 6;
 
-    private boolean slowMode = false;
-    private final double SLOW_TURN_MULT = 0.5;
+    private boolean nonSlowHighGear = false;
 
     // Singleton
     private static SparkTankDriveBase instance;
@@ -136,11 +135,6 @@ public class SparkTankDriveBase implements TankDriveBase {
     public void tankDrive(double leftSpeed, double rightSpeed) {
         double voltageMultiplier = adjustVoltage();
 
-        if (slowMode) {
-            leftSpeed *= SLOW_TURN_MULT;
-            rightSpeed *= SLOW_TURN_MULT;
-        }
-
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
         leftMaster.set(rightSpeed * speedMultiplier * voltageMultiplier);
     }
@@ -169,11 +163,6 @@ public class SparkTankDriveBase implements TankDriveBase {
         } else if (Math.abs(Rval) > 1) {
             leftSpeed = Lval / Math.abs(Rval);
             rightSpeed = Rval / Math.abs(Rval);
-        }
-
-        if (slowMode) {
-            leftSpeed *= SLOW_TURN_MULT;
-            rightSpeed *= SLOW_TURN_MULT;
         }
 
         rightMaster.set(leftSpeed * speedMultiplier * voltageMultiplier);
@@ -224,6 +213,11 @@ public class SparkTankDriveBase implements TankDriveBase {
             setLowGear();
         } else {
             speedMultiplier = normalSpeed;
+            if (nonSlowHighGear) {
+                setHighGear();
+            } else {
+                setLowGear();
+            }
         }
         SmartDashboard.putBoolean("SparkTankDriveBase.lowerGear", lowerGear);
     }
@@ -285,7 +279,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     public double encoderDistanceToMeters(double encoderValue) {
         double gearRatio = highGear ? 5.1 : 13.5;
         double wheelCircumferenceInches = WHEEL_DIAMETER * Math.PI;
-        double scalar = 2.622;
+        double scalar = 0.9;
         return Units.inchesToMeters(encoderValue * (wheelCircumferenceInches / gearRatio) / scalar);
     }
 
@@ -344,13 +338,9 @@ public class SparkTankDriveBase implements TankDriveBase {
 
         double voltage = RobotController.getBatteryVoltage();
 
-        SmartDashboard.putNumber("SparkTankDriveBase.voltage", voltage);
-
         // Moving average filter
         voltageFilter.add(voltage);
         double filteredVoltage = voltageFilter.get();
-
-        SmartDashboard.putNumber("SparkTankDriveBase.filteredVoltage", filteredVoltage);
 
         if (filteredVoltage < MIN_VOLTAGE) {
             output = MIN_MULTIPLIER;
@@ -369,14 +359,13 @@ public class SparkTankDriveBase implements TankDriveBase {
         return output;
     }
 
-    @Override 
-    public void setSlowMode(boolean slow) {
-        if(slow) {
-            setLowGear();
-            slowMode = true;
-        } else {
-            slowMode = false;
-        }
-        
+    @Override
+    public void setNonSlowHighGear() {
+        nonSlowHighGear = true;
+    }
+
+    @Override
+    public void setNonSlowLowGear() {
+        nonSlowHighGear = false;
     }
 }

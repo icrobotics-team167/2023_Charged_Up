@@ -12,7 +12,7 @@ import java.time.Duration;
 public class DriveForwardsUntil extends Action {
 
     private PeriodicTimer timer;
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
 
     private DriveForwardsCondition condition;
     private double speed;
@@ -31,11 +31,6 @@ public class DriveForwardsUntil extends Action {
         this.conditionMet = false;
         this.timeoutReached = false;
         this.isDone = false;
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SPI;
 import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.util.MathUtils;
 import frc.robot.util.PeriodicTimer;
 // import frc.robot.subsystems.drive.TankDriveBase;
 
@@ -15,7 +16,7 @@ public class NaiveAutoBalance extends Action {
 
     // private double speedRange;
     private PeriodicTimer timer;
-    private AHRS navx;
+    private AHRS navx = Subsystems.navx;
 
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
@@ -32,22 +33,12 @@ public class NaiveAutoBalance extends Action {
     // Time to wait between every time the robot moves in seconds
     private double waitTime = 0.75;
     private boolean stop = false;
-    boolean done = false;
 
     /**
      * Constructs a new AutoBalance routine.
      */
     public NaiveAutoBalance() {
         super();
-
-        // Initialize the navX
-        try {
-            navx = new AHRS(SPI.Port.kMXP);
-            // DriverStation.reportError("Not really an error, successfully loaded navX",
-            // true);
-        } catch (RuntimeException ex) {
-            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
 
         // Set variables
 
@@ -70,15 +61,11 @@ public class NaiveAutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
-        if (done) {
-            Subsystems.driveBase.stop();
-            return;
-        }
         double pitch = navx.getPitch();
 
         if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
+            timer.reset();
             Subsystems.driveBase.stop();
-            done = true;
             return;
         }
 
@@ -96,7 +83,7 @@ public class NaiveAutoBalance extends Action {
                 timer.reset();
             } else {
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
-                    Subsystems.driveBase.arcadeDrive(pitch / Math.abs(pitch) * speed, 0);
+                    Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * speed, 0);
                 }
             }
         }
@@ -109,7 +96,7 @@ public class NaiveAutoBalance extends Action {
     public boolean isDone() {
         // There's no code for handling how long it should be autobalancing for during
         // auto as we don't expect any other auto routines to come after autoBalance
-        return done;
+        return false;
     }
 
     @Override

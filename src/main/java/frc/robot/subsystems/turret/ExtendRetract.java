@@ -17,7 +17,7 @@ public class ExtendRetract {
 
     private double initialEncoderPosition;
 
-    private static final double MAX_EXTEND_SPEED = 0.8;
+    private static final double MAX_EXTEND_SPEED = 1;
     private static final double START_EXTENSION = 3.5;
 
     public static final double MAX_EXTENSION = 42;
@@ -97,7 +97,7 @@ public class ExtendRetract {
         if (overridePositionLimits) {
             return false;
         }
-        if (!retractSwitch.get()) {
+        if (!retractSwitch.get() || getPositionInches() <= MIN_EXTENSON) {
             initialEncoderPosition = extendRetractEncoder.getPosition();
             return true;
         }

@@ -58,12 +58,12 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doSwitchHighGear() {
-        return primary.getRightBumper();
+        return primary.getRightTrigger();
     }
 
     @Override
     public boolean doSwitchLowGear() {
-        return primary.getRightTrigger();
+        return primary.getRightBumper();
     }
 
     @Override
@@ -88,10 +88,11 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmSwivel() {
-        double swivel = secondary.getLeftStickX();
-        if (Config.Settings.SECONDARY_DEADZONE_ENABLED
-                && Math.abs(swivel) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
-            swivel = 0;
+        double swivel;
+        if (secondary.getRightTriggerValue() > secondary.getLeftTriggerValue()) {
+            swivel = secondary.getRightTriggerValue();
+        } else {
+            swivel = -secondary.getLeftTriggerValue();
         }
         return swivel;
     }
@@ -118,7 +119,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doLimitOverride() {
-        return secondary.getBButton();
+        return secondary.getDPadRight();
     }
 
     @Override
@@ -128,7 +129,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doSlowTurret() {
-        return secondary.getRightTrigger();
+        return secondary.getBButton();
     }
 
     @Override
@@ -138,22 +139,22 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        return secondary.getDPadUp();
+        return false;
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getDPadLeft();
+        return secondary.getYButton();
     }
 
     @Override
     public boolean doAutoPickup() {
-        return secondary.getDPadDown();
+        return secondary.getAButton();
     }
 
     @Override
     public boolean doPlayerStation() {
-        return secondary.getDPadRight();
+        return secondary.getXButton();
     }
 
     @Override
