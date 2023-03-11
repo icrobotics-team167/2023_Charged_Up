@@ -33,7 +33,6 @@ public class NaiveAutoBalance extends Action {
     // Time to wait between every time the robot moves in seconds
     private double waitTime = 0.75;
     private boolean stop = false;
-    boolean done = false;
 
     /**
      * Constructs a new AutoBalance routine.
@@ -62,15 +61,11 @@ public class NaiveAutoBalance extends Action {
      * balance the robot.
      */
     public void periodic() {
-        if (done) {
-            Subsystems.driveBase.stop();
-            return;
-        }
         double pitch = navx.getPitch();
 
         if (Math.abs(pitch) < SENSITIVITY_THRESHOLD) {
+            timer.reset();
             Subsystems.driveBase.stop();
-            done = true;
             return;
         }
 
@@ -101,7 +96,7 @@ public class NaiveAutoBalance extends Action {
     public boolean isDone() {
         // There's no code for handling how long it should be autobalancing for during
         // auto as we don't expect any other auto routines to come after autoBalance
-        return done;
+        return false;
     }
 
     @Override

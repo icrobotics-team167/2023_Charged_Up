@@ -28,7 +28,7 @@ public class Pivot {
 
     private boolean overrideAngleLimits = false;
 
-    private final double SLOW_TURN_MULT = 0.5;
+    private final double SLOW_TURN_MULT = 0.3;
     private boolean slowMode = false;
 
     // Singleton
@@ -154,7 +154,7 @@ public class Pivot {
         double low = 0.25;
         double extensionPosition = extendRetract.getPositionInches();
         double multiplier = -((extensionPosition - ExtendRetract.MIN_EXTENSON)
-                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/low))
+                / ((ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON)/(1-low)))
                 + (1 + (1) / (ExtendRetract.MAX_EXTENSION - ExtendRetract.MIN_EXTENSON));
         multiplier = MathUtil.clamp(multiplier, low, 1);
         if (overrideAngleLimits) {

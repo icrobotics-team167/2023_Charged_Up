@@ -15,14 +15,20 @@ public class MoveArm extends Action {
 
     private boolean doneMoving = false;
 
-    public MoveArm(TurretPosition targetState, double timeOutSeconds) {
+    private double speed;
+
+    public MoveArm(TurretPosition targetState, double speed, double timeOutSeconds) {
         this.targetState = targetState;
+        this.speed = speed;
         this.timeOutSeconds = timeOutSeconds;
         timer = new PeriodicTimer();
     }
 
+    public MoveArm(TurretPosition targetState, double speed) {
+        this(targetState, speed, 0);
+    }
     public MoveArm(TurretPosition targetState) {
-        this(targetState, 0);
+        this(targetState, 1);
     }
 
     @Override
@@ -32,7 +38,7 @@ public class MoveArm extends Action {
 
     @Override
     public void periodic() {
-        doneMoving = Subsystems.turret.moveTo(targetState);
+        doneMoving = Subsystems.turret.moveTo(targetState, 0.8);
         SmartDashboard.putBoolean("MoveArm.doneMoving", doneMoving);
     }
 

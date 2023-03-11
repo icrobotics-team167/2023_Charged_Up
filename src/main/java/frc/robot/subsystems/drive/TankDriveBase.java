@@ -22,8 +22,6 @@ public interface TankDriveBase {
 
     boolean isLowerGear();
 
-    void setSlowMode(boolean slow);
-
     // Auto
     void stop();
 
@@ -39,5 +37,9 @@ public interface TankDriveBase {
 
     // Utility
     double metersPerSecondToRPM(double metersPerSecond);
+    
+    void setNonSlowHighGear();
+
+    void setNonSlowLowGear();
 
 }

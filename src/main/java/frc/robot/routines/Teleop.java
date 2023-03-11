@@ -34,12 +34,12 @@ public class Teleop {
     public void periodic() {
         if (controls.doSwitchHighGear()) {
             driveBase.setHighGear();
+            driveBase.setNonSlowHighGear();
         } else if (controls.doSwitchLowGear()) {
             driveBase.setLowGear();
+            driveBase.setNonSlowLowGear();
         }
-        if (driveBase.isHighGear()) {
-            driveBase.setSlowMode(controls.doSlowMode());
-        }
+        driveBase.setLowerGear(controls.doSlowMode());
         if (Config.Settings.TANK_DRIVE) {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
@@ -49,19 +49,20 @@ public class Teleop {
         }
 
         turret.setSlowMode(controls.doSlowTurret());
-        turret.lockSwivel(controls.doLockSwivel());
 
         if (controls.doResetTurret()) {
             claw.closeClaw();
             turret.moveTo(TurretPosition.INITIAL);
-        } else if (controls.doAutoHigh()) {
-            turret.moveTo(TurretPosition.HIGH_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doSwivel180()) {
+            turret.moveTo(turret.getPosition().withSwivel(180), 0.5);
         } else if (controls.doAutoMid()) {
             turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doAutoPickup()) {
             turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doPlayerStation()) {
+            turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
         } else {
-            turret.setLimitOverride(controls.doLimitOverride());
+            // turret.setLimitOverride(controls.doLimitOverride());
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
         }
 
