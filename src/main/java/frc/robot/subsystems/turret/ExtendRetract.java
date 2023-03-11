@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
 /**
@@ -18,11 +19,11 @@ public class ExtendRetract {
     private double initialEncoderPosition;
 
     private static final double MAX_EXTEND_SPEED = 1;
-    private static final double START_EXTENSION = 3.5;
+    private static final double START_EXTENSION = 17;
 
     public static final double MAX_EXTENSION = 42;
-    public static final double MIN_EXTENSON = 3.5;
-    private static final double DECEL_DISTANCE = 0.5; // The extension has some interia before it fully stops so this is
+    public static final double MIN_EXTENSON = START_EXTENSION;
+    private static final double DECEL_DISTANCE = 0.25; // The extension has some interia before it fully stops so this is
                                                       // to account for that
     private boolean overridePositionLimits = false;
 
@@ -97,8 +98,11 @@ public class ExtendRetract {
         if (overridePositionLimits) {
             return false;
         }
-        if (!retractSwitch.get() || getPositionInches() <= MIN_EXTENSON) {
+        if (!retractSwitch.get()) {
             initialEncoderPosition = extendRetractEncoder.getPosition();
+            return true;
+        }
+        if (getPositionInches() <= MIN_EXTENSON) {
             return true;
         }
         return getPositionInches() <= MIN_EXTENSON;
@@ -131,7 +135,7 @@ public class ExtendRetract {
      * @return The position in inches.
      */
     public double getPositionInches() {
-        double scalar = -0.113;
+        double scalar = -0.15;
         return (extendRetractEncoder.getPosition() - initialEncoderPosition) * scalar + START_EXTENSION;
     }
 
