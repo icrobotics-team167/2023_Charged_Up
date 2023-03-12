@@ -41,7 +41,7 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowTurret();
 
-    public abstract boolean doLockSwivel();
+    public abstract boolean doUnlockSwivel();
     
     public abstract boolean doAutoHigh();
 
@@ -51,6 +51,13 @@ public abstract class ControlScheme {
 
     public abstract boolean doPlayerStation();
 
-    public abstract boolean doSwivel180();
+    public abstract boolean doSwivelNorth();
 
+    public abstract boolean doSwivelEast();
+
+    public abstract boolean doSwivelSouth();
+
+    public abstract boolean doSwivelWest();
+
+    public abstract double getPreset();
 }

@@ -18,6 +18,8 @@ public class Teleop {
     private LimeLight limeLight;
     private AHRS navx = Subsystems.navx;
 
+    private TurretPosition targetState = null;
+
     public Teleop(ControlScheme controls) {
         this.controls = controls;
         driveBase = Subsystems.driveBase;
@@ -50,20 +52,58 @@ public class Teleop {
 
         turret.setSlowMode(controls.doSlowTurret());
 
+        if(targetState!=null) {
+            turret.moveTo(targetState);
+        }
+
         if (controls.doResetTurret()) {
-            claw.closeClaw();
+            // claw.closeClaw();
             turret.moveTo(TurretPosition.INITIAL);
-        } else if (controls.doSwivel180()) {
-            turret.moveTo(turret.getPosition().withSwivel(180), 0.5);
-        } else if (controls.doAutoMid()) {
-            turret.moveTo(TurretPosition.MID_GOAL.withSwivel(turret.getPosition().swivelAngle()));
+        } else if (controls.doSwivelNorth()) {
+            turret.moveTo(turret.getPosition().withSwivel(0), 0.5);
+        } else if (controls.doSwivelEast()) {
+            turret.moveTo(turret.getPosition().withSwivel(90), 0.5);
+        } else if (controls.doSwivelSouth()) {
+            if(turret.getPosition().swivelAngle() < 0) {
+                turret.moveTo(turret.getPosition().withSwivel(-180), 0.5);
+            } else {
+                turret.moveTo(turret.getPosition().withSwivel(180), 0.5);
+            }
+        } else if (controls.doSwivelWest()) {
+            turret.moveTo(turret.getPosition().withSwivel(-90), 0.5);
         } else if (controls.doAutoPickup()) {
             turret.moveTo(TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()));
         } else if (controls.doPlayerStation()) {
+            claw.openClaw();
             turret.moveTo(TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()));
+        // Preset positions are done from the perspective of the driver
+        } else if (controls.getPreset() == 0) {
+            if(controls.doAutoHigh()) {
+                turret.moveTo(TurretPosition.HIGH_MID);
+            } else if (controls.doAutoMid()) {
+                turret.moveTo(TurretPosition.MID_MID);
+            } else {
+                if(controls.doUnlockSwivel()) {
+                    turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+                } else {
+                    turret.move(controls.getArmPivot(), 0, controls.getArmExtend());
+                }
+                
+            }
+        } else if (controls.getPreset() == 1) {
+            if(controls.doAutoHigh()) {
+                turret.moveTo(TurretPosition.HIGH_RIGHT);
+            } else if(controls.doAutoMid()) {
+                turret.moveTo(TurretPosition.MID_RIGHT);
+            }
+        } else if (controls.getPreset() == -1) {
+            if(controls.doAutoHigh()) {
+                turret.moveTo(TurretPosition.HIGH_LEFT);
+            } else if(controls.doAutoMid()) {
+                turret.moveTo(TurretPosition.MID_LEFT);
+            } 
         } else {
-            // turret.setLimitOverride(controls.doLimitOverride());
-            turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+            turret.stop();
         }
 
         if (controls.openClaw()) {
@@ -79,4 +119,5 @@ public class Teleop {
         SmartDashboard.putNumber("Navx.pitch", navx.getPitch());
 
     }
+
 }

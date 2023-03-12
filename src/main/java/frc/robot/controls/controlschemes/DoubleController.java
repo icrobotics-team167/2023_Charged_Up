@@ -83,18 +83,17 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmSwivel() {
-        double swivel;
-        if (secondary.getRightTriggerValue() > secondary.getLeftTriggerValue()) {
-            swivel = secondary.getRightTriggerValue();
-        } else {
-            swivel = -secondary.getLeftTriggerValue();
+        double swivel = secondary.getRightStickX();
+        if (Config.Settings.SECONDARY_DEADZONE_ENABLED
+                && Math.abs(swivel) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
+            swivel = 0;
         }
         return swivel;
     }
 
     @Override
     public double getArmPivot() {
-        double pivot = secondary.getLeftStickY();
+        double pivot = secondary.getRightStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(pivot) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             pivot = 0;
@@ -104,7 +103,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        double extend = secondary.getRightStickY();
+        double extend = secondary.getLeftStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(extend) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             extend = 0;
@@ -124,22 +123,22 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doSlowTurret() {
-        return secondary.getBButton();
+        return secondary.getRightTrigger();
     }
 
     @Override
-    public boolean doLockSwivel() {
-        return secondary.getLeftTrigger();
+    public boolean doUnlockSwivel() {
+    return secondary.getLeftTrigger();
     }
 
     @Override
     public boolean doAutoHigh() {
-        return false;
+        return secondary.getYButton();
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getYButton();
+        return secondary.getBButton();
     }
 
     @Override
@@ -153,7 +152,32 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doSwivel180() {
-        return secondary.getBackButton();
+    public boolean doSwivelNorth() {
+        return secondary.getDPadUp();
+    }
+
+    @Override
+    public boolean doSwivelEast() {
+        return secondary.getDPadRight();
+    }
+
+    @Override
+    public boolean doSwivelSouth() {
+        return secondary.getDPadDown();
+    }
+
+    @Override
+    public boolean doSwivelWest() {
+        return secondary.getDPadLeft();
+    }
+
+    @Override
+    public double getPreset() {
+        if (secondary.getLeftStickX() == -1) {
+            return -1;
+        } else if (secondary.getLeftStickX() == 1) {
+            return 1;
+        }
+        return 0;
     }
 }
