@@ -151,4 +151,40 @@ public class NullController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean toggleClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleLimelight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+	@Override
+	public boolean doAutoHighLeft() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoMidLeft() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoHighRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoMidRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

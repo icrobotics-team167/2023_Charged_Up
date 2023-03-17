@@ -128,17 +128,17 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doUnlockSwivel() {
-    return secondary.getLeftTrigger();
+        return secondary.getLeftTrigger();
     }
 
     @Override
     public boolean doAutoHigh() {
-        return secondary.getYButton();
+        return getPreset() == 0 && secondary.getYButton();
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getBButton();
+        return getPreset() == 0 && secondary.getBButton();
     }
 
     @Override
@@ -179,5 +179,36 @@ public class DoubleController extends ControlScheme {
             return 1;
         }
         return 0;
+    }
+
+    @Override
+    public boolean toggleClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleLimelight() {
+        return primary.getRightBumperToggled();
+    }
+
+    @Override
+    public boolean doAutoHighLeft() {
+        return getPreset() == -1 && secondary.getYButton();
+    }
+
+    @Override
+    public boolean doAutoMidLeft() {
+        return getPreset() == -1 && secondary.getBButton();
+    }
+
+    @Override
+    public boolean doAutoHighRight() {
+        return getPreset() == 1 && secondary.getYButton();
+    }
+
+    @Override
+    public boolean doAutoMidRight() {
+        return getPreset() == 1 && secondary.getBButton();
     }
 }

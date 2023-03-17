@@ -42,6 +42,10 @@ public interface Controller {
 
     boolean getRightStickButtonPressed();
 
+    boolean getRawButtonPressedById(int buttonId);
+
+    boolean getButtonPressedById(int buttonId);
+
     boolean getAButton();
 
     boolean getAButtonPressed();
