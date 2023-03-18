@@ -21,16 +21,14 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowMode();
 
-    // Limelight
-
-    public abstract boolean toggleLimelightMode();
-
     // Turret (Secondary controller)
 
     // Claw
     public abstract boolean openClaw();
 
     public abstract boolean closeClaw();
+
+    public abstract boolean toggleClaw();
 
     // Arm controls
     public abstract double getArmSwivel();
@@ -45,16 +43,33 @@ public abstract class ControlScheme {
 
     public abstract boolean doSlowTurret();
 
-    public abstract boolean doLockSwivel();
+    public abstract boolean doUnlockSwivel();
     
     public abstract boolean doAutoHigh();
 
     public abstract boolean doAutoMid();
 
+    public abstract boolean doAutoHighLeft();
+
+    public abstract boolean doAutoMidLeft();
+
+    public abstract boolean doAutoHighRight();
+
+    public abstract boolean doAutoMidRight();
+
     public abstract boolean doAutoPickup();
 
     public abstract boolean doPlayerStation();
 
-    public abstract boolean doSwivel180();
+    public abstract boolean doSwivelNorth();
 
+    public abstract boolean doSwivelEast();
+
+    public abstract boolean doSwivelSouth();
+
+    public abstract boolean doSwivelWest();
+
+    public abstract double getPreset();
+
+    public abstract boolean toggleLimelight();
 }

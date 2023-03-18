@@ -30,6 +30,8 @@ public interface Controller {
 
     double getLeftStickY();
 
+    double getLeftStickZ();
+
     boolean getLeftStickButton();
 
     boolean getLeftStickButtonPressed();
@@ -41,6 +43,10 @@ public interface Controller {
     boolean getRightStickButton();
 
     boolean getRightStickButtonPressed();
+
+    boolean getRawButtonPressedById(int buttonId);
+
+    boolean getButtonPressedById(int buttonId);
 
     boolean getAButton();
 

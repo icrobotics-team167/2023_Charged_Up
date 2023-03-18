@@ -1,0 +1,67 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="targetState" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="25" y="98"/>
+	</widget>
+	<widget field="MoveArm.doneMoving" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="78"/>
+	</widget>
+	<widget field="SparkTankDriveBase.voltageMultiplier" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="20"/>
+	</widget>
+	<widget field="Robot.batteryVoltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1133" y="301"/>
+		<property name="Buffer Size (samples)" value="8000"/>
+		<property name="Autoscale Y Values" value="false"/>
+		<property name="Minimum Y Value" value="6"/>
+		<property name="Maximum Y Value" value="13"/>
+	</widget>
+	<widget field="Robot.phCompressor.pressure" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1132" y="0"/>
+		<property name="Buffer Size (samples)" value="8000"/>
+		<property name="Autoscale Y Values" value="false"/>
+		<property name="Maximum Y Value" value="125"/>
+	</widget>
+	<widget field="SparkTankDriveBase.lowerGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="0"/>
+	</widget>
+	<widget field="limelight_Interface" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="113" y="556"/>
+	</widget>
+	<widget field="limelight_Stream" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="120" y="534"/>
+	</widget>
+	<widget field="limelight_PipelineName" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="93" y="515"/>
+	</widget>
+	<widget field="Turret.extensionSpeedMultiplier" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="349"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="296" y="1"/>
+		<width>833</width>
+		<height>578</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="Autonomous Routines" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="3" y="118"/>
+	</widget>
+	<widget field="Navx.yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="4" y="58"/>
+	</widget>
+	<widget field="Pivot.position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="3" y="286"/>
+	</widget>
+	<widget field="Navx.pitch" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="40"/>
+	</widget>
+	<widget field="ExtendRetract.position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="304"/>
+	</widget>
+	<widget field="Swivel.position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="7" y="324"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>

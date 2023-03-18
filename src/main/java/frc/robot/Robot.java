@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controls.controllers.*;
 import frc.robot.controls.controlschemes.*;
@@ -31,14 +32,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        autoChooser.setDefaultOption(AutoRoutines.NOTHING.name, AutoRoutines.NOTHING);
+        AutoRoutines defaultRoutine = AutoRoutines.BALANCE_CAUTIOUS;
         for (AutoRoutines routine : AutoRoutines.values()) {
-            if (routine != AutoRoutines.NOTHING) {
+            if (routine != defaultRoutine) {
                 autoChooser.addOption(routine.name, routine);
+            } else {
+                autoChooser.setDefaultOption(defaultRoutine.name, defaultRoutine);
             }
 
         }
         SmartDashboard.putData("Autonomous Routines", autoChooser);
+
+        Subsystems.driveBase.setLowGear();
 
         Controller primaryController = null;
         switch (Config.Settings.PRIMARY_CONTROLLER_TYPE) {
@@ -47,6 +52,9 @@ public class Robot extends TimedRobot {
                 break;
             case PS:
                 primaryController = new PSController(Config.Ports.PRIMARY_CONTROLLER);
+                break;
+            case JOYSTICK:
+                primaryController = new ThrustMasterController(Config.Ports.PRIMARY_CONTROLLER);
                 break;
             case NONE:
                 primaryController = null;
@@ -60,14 +68,27 @@ public class Robot extends TimedRobot {
             case PS:
                 secondaryController = new PSController(Config.Ports.SECONDARY_CONTROLLER);
                 break;
+            case JOYSTICK:
+                secondaryController = new ThrustMasterController(Config.Ports.SECONDARY_CONTROLLER);
+                break;
             case NONE:
                 secondaryController = null;
                 break;
         }
+
+        Controller tertiaryController = null;
+        if (Config.Settings.TERTIARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
+            tertiaryController = new ThrustMasterController(Config.Ports.TERTIARY_CONTROLLER);
+        } 
+
+
         if (primaryController == null && secondaryController == null) {
             controls = new NullController();
         } else if (primaryController != null && secondaryController == null) {
             controls = new SingleController(primaryController);
+        } else if (Config.Settings.PRIMARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
+            // If the first contorller is a JOYSTICK type, assume we have three joysticks.
+            controls = new DeltaJoystickController(primaryController, secondaryController, tertiaryController);
         } else if (primaryController != null && secondaryController != null) {
             controls = new DoubleController(primaryController, secondaryController);
         } else {
@@ -94,6 +115,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("Robot.phCompressor.pressure", phCompressor.getPressure());
+        SmartDashboard.putNumber("Robot.batteryVoltage", RobotController.getBatteryVoltage());
     }
 
     @Override
@@ -113,8 +136,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        limeLight.setCameraMode();
         teleop.init();
+        limeLight.setCameraMode();
     }
 
     @Override

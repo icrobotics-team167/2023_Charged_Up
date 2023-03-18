@@ -177,6 +177,11 @@ public class PSController implements Controller {
         return -controller.getLeftY();
     }
 
+    @Override
+    public double getLeftStickZ() {
+        return 0;
+    }
+
     /**
      * Gets if the Left Stick Button (L3) is pressed.
      * 
@@ -463,6 +468,18 @@ public class PSController implements Controller {
     @Override
     public boolean getDPadLeft() {
         return controller.getPOV() == 270;
+    }
+
+    @Override
+    public boolean getButtonPressedById(int buttonId) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getRawButtonPressedById(int buttonId) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

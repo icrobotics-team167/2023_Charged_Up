@@ -50,6 +50,15 @@ public class Claw {
         open = false;
     }
 
+    public void toggleClaw() {
+        if(open) {
+            closeClaw();
+        }
+        else {
+            openClaw();
+        }
+    }
+
     public boolean isOpen() {
         return open;
     }

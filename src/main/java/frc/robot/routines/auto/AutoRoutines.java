@@ -3,6 +3,7 @@ package frc.robot.routines.auto;
 import frc.robot.routines.Action;
 import frc.robot.routines.auto.*;
 import frc.robot.routines.Routine;
+import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretPosition;
 
 import java.time.Duration;
@@ -18,34 +19,54 @@ public enum AutoRoutines {
         // })),
 
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
-                        // new MoveArm(TurretPosition.HIGH_GOAL),
+                        new MoveArm(TurretPosition.HIGH_MID),
+                        new Wait(0.25),
                         new OpenClaw(),
-                        new DriveStraight(150, -0.2),
-                        new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
+                        new Wait(0.25),
+                        new DriveStraight(180, -0.3)
+                                        .withTurret(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
+                        // new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
+                        new CloseClaw(),
                         new DriveForwardsUntil(
                                         navx -> navx.getPitch() >= 8,
                                         0.2,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(30, 0.2),
-                        new Wait(1),
-                        new DumbAutoBalance()
+                        new DriveStraight(49, 0.4),
+        // new Wait(1),
+        // new NaiveAutoBalance()
         })),
-        GO_FORWARD_BACK("Go forward and back", new Routine(new Action[] {
-                        new DriveStraight(180, -0.2),
-                        new DriveStraight(180, 0.2)
-        })),
-        GO_STRAIGHT("Go straight (Out of community score)", new Routine(new Action[] {
-                        // 180 inches for getting to cones
-                        new DriveStraight(180, 0.2),
-        // new ResetArm()
-        })),
-        TEST_CLAW("Move the claw", new Routine(new Action[] {
+        GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
+                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
+                        // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new OpenClaw(),
-                        new Wait(5),
-                        new CloseClaw()
+                        new DriveStraight(180, -0.5)
+                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_BLUE.pivotAngle(),
+                                                        180, 3.5)),
+                        new MoveArm(new TurretPosition(-30, 180, 3.5)),
+                        new CloseClaw(),
+                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
+                        new OpenClaw(),
         })),
-        DRIVE_BACKWARDS("drive backwards", new Routine(new Action[] {
-                        new DriveStraight(-50, -0.5)
+        GO_STRAIGHT_RED("Score cube then cone (Red Alliance)", new Routine(new Action[] {
+                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
+                        // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
+                        new OpenClaw(),
+                        new DriveStraight(180, -0.5)
+                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_RED.pivotAngle(),
+                                                        -180, 3.5)),
+                        new MoveArm(new TurretPosition(-30, -180, 3.5)),
+                        new CloseClaw(),
+                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
+                        new OpenClaw(),
+        })),
+        TEST_SCORING_POS("Test:Scoring positions", new Routine(new Action[] {
+                new MoveArm(TurretPosition.MID_MID),
+                new OpenClaw(),
+                // new Wait(0.5),
+                new CloseClaw(),
+                new ResetArm(),
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

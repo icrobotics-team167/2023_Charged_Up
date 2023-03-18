@@ -58,22 +58,17 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doSwitchHighGear() {
-        return primary.getRightBumper();
+        return primary.getRightTrigger();
     }
 
     @Override
     public boolean doSwitchLowGear() {
-        return primary.getRightTrigger();
+        return primary.getRightBumper();
     }
 
     @Override
     public boolean doSlowMode() {
         return primary.getLeftTrigger();
-    }
-
-    @Override
-    public boolean toggleLimelightMode() {
-        return primary.getLeftBumperPressed();
     }
 
     @Override
@@ -88,7 +83,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmSwivel() {
-        double swivel = secondary.getLeftStickX();
+        double swivel = secondary.getRightStickX();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(swivel) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             swivel = 0;
@@ -98,7 +93,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmPivot() {
-        double pivot = secondary.getLeftStickY();
+        double pivot = secondary.getRightStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(pivot) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             pivot = 0;
@@ -108,7 +103,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        double extend = secondary.getRightStickY();
+        double extend = secondary.getLeftStickY();
         if (Config.Settings.SECONDARY_DEADZONE_ENABLED
                 && Math.abs(extend) < Math.abs(Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE)) {
             extend = 0;
@@ -118,7 +113,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean doLimitOverride() {
-        return secondary.getBButton();
+        return secondary.getDPadRight();
     }
 
     @Override
@@ -132,32 +127,88 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doLockSwivel() {
+    public boolean doUnlockSwivel() {
         return secondary.getLeftTrigger();
     }
 
     @Override
     public boolean doAutoHigh() {
-        return secondary.getDPadUp();
+        return getPreset() == 0 && secondary.getYButton();
     }
 
     @Override
     public boolean doAutoMid() {
-        return secondary.getDPadLeft();
+        return getPreset() == 0 && secondary.getBButton();
     }
 
     @Override
     public boolean doAutoPickup() {
-        return secondary.getDPadDown();
+        return secondary.getAButton();
     }
 
     @Override
     public boolean doPlayerStation() {
+        return secondary.getXButton();
+    }
+
+    @Override
+    public boolean doSwivelNorth() {
+        return secondary.getDPadUp();
+    }
+
+    @Override
+    public boolean doSwivelEast() {
         return secondary.getDPadRight();
     }
 
     @Override
-    public boolean doSwivel180() {
-        return secondary.getBackButton();
+    public boolean doSwivelSouth() {
+        return secondary.getDPadDown();
+    }
+
+    @Override
+    public boolean doSwivelWest() {
+        return secondary.getDPadLeft();
+    }
+
+    @Override
+    public double getPreset() {
+        if (secondary.getLeftStickX() == -1) {
+            return -1;
+        } else if (secondary.getLeftStickX() == 1) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean toggleClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleLimelight() {
+        return primary.getRightBumperToggled();
+    }
+
+    @Override
+    public boolean doAutoHighLeft() {
+        return getPreset() == -1 && secondary.getYButton();
+    }
+
+    @Override
+    public boolean doAutoMidLeft() {
+        return getPreset() == -1 && secondary.getBButton();
+    }
+
+    @Override
+    public boolean doAutoHighRight() {
+        return getPreset() == 1 && secondary.getYButton();
+    }
+
+    @Override
+    public boolean doAutoMidRight() {
+        return getPreset() == 1 && secondary.getBButton();
     }
 }
