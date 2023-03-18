@@ -20,7 +20,6 @@ public enum AutoRoutines {
 
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_MID),
-                        new Wait(0.25),
                         new OpenClaw(),
                         new Wait(0.25),
                         new DriveStraight(180, -0.3)
