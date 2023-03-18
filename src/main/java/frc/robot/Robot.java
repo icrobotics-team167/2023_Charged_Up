@@ -124,7 +124,8 @@ public class Robot extends TimedRobot {
         auto = autoChooser.getSelected().actions;
         limeLight.setVisionMode();
         Subsystems.driveBase.resetEncoders();
-        Subsystems.driveBase.setHighGear();
+        Subsystems.driveBase.setLowGear();
+        Subsystems.driveBase.setBrake();
         auto.exec();
         // System.out.println("Auto selected: " + autoChooser.getSelected().name);
     }

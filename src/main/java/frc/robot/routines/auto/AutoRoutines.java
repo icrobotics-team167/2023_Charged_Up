@@ -22,17 +22,21 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_MID),
                         new OpenClaw(),
                         new Wait(0.25),
-                        new DriveStraight(180, -0.3)
-                                        .withTurret(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
-                        // new MoveArm(TurretPosition.INTAKE.withExtension(3.5).withPivot(-20)),
-                        new CloseClaw(),
+                        // new DriveStraight(20, -0.3).withTurret(TurretPosition.INITIAL),
+                        new DriveStraight(170, -0.5).withTurret(TurretPosition.INITIAL),
+                        // new MoveArm(TurretPosition.INITIAL),
+                        // new DriveStraight(5, 0.2),
+                        // new DriveStraight(40, -0.3),
                         new DriveForwardsUntil(
-                                        navx -> navx.getPitch() >= 8,
-                                        0.2,
+                                        navx -> Math.abs(navx.getPitch()) >= 8,
+                                        0.3,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(49, 0.4),
-        // new Wait(1),
-        // new NaiveAutoBalance()
+                        new DriveStraight(35, 0.4),
+                        // new DriveStraight(30 +  Math.random() * 4 - 2, -0.4),
+                        // new Wait(0.5),
+                        new DumbAutoBalance()
+                        // new NaiveAutoBalance()
+                        
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
@@ -60,12 +64,14 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
                         new OpenClaw(),
         })),
-        TEST_SCORING_POS("Test:Scoring positions", new Routine(new Action[] {
-                new MoveArm(TurretPosition.MID_MID),
-                new OpenClaw(),
-                // new Wait(0.5),
-                new CloseClaw(),
-                new ResetArm(),
+        TEST_BALANCE("Test:Balance Test", new Routine(new Action[] {
+                new DriveForwardsUntil(
+                        navx -> Math.abs(navx.getPitch()) >= 8,
+                        -0.2,
+                        Duration.ofMillis(3500)),
+                new DriveStraight(35, -0.4),
+                new DumbAutoBalance()
+
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

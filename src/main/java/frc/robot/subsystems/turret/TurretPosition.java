@@ -21,13 +21,12 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     public static final TurretPosition INITIAL = new TurretPosition(60, 0, 17);
     // public static final TurretPosition MID_GOAL = new TurretPosition(36, 0, 20.1);
     // public static final TurretPosition HIGH_GOAL_CENTER = new TurretPosition(35, 0, 39.6);
-    public static final TurretPosition INTAKE = new TurretPosition(-33, 0, 22.5);
+    public static final TurretPosition INTAKE = new TurretPosition(-33, 0, 17);
     public static final TurretPosition PLAYER_STATION = new TurretPosition(42, 0, 20);
 
-    // 6 positions for single grid section PLEASE TEST THESE
-    public static final TurretPosition HIGH_RIGHT = new TurretPosition(33.26, 15.19, 55.36);
+    public static final TurretPosition HIGH_RIGHT = new TurretPosition(30, 15.19, 56);
     public static final TurretPosition HIGH_LEFT = HIGH_RIGHT.withSwivel(-18);
-    public static final TurretPosition HIGH_MID = new TurretPosition(27, 0, 51.3);
+    public static final TurretPosition HIGH_MID = new TurretPosition(32, 0, 51.3);
     public static final TurretPosition MID_RIGHT = new TurretPosition(24.3, 21.2, 35);
     public static final TurretPosition MID_LEFT = MID_RIGHT.withPivot(28.7).withExtension(38.5).withSwivel(-28);
     public static final TurretPosition MID_MID = new TurretPosition(17.3, 0,30.2);
