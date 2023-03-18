@@ -26,7 +26,7 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
 
     public static final TurretPosition HIGH_RIGHT = new TurretPosition(30, 15.19, 56);
     public static final TurretPosition HIGH_LEFT = HIGH_RIGHT.withSwivel(-18);
-    public static final TurretPosition HIGH_MID = new TurretPosition(32, 0, 51.3);
+    public static final TurretPosition HIGH_MID = new TurretPosition(31, 0, 51.3);
     public static final TurretPosition MID_RIGHT = new TurretPosition(24.3, 21.2, 35);
     public static final TurretPosition MID_LEFT = MID_RIGHT.withPivot(28.7).withExtension(38.5).withSwivel(-28);
     public static final TurretPosition MID_MID = new TurretPosition(17.3, 0,30.2);
@@ -37,10 +37,10 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     public static final TurretPosition FAR_MID_LEFT = FAR_MID_RIGHT.flipSwivelSign();
 
     // positions for auto only
-    public static final TurretPosition HIGH_GOAL_CUBE_BLUE = HIGH_MID.withSwivel(9.6); // positioning for auto
+    public static final TurretPosition HIGH_GOAL_CUBE_BLUE = HIGH_MID.withSwivel(-9.6); // positioning for auto
     public static final TurretPosition HIGH_GOAL_CUBE_RED = HIGH_GOAL_CUBE_BLUE.flipSwivelSign(); // positioning for
                                                                                                   // auto
-    public static final TurretPosition HIGH_GOAL_CONE_BLUE = HIGH_MID.withSwivel(-12.5); // positioning for auto
+    public static final TurretPosition HIGH_GOAL_CONE_BLUE = HIGH_MID.withSwivel(12.5); // positioning for auto
     public static final TurretPosition HIGH_GOAL_CONE_RED = HIGH_GOAL_CONE_BLUE.flipSwivelSign(); // positioning for
                                                                                                   // auto
 

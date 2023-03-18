@@ -39,15 +39,16 @@ public enum AutoRoutines {
                         
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
-                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
+                        // new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new OpenClaw(),
-                        new DriveStraight(180, -0.5)
-                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_BLUE.pivotAngle(),
-                                                        180, 3.5)),
-                        new MoveArm(new TurretPosition(-30, 180, 3.5)),
+                        new DriveStraight(195, -0.3)
+                                        .withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.INITIAL.withSwivel(-180)),
+                        new MoveArm(new TurretPosition(-28, -180, 17)),
+                        new Wait(5),
                         new CloseClaw(),
-                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new DriveStraight(180, 0.3).withTurret(TurretPosition.INITIAL),
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
                         new OpenClaw(),
         })),
@@ -55,12 +56,12 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new OpenClaw(),
-                        new DriveStraight(180, -0.5)
-                                        .withTurret(new TurretPosition(TurretPosition.HIGH_GOAL_CUBE_RED.pivotAngle(),
-                                                        -180, 3.5)),
-                        new MoveArm(new TurretPosition(-30, -180, 3.5)),
+                        new DriveStraight(195, -0.3)
+                                        .withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.INITIAL.withSwivel(180)),
+                        new MoveArm(new TurretPosition(-28, 180, 17)),
                         new CloseClaw(),
-                        new DriveStraight(180, 0.5).withTurret(TurretPosition.INITIAL),
+                        new DriveStraight(180, 0.3).withTurret(TurretPosition.INITIAL),
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
                         new OpenClaw(),
         })),
