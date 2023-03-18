@@ -2,6 +2,7 @@ package frc.robot.routines.auto;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.routines.Action;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MathUtils;
@@ -9,17 +10,18 @@ import frc.robot.util.MovingAverage;
 
 public class DumbAutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
-    private MovingAverage pitchFilter;
 
-    private static final double SPEED = 0.25;
-    private static final double SENSITIVITY_THRESHOLD = 8;
+    private static final double SPEED = 0.075;
+    private static final double SENSITIVITY_THRESHOLD = 5;
+
+    private int lastPitchSign;
+    private double dampeningFactor;
 
     /**
      * Constructs a new DumbAutobalance auto routine.
      */
     public DumbAutoBalance() {
         super();
-        pitchFilter = new MovingAverage(25, true);
     }
 
     /**
@@ -27,7 +29,8 @@ public class DumbAutoBalance extends Action {
      */
     @Override
     public void init() {
-        pitchFilter.clear();
+        dampeningFactor = 1;
+        lastPitchSign = MathUtils.getSign(navx.getPitch());
     }
 
     /**
@@ -39,12 +42,16 @@ public class DumbAutoBalance extends Action {
      */
     @Override
     public void periodic() {
-        pitchFilter.add(navx.getPitch());
-        double pitch = pitchFilter.get();
+        // SmartDashboard.putNumber("DumbAutoBalance.dampeningFactor", dampeningFactor);
+        double pitch = navx.getPitch();
+        if (MathUtils.getSign(pitch) * -1 == lastPitchSign) {
+            dampeningFactor += 0.4;
+        }
         if (Math.abs(pitch) <= SENSITIVITY_THRESHOLD) {
             pitch = 0;
         }
-        Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * SPEED, 0);
+        Subsystems.driveBase.arcadeDrive(pitch / 9 * (SPEED / (dampeningFactor)), 0);
+        lastPitchSign = MathUtils.getSign(navx.getPitch());
     }
 
     /**
