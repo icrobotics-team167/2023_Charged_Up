@@ -55,7 +55,8 @@ public class Teleop {
         }
         // turret.setSlowMode(controls.doSlowTurret());
 
-        // Code so that u only have to press one button and it will automatically go to it. Do not commit until tested
+        // Code so that u only have to press one button and it will automatically go to
+        // it. Do not commit until tested
 
         if (controls.doResetTurret()) {
             claw.closeClaw();
@@ -65,7 +66,7 @@ public class Teleop {
         } else if (controls.doSwivelEast()) {
             targetState = turret.getPosition().withSwivel(90);
         } else if (controls.doSwivelSouth()) {
-            if(turret.getPosition().swivelAngle() < 0) {
+            if (turret.getPosition().swivelAngle() < 0) {
                 targetState = turret.getPosition().withSwivel(-180);
             } else {
                 targetState = turret.getPosition().withSwivel(180);
@@ -77,36 +78,34 @@ public class Teleop {
         } else if (controls.doPlayerStation()) {
             claw.openClaw();
             targetState = TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle());
-        // Preset positions are done from the perspective of the driver
-        } else if(controls.doAutoHigh()) {
+            // Preset positions are done from the perspective of the driver
+        } else if (controls.doAutoHigh()) {
             targetState = TurretPosition.HIGH_MID;
         } else if (controls.doAutoMid()) {
             targetState = TurretPosition.MID_MID;
-        } else if(controls.doAutoHighRight()) {
+        } else if (controls.doAutoHighRight()) {
             targetState = TurretPosition.HIGH_RIGHT;
-        } else if(controls.doAutoMidRight()) {
+        } else if (controls.doAutoMidRight()) {
             targetState = TurretPosition.MID_RIGHT;
-        } else if(controls.doAutoHighLeft()) {
+        } else if (controls.doAutoHighLeft()) {
             targetState = TurretPosition.HIGH_LEFT;
-        } else if(controls.doAutoMidLeft()) {
-            targetState = TurretPosition.MID_LEFT; 
+        } else if (controls.doAutoMidLeft()) {
+            targetState = TurretPosition.MID_LEFT;
+        }
+        // else {
+        if (Math.abs(controls.getArmPivot()) > 0.1 || Math.abs(controls.getArmSwivel()) > 0.1
+                || Math.abs(controls.getArmExtend()) > 0.1) {
+            targetState = null;
+            turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
         } else {
-            if(Math.abs(controls.getArmPivot()) > 0.1 || Math.abs(controls.getArmSwivel()) > 0.1 || Math.abs(controls.getArmExtend()) > 0.1) {
-                targetState = null;
-                if(controls.doUnlockSwivel()) {
-                    turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
-                } else {
-                    turret.move(controls.getArmPivot(), 0, controls.getArmExtend());
-                }          
+            if (targetState != null) {
+                turret.moveTo(targetState);
             } else {
-                if(targetState!=null) {
-                    turret.moveTo(targetState);
-                } else {
-                    turret.stop();
-                }
+                turret.stop();
             }
         }
-        
+        // }
+
         if (controls.openClaw()) {
             claw.openClaw();
         } else if (controls.closeClaw()) {

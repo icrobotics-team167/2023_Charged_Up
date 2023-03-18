@@ -14,14 +14,12 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public int getPort() {
-        // TODO Auto-generated method stub
-        return 0;
+        return port;
     }
 
     @Override
     public ControllerType getControllerType() {
-        // TODO Auto-generated method stub
-        return null;
+        return ControllerType.JOYSTICK;
     }
 
     @Override
@@ -93,6 +91,11 @@ public class ThrustMasterController implements Controller {
         
         return -joystick.getY();
 
+    }
+
+    @Override
+    public double getLeftStickZ() {
+        return joystick.getZ();
     }
 
     @Override

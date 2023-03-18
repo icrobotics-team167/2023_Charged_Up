@@ -59,7 +59,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean toggleClaw() {
-        return tertiary.getRawButtonPressedById(2);
+        return tertiary.getLeftTriggerPressed();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doResetTurret() {
-        return tertiary.getButtonPressedById(4);
+        return tertiary.getButtonPressedById(2);
     }
 
     @Override

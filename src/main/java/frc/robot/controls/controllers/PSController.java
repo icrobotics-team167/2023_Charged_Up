@@ -177,6 +177,11 @@ public class PSController implements Controller {
         return -controller.getLeftY();
     }
 
+    @Override
+    public double getLeftStickZ() {
+        return 0;
+    }
+
     /**
      * Gets if the Left Stick Button (L3) is pressed.
      * 

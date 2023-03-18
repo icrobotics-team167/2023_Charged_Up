@@ -37,6 +37,9 @@ public class Config {
 
         // Secondary controller deadzone size
         public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.09;
+
+        // Tertiary controller deadzone size
+        public static final double TERTIARY_CONTROLLER_DEADZONE_SIZE = 0.09;
     }
 
     public static final class Ports {

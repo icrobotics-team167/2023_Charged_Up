@@ -137,6 +137,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         teleop.init();
+        limeLight.setCameraMode();
     }
 
     @Override
