@@ -21,7 +21,7 @@ public class Pivot {
     private double initialEncoderPosition;
 
     // private DigitalInput pivotSwitch;
-    private static final double MAX_TURN_SPEED = 1;
+    private static final double MAX_TURN_SPEED = 0.5;
     private static final double INITIAL_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
     private static final double MAX_PIVOT_ANGLE = 90;
     private static final double MIN_PIVOT_ANGLE = -35;
@@ -50,8 +50,8 @@ public class Pivot {
 
     /**
      * Constructs a new pivot joint for the arm.
-     * Assumes the arm is at a 65 degree angle up relative to the drive base on code
-     * boot.
+     * Assumes the arm is at a set degree angle up relative to the drive base on code
+     * boot. See TurretPosition.INITIAL for where that set degree is.
      */
     private Pivot() {
         // Set up motors

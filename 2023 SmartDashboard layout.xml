@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="targetState" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="25" y="98"/>
+	</widget>
 	<widget field="MoveArm.doneMoving" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="78"/>
 	</widget>
@@ -41,7 +44,7 @@
 		<property name="Camera Choice" value=""/>
 	</static-widget>
 	<widget field="Autonomous Routines" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="4" y="106"/>
+		<location x="3" y="118"/>
 	</widget>
 	<widget field="Navx.yaw" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="4" y="58"/>

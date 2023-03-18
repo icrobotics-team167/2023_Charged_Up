@@ -13,8 +13,10 @@ public class Config {
         public static final double JOYSTICKS_EXPONENT = 2;
 
         // Controllers
-        public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
-        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.XB;
+        public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType TERTIARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+
 
         // Dead zones
         public static final boolean PRIMARY_DEADZONE_ENABLED = true;
@@ -35,6 +37,9 @@ public class Config {
 
         // Secondary controller deadzone size
         public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.09;
+
+        // Tertiary controller deadzone size
+        public static final double TERTIARY_CONTROLLER_DEADZONE_SIZE = 0.09;
     }
 
     public static final class Ports {
@@ -42,6 +47,8 @@ public class Config {
         // Controllers
         public static final int PRIMARY_CONTROLLER = 0;
         public static final int SECONDARY_CONTROLLER = 1; // if applicable
+        public static final int TERTIARY_CONTROLLER = 2; // if applicable
+
 
         // main control system components
         // public static final int RoboRio = 0

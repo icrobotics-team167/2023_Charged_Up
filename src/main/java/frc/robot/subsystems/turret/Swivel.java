@@ -20,7 +20,7 @@ public class Swivel {
     private double initialEncoderPosition;
 
     private final double MAX_TURN_ANGLE = 225;
-    private final double MAX_TURN_SPEED = 1;
+    private final double MAX_TURN_SPEED = 0.5;
 
     private ExtendRetract extendRetract;
 
@@ -84,7 +84,7 @@ public class Swivel {
         if (!swivelSwitch.get()) {
             initialEncoderPosition = swivelEncoder.getPosition();
         }
-        if(swivelLocked) {
+        if (swivelLocked) {
             return;
         }
         double extensionSpeedMult = extensionSpeedMultiplier();

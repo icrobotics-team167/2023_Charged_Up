@@ -86,11 +86,11 @@ public class NullController extends ControlScheme {
         return false;
     }
 
-    @Override
-    public boolean doLockSwivel() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    // @Override
+    // public boolean doLockSwivel() {
+    //     // TODO Auto-generated method stub
+    //     return false;
+    // }
 
     @Override
     public boolean doAutoHigh() {
@@ -117,14 +117,74 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean doSwivel180() {
+    public boolean doSwivelNorth() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean toggleLimelightMode() {
+    public boolean doSwivelEast() {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean doSwivelSouth() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean doSwivelWest() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getPreset() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean doUnlockSwivel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleClaw() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleLimelight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+	@Override
+	public boolean doAutoHighLeft() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoMidLeft() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoHighRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean doAutoMidRight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

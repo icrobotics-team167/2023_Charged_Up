@@ -19,7 +19,7 @@ public enum AutoRoutines {
         // })),
 
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
-                        new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
+                        new MoveArm(TurretPosition.HIGH_MID),
                         new Wait(0.25),
                         new OpenClaw(),
                         new Wait(0.25),
@@ -61,17 +61,12 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
                         new OpenClaw(),
         })),
-        TEST_CONE_SCORE("Test:Score cone", new Routine(new Action[] {
-                        new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
-                        new OpenClaw(),
-                        new DriveStraight(160, -0.5).withTurret(TurretPosition.HIGH_GOAL_CONE_BLUE.withExtension(3.5)),
-                        new MoveArm(TurretPosition.INTAKE.withSwivel(180), 0.8)
-        })),
-        TEST_INTAKE_CONE("Test:Intake cone from behind", new Routine(new Action[] {
-                        new OpenClaw(),
-                        new MoveArm(TurretPosition.INTAKE.withSwivel(180)),
-                        new CloseClaw(),
-                        new ResetArm(),
+        TEST_SCORING_POS("Test:Scoring positions", new Routine(new Action[] {
+                new MoveArm(TurretPosition.MID_MID),
+                new OpenClaw(),
+                // new Wait(0.5),
+                new CloseClaw(),
+                new ResetArm(),
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

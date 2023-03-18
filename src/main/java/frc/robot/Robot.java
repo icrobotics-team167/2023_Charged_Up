@@ -53,6 +53,9 @@ public class Robot extends TimedRobot {
             case PS:
                 primaryController = new PSController(Config.Ports.PRIMARY_CONTROLLER);
                 break;
+            case JOYSTICK:
+                primaryController = new ThrustMasterController(Config.Ports.PRIMARY_CONTROLLER);
+                break;
             case NONE:
                 primaryController = null;
                 break;
@@ -65,14 +68,27 @@ public class Robot extends TimedRobot {
             case PS:
                 secondaryController = new PSController(Config.Ports.SECONDARY_CONTROLLER);
                 break;
+            case JOYSTICK:
+                secondaryController = new ThrustMasterController(Config.Ports.SECONDARY_CONTROLLER);
+                break;
             case NONE:
                 secondaryController = null;
                 break;
         }
+
+        Controller tertiaryController = null;
+        if (Config.Settings.TERTIARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
+            tertiaryController = new ThrustMasterController(Config.Ports.TERTIARY_CONTROLLER);
+        } 
+
+
         if (primaryController == null && secondaryController == null) {
             controls = new NullController();
         } else if (primaryController != null && secondaryController == null) {
             controls = new SingleController(primaryController);
+        } else if (Config.Settings.PRIMARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
+            // If the first contorller is a JOYSTICK type, assume we have three joysticks.
+            controls = new DeltaJoystickController(primaryController, secondaryController, tertiaryController);
         } else if (primaryController != null && secondaryController != null) {
             controls = new DoubleController(primaryController, secondaryController);
         } else {
@@ -120,8 +136,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        limeLight.setCameraMode();
         teleop.init();
+        limeLight.setCameraMode();
     }
 
     @Override
