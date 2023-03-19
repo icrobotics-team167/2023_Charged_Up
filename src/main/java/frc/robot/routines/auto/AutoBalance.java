@@ -11,7 +11,7 @@ import frc.robot.util.MovingAverage;
 public class AutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
 
-    private static final double SPEED = 0.075;
+    private static final double SPEED = 0.1;
     private static final double SENSITIVITY_THRESHOLD = 5;
 
     private int lastPitchSign;

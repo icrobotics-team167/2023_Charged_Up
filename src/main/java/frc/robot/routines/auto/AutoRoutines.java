@@ -68,7 +68,7 @@ public enum AutoRoutines {
         TEST_BALANCE("Test:Balance Test", new Routine(new Action[] {
                         new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
-                                        -0.2,
+                                        -0.3,
                                         Duration.ofMillis(3500)),
                         new DriveStraight(35, -0.4),
                         new AutoBalance()
