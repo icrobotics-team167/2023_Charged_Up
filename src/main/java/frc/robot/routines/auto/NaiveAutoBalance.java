@@ -20,18 +20,18 @@ public class NaiveAutoBalance extends Action {
 
     // The minimum angle value where if the angle's absolute value is below this, 0
     // is passed into the PID controller
-    private final double SENSITIVITY_THRESHOLD = 3;
+    private final double SENSITIVITY_THRESHOLD = 4;
     // The max output that can be sent to the motors. The proportional value also
     // scales off this.
 
     // Potential change: Add these to the constructor?
     // Speed at which the robot moves while driving
-    private double speed = 0.5;
+    private double speed = 0.25;
 
     // How long the robot moves each time it moves
     private double driveTime = 0.2;
     // Time to wait between every time the robot moves in seconds
-    private double waitTime = 0.75;
+    private double waitTime = 1;
     private boolean stop = false;
 
     /**
@@ -74,7 +74,7 @@ public class NaiveAutoBalance extends Action {
                 stop = false;
                 timer.reset();
             } else {
-                Subsystems.driveBase.arcadeDrive(0.05, 0);
+                Subsystems.driveBase.arcadeDrive((pitch/8) * 0.075, 0);
             }
 
         } else {
@@ -83,7 +83,8 @@ public class NaiveAutoBalance extends Action {
                 timer.reset();
             } else {
                 if (Math.abs(pitch) > SENSITIVITY_THRESHOLD) {
-                    Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * speed, 0);
+                    // Subsystems.driveBase.arcadeDrive(MathUtils.getSign(pitch) * speed, 0);
+                    Subsystems.driveBase.arcadeDrive((pitch/8) * 0.075, 0);
                 }
             }
         }

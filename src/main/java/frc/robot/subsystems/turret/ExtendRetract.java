@@ -18,7 +18,7 @@ public class ExtendRetract {
 
     private double initialEncoderPosition;
 
-    private static final double MAX_EXTEND_SPEED = 0.5;
+    private static final double MAX_EXTEND_SPEED = 0.75;
     private static final double START_EXTENSION = 17;
 
     public static final double MAX_EXTENSION = 56;
