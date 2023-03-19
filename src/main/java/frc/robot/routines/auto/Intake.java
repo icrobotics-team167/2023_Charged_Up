@@ -5,7 +5,7 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
 
 /**
- * Closes the claw
+ * Claw intake.
  * Constructor and init set up the timer
  * The only done condition is if the timer has been running for 0.25 seconds
  */

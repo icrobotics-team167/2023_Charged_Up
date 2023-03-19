@@ -2,12 +2,14 @@ package frc.robot.subsystems.turret;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
 public class Claw {
     private CANSparkMax intakeMotor;
 
-    private static final double INTAKE_SPEED = 0.5;
+    private static final double INTAKE_SPEED = 0.2;
     private static final double OUTTAKE_SPEED = 0.2;
 
     private boolean overCurrent;
@@ -38,17 +40,20 @@ public class Claw {
             intakeMotor.stopMotor();
             return;
         }
+        SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         overCurrent = intakeMotor.getBusVoltage() > CURRENT_LIMIT;
         intakeMotor.set(INTAKE_SPEED);
     }
 
     public void outtake() {
         overCurrent = false;
+        SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         intakeMotor.set(-OUTTAKE_SPEED);
     }
 
     public void stop() {
         overCurrent = false;
+        SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         intakeMotor.stopMotor();
     }
 }
