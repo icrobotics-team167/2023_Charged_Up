@@ -13,7 +13,7 @@ public class Claw {
     private static final double OUTTAKE_SPEED = 0.2;
 
     private boolean overCurrent;
-    private static final double CURRENT_LIMIT = 10;
+    private static final double CURRENT_LIMIT = 9;
 
     public static Claw instance;
     public static Claw getInstance() {
