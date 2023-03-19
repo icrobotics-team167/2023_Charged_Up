@@ -9,7 +9,7 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
 import java.time.Duration;
 
-public class DriveForwardsUntil extends Action {
+public class DriveStraightUntil extends Action {
 
     private PeriodicTimer timer;
     private AHRS navx = Subsystems.navx;
@@ -22,7 +22,7 @@ public class DriveForwardsUntil extends Action {
     private boolean conditionMet;
     private boolean timeoutReached;
 
-    public DriveForwardsUntil(DriveForwardsCondition condition, double speed, Duration timeout) {
+    public DriveStraightUntil(DriveForwardsCondition condition, double speed, Duration timeout) {
         super();
         this.condition = condition;
         this.timer = new PeriodicTimer();
