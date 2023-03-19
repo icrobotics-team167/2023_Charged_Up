@@ -105,13 +105,6 @@ public class SingleController extends ControlScheme {
 
     @Override
     public boolean outtake() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSlowTurret() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -146,44 +139,8 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean doSwivelNorth() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelEast() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelSouth() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelWest() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public double getPreset() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public boolean doUnlockSwivel() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
-    @Override
-    public boolean toggleClaw() {
-        // TODO Auto-generated method stub
         return false;
     }
 

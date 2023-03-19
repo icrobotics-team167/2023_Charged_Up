@@ -62,10 +62,6 @@ public class DeltaJoystickController extends ControlScheme {
         return false;
     }
 
-    @Override
-    public boolean toggleClaw() {
-        return false;
-    }
 
     @Override
     public boolean intake() {
@@ -114,11 +110,6 @@ public class DeltaJoystickController extends ControlScheme {
         return tertiary.getButtonPressedById(2);
     }
 
-    @Override
-    public boolean doSlowTurret() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     @Override
     public boolean doUnlockSwivel() {
@@ -145,31 +136,6 @@ public class DeltaJoystickController extends ControlScheme {
         return tertiary.getButtonPressedById(6);
     }
 
-    @Override
-    public boolean doSwivelNorth() {
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelEast() {
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelSouth() {
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelWest() {
-        return false;
-    }
-
-    @Override
-    public double getPreset() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     @Override
     public boolean toggleLimelight() {

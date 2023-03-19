@@ -122,11 +122,6 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean doSlowTurret() {
-        return secondary.getRightTrigger();
-    }
-
-    @Override
     public boolean doUnlockSwivel() {
         return secondary.getLeftTrigger();
     }
@@ -151,40 +146,13 @@ public class DoubleController extends ControlScheme {
         return secondary.getXButton();
     }
 
-    @Override
-    public boolean doSwivelNorth() {
-        return secondary.getDPadUp();
-    }
-
-    @Override
-    public boolean doSwivelEast() {
-        return secondary.getDPadRight();
-    }
-
-    @Override
-    public boolean doSwivelSouth() {
-        return secondary.getDPadDown();
-    }
-
-    @Override
-    public boolean doSwivelWest() {
-        return secondary.getDPadLeft();
-    }
-
-    @Override
-    public double getPreset() {
+    private double getPreset() {
         if (secondary.getLeftStickX() == -1) {
             return -1;
         } else if (secondary.getLeftStickX() == 1) {
             return 1;
         }
         return 0;
-    }
-
-    @Override
-    public boolean toggleClaw() {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override
