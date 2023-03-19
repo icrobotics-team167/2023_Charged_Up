@@ -72,12 +72,12 @@ public class DoubleController extends ControlScheme {
     }
 
     @Override
-    public boolean openClaw() {
+    public boolean intake() {
         return secondary.getRightBumper();
     }
 
     @Override
-    public boolean closeClaw() {
+    public boolean outtake() {
         return secondary.getLeftBumper();
     }
 

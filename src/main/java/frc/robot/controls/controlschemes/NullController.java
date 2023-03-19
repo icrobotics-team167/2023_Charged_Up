@@ -69,13 +69,13 @@ public class NullController extends ControlScheme {
     }
 
     @Override
-    public boolean openClaw() {
+    public boolean intake() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean closeClaw() {
+    public boolean outtake() {
         // TODO Auto-generated method stub
         return false;
     }
@@ -88,8 +88,8 @@ public class NullController extends ControlScheme {
 
     // @Override
     // public boolean doLockSwivel() {
-    //     // TODO Auto-generated method stub
-    //     return false;
+    // // TODO Auto-generated method stub
+    // return false;
     // }
 
     @Override
@@ -164,27 +164,27 @@ public class NullController extends ControlScheme {
         return false;
     }
 
-	@Override
-	public boolean doAutoHighLeft() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoHighLeft() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoMidLeft() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoMidLeft() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoHighRight() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoHighRight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoMidRight() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoMidRight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

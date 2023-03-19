@@ -24,9 +24,9 @@ public abstract class ControlScheme {
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean openClaw();
+    public abstract boolean intake();
 
-    public abstract boolean closeClaw();
+    public abstract boolean outtake();
 
     public abstract boolean toggleClaw();
 
@@ -44,7 +44,7 @@ public abstract class ControlScheme {
     public abstract boolean doSlowTurret();
 
     public abstract boolean doUnlockSwivel();
-    
+
     public abstract boolean doAutoHigh();
 
     public abstract boolean doAutoMid();

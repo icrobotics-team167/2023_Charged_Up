@@ -19,6 +19,7 @@ public class Teleop {
     private AHRS navx = Subsystems.navx;
 
     private TurretPosition targetState = null;
+    private TurretPosition holdState;
 
     public Teleop(ControlScheme controls) {
         this.controls = controls;
@@ -31,6 +32,7 @@ public class Teleop {
 
     public void init() {
         driveBase.resetEncoders();
+        holdState = turret.getPosition();
     }
 
     public void periodic() {
@@ -59,26 +61,11 @@ public class Teleop {
         // it. Do not commit until tested
 
         if (controls.doResetTurret()) {
-            claw.closeClaw();
             targetState = TurretPosition.INITIAL;
-        } else if (controls.doSwivelNorth()) {
-            targetState = turret.getPosition().withSwivel(0);
-        } else if (controls.doSwivelEast()) {
-            targetState = turret.getPosition().withSwivel(90);
-        } else if (controls.doSwivelSouth()) {
-            if (turret.getPosition().swivelAngle() < 0) {
-                targetState = turret.getPosition().withSwivel(-180);
-            } else {
-                targetState = turret.getPosition().withSwivel(180);
-            }
-        } else if (controls.doSwivelWest()) {
-            targetState = turret.getPosition().withSwivel(-90);
         } else if (controls.doAutoPickup()) {
             targetState = TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle());
         } else if (controls.doPlayerStation()) {
-            claw.openClaw();
             targetState = TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle());
-            // Preset positions are done from the perspective of the driver
         } else if (controls.doAutoHigh()) {
             targetState = TurretPosition.HIGH_MID;
         } else if (controls.doAutoMid()) {
@@ -93,25 +80,25 @@ public class Teleop {
             targetState = TurretPosition.MID_LEFT;
         }
         // else {
-        if (Math.abs(controls.getArmPivot()) > 0.1 || Math.abs(controls.getArmSwivel()) > 0.1
-                || Math.abs(controls.getArmExtend()) > 0.1) {
+        if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(controls.getArmSwivel()) > 0
+                || Math.abs(controls.getArmExtend()) > 0) {
             targetState = null;
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
+            holdState = turret.getPosition();
         } else {
             if (targetState != null) {
                 turret.moveTo(targetState);
             } else {
-                turret.stop();
+                turret.moveTo(holdState);
             }
         }
-        // }
 
-        if (controls.openClaw()) {
-            claw.openClaw();
-        } else if (controls.closeClaw()) {
-            claw.closeClaw();
-        } else if (controls.toggleClaw()) {
-            claw.toggleClaw();
+        if (controls.intake()) {
+            claw.intake();
+        } else if (controls.outtake()) {
+            claw.outtake();
+        } else {
+            claw.stop();
         }
 
         // PUT DEBUG STATEMENTS HERE
