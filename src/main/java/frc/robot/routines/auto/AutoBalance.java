@@ -8,7 +8,7 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MathUtils;
 import frc.robot.util.MovingAverage;
 
-public class DumbAutoBalance extends Action {
+public class AutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
 
     private static final double SPEED = 0.075;
@@ -20,7 +20,7 @@ public class DumbAutoBalance extends Action {
     /**
      * Constructs a new DumbAutobalance auto routine.
      */
-    public DumbAutoBalance() {
+    public AutoBalance() {
         super();
     }
 

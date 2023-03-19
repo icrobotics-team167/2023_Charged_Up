@@ -32,11 +32,11 @@ public enum AutoRoutines {
                                         0.3,
                                         Duration.ofMillis(3500)),
                         new DriveStraight(35, 0.4),
-                        // new DriveStraight(30 +  Math.random() * 4 - 2, -0.4),
+                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
                         // new Wait(0.5),
-                        new DumbAutoBalance()
-                        // new NaiveAutoBalance()
-                        
+                        new AutoBalance()
+        // new NaiveAutoBalance()
+
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
@@ -66,12 +66,12 @@ public enum AutoRoutines {
                         new OpenClaw(),
         })),
         TEST_BALANCE("Test:Balance Test", new Routine(new Action[] {
-                new DriveStraightUntil(
-                        navx -> Math.abs(navx.getPitch()) >= 8,
-                        -0.2,
-                        Duration.ofMillis(3500)),
-                new DriveStraight(35, -0.4),
-                new DumbAutoBalance()
+                        new DriveStraightUntil(
+                                        navx -> Math.abs(navx.getPitch()) >= 8,
+                                        -0.2,
+                                        Duration.ofMillis(3500)),
+                        new DriveStraight(35, -0.4),
+                        new AutoBalance()
 
         })),
         NOTHING("Nothing", new Routine(new Action[] {
