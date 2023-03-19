@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.controls.controllers.Controller;
 
 /**
- * Delta is the fourth Greek letter and we have four hypothetical joysticks. Q.E.D.
+ * Delta is the fourth Greek letter and we have four hypothetical joysticks.
+ * Q.E.D.
  */
 public class DeltaJoystickController extends ControlScheme {
 
@@ -20,20 +21,20 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getTankLeftSpeed() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public double getTankRightSpeed() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public double getArcadeThrottle() {
         return primary.getLeftStickY();
-        
+
     }
 
     @Override
@@ -53,7 +54,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doSlowMode() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -84,19 +85,19 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        if(tertiary.getButtonPressedById(5)){
+        if (tertiary.getButtonPressedById(5)) {
             return 1;
-        } else if(tertiary.getButtonPressedById(3)) {
+        } else if (tertiary.getButtonPressedById(3)) {
             return -1;
         } else {
             return 0;
         }
-        
+
     }
 
     @Override
     public boolean doLimitOverride() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -107,7 +108,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doSlowTurret() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -118,17 +119,17 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-		return tertiary.getButtonPressedById(10);
+        return tertiary.getButtonPressedById(10);
     }
 
     @Override
     public boolean doAutoMid() {
-		return tertiary.getButtonPressedById(9);
+        return tertiary.getButtonPressedById(9);
     }
 
     @Override
     public boolean doAutoPickup() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -159,7 +160,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getPreset() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -168,26 +169,24 @@ public class DeltaJoystickController extends ControlScheme {
         return secondary.getRawButtonPressedById(16);
     }
 
-	@Override
-	public boolean doAutoHighLeft() {
-		return tertiary.getButtonPressedById(8);
-	}
+    @Override
+    public boolean doAutoHighLeft() {
+        return tertiary.getButtonPressedById(8);
+    }
 
-	@Override
-	public boolean doAutoMidLeft() {
-		return tertiary.getButtonPressedById(7);
-	}
+    @Override
+    public boolean doAutoMidLeft() {
+        return tertiary.getButtonPressedById(7);
+    }
 
-	@Override
-	public boolean doAutoHighRight() {
-		return tertiary.getButtonPressedById(12);
-	}
+    @Override
+    public boolean doAutoHighRight() {
+        return tertiary.getButtonPressedById(12);
+    }
 
-	@Override
-	public boolean doAutoMidRight() {
-		return tertiary.getButtonPressedById(11);
-	}
+    @Override
+    public boolean doAutoMidRight() {
+        return tertiary.getButtonPressedById(11);
+    }
 
-    
-    
 }

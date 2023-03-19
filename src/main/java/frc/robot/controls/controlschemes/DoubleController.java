@@ -183,7 +183,7 @@ public class DoubleController extends ControlScheme {
 
     @Override
     public boolean toggleClaw() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 

@@ -90,6 +90,7 @@ public class DriveStraight extends Action {
         startAngle = navx.getAngle();
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);
+        angleFilter.clear();
     }
 
     // new code starts here:
