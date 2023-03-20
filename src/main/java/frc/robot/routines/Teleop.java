@@ -80,7 +80,7 @@ public class Teleop {
             targetState = TurretPosition.MID_LEFT;
         }
         // else {
-        if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(controls.getArmSwivel()) > 0
+        if (Math.abs(controls.getArmPivot()) > 0 || (controls.doUnlockSwivel() && Math.abs(controls.getArmSwivel()) > 0)
                 || Math.abs(controls.getArmExtend()) > 0) {
             targetState = null;
             turret.move(controls.getArmPivot(), controls.getArmSwivel(), controls.getArmExtend());
