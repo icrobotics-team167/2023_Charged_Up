@@ -18,7 +18,7 @@ public class DeltaJoystickController extends ControlScheme {
     public DeltaJoystickController(Controller primary, Controller secondary, Controller tertiary, Controller quaternary) {
         this.primary = primary;
         this.secondary = secondary;
-        this.quaternary = tertiary;
+        this.tertiary = tertiary;
         this.quaternary = quaternary;
     }
 

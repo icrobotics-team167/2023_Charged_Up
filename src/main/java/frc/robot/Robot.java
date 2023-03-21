@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
 
         Controller quaternaryController = null;
         if (Config.Settings.QUATERNARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
-            tertiaryController = new ThrustMasterController(Config.Ports.QUATERNARY_CONTROLLER);
+            quaternaryController = new ThrustMasterController(Config.Ports.QUATERNARY_CONTROLLER);
         }
 
 
