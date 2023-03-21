@@ -5,17 +5,17 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.PeriodicTimer;
 
 /**
- * Closes the claw
+ * Claw outtake.
  * Constructor and init set up the timer
  * The only done condition is if the timer has been running for 0.25 seconds
  */
-public class CloseClaw extends Action {
+public class Outtake extends Action {
 
     private final double WAIT_TIME = 0.25;
 
     private PeriodicTimer timer;
 
-    public CloseClaw() {
+    public Outtake() {
         timer = new PeriodicTimer();
     }
 
@@ -26,7 +26,7 @@ public class CloseClaw extends Action {
 
     @Override
     public void periodic() {
-        Subsystems.claw.closeClaw();
+        Subsystems.claw.outtake();
     }
 
     @Override
@@ -36,6 +36,6 @@ public class CloseClaw extends Action {
 
     @Override
     public void done() {
-        
+
     }
 }

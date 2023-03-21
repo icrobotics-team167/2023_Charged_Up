@@ -81,16 +81,12 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public double getLeftStickX() {
-
         return -joystick.getX();
-
     }
 
     @Override
     public double getLeftStickY() {
-        
         return -joystick.getY();
-
     }
 
     @Override

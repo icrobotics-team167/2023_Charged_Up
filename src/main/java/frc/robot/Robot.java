@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         teleop.init();
         limeLight.setCameraMode();
+        Subsystems.driveBase.setHighGear();
     }
 
     @Override

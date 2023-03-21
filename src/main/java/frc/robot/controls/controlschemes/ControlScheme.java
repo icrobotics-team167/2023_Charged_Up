@@ -24,11 +24,9 @@ public abstract class ControlScheme {
     // Turret (Secondary controller)
 
     // Claw
-    public abstract boolean openClaw();
+    public abstract boolean intake();
 
-    public abstract boolean closeClaw();
-
-    public abstract boolean toggleClaw();
+    public abstract boolean outtake();
 
     // Arm controls
     public abstract double getArmSwivel();
@@ -41,10 +39,8 @@ public abstract class ControlScheme {
 
     public abstract boolean doResetTurret();
 
-    public abstract boolean doSlowTurret();
-
     public abstract boolean doUnlockSwivel();
-    
+
     public abstract boolean doAutoHigh();
 
     public abstract boolean doAutoMid();
@@ -60,16 +56,6 @@ public abstract class ControlScheme {
     public abstract boolean doAutoPickup();
 
     public abstract boolean doPlayerStation();
-
-    public abstract boolean doSwivelNorth();
-
-    public abstract boolean doSwivelEast();
-
-    public abstract boolean doSwivelSouth();
-
-    public abstract boolean doSwivelWest();
-
-    public abstract double getPreset();
 
     public abstract boolean toggleLimelight();
 }
