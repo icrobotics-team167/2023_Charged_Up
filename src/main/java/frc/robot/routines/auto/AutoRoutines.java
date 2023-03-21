@@ -27,19 +27,20 @@ public enum AutoRoutines {
                         // new MoveArm(TurretPosition.INITIAL),
                         // new DriveStraight(5, 0.2),
                         // new DriveStraight(40, -0.3),
-                        new DriveForwardsUntil(
+                        new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
                                         0.3,
                                         Duration.ofMillis(3500)),
                         new DriveStraight(35, 0.4),
                         // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
+                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
                         // new Wait(0.5),
-                        new DumbAutoBalance()
+                        new AutoBalance()
         // new NaiveAutoBalance()
 
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
-                        // new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new Outtake(),
                         new DriveStraight(195, -0.3)
@@ -66,12 +67,12 @@ public enum AutoRoutines {
                         new Outtake(),
         })),
         TEST_BALANCE("Test:Balance Test", new Routine(new Action[] {
-                        new DriveForwardsUntil(
+                        new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
-                                        -0.2,
+                                        -0.4,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(35, -0.4),
-                        new DumbAutoBalance()
+                        new DriveStraight(35, -0.5),
+                        new AutoBalance()
 
         })),
         NOTHING("Nothing", new Routine(new Action[] {
