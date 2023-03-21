@@ -8,7 +8,7 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MathUtils;
 import frc.robot.util.MovingAverage;
 
-public class DumbAutoBalance extends Action {
+public class AutoBalance extends Action {
     private AHRS navx = Subsystems.navx;
 
     private static final double SPEED = 0.075;
@@ -16,11 +16,12 @@ public class DumbAutoBalance extends Action {
 
     private int lastPitchSign;
     private double dampeningFactor;
+    private double balancedTickCount;
 
     /**
      * Constructs a new DumbAutobalance auto routine.
      */
-    public DumbAutoBalance() {
+    public AutoBalance() {
         super();
     }
 
@@ -31,6 +32,7 @@ public class DumbAutoBalance extends Action {
     public void init() {
         dampeningFactor = 1;
         lastPitchSign = MathUtils.getSign(navx.getPitch());
+        balancedTickCount = 0;
     }
 
     /**
@@ -42,13 +44,23 @@ public class DumbAutoBalance extends Action {
      */
     @Override
     public void periodic() {
-        // SmartDashboard.putNumber("DumbAutoBalance.dampeningFactor", dampeningFactor);
+        SmartDashboard.putNumber("DumbAutoBalance.dampeningFactor", dampeningFactor);
         double pitch = navx.getPitch();
         if (MathUtils.getSign(pitch) * -1 == lastPitchSign) {
             dampeningFactor += 0.4;
         }
         if (Math.abs(pitch) <= SENSITIVITY_THRESHOLD) {
+            // If we're balanced for more than 2 seconds, lower the dampening factor in
+            // case we get knocked off balance
+            // TODO: Test this
+            if ((double) balancedTickCount / 50.0 >= 2 && dampeningFactor >= 1) {
+                dampeningFactor -= 0.01;
+            }
+            balancedTickCount++;
+
             pitch = 0;
+        } else {
+            balancedTickCount = 0;
         }
         Subsystems.driveBase.arcadeDrive(pitch / 9 * (SPEED / (dampeningFactor)), 0);
         lastPitchSign = MathUtils.getSign(navx.getPitch());
