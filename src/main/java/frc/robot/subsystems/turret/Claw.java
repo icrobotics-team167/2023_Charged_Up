@@ -1,25 +1,21 @@
 package frc.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 
-/**
- * Opens and closes the claw.
- */
 public class Claw {
+    private CANSparkMax intakeMotor;
 
-    private Solenoid openClaw;
+    private static final double INTAKE_SPEED = 0.4;
+    private static final double OUTTAKE_SPEED = 0.2;
+
+    private boolean overCurrent;
+    private static final double CURRENT_LIMIT = 9;
 
     public static Claw instance;
-
-    private boolean open;
-
-    /**
-     * Allows only one instance of Claw to exist at once.
-     * 
-     * @return An instance of Claw. Creates a new one if it doesn't exist already.
-     */
     public static Claw getInstance() {
         if (instance == null) {
             instance = new Claw();
@@ -27,39 +23,37 @@ public class Claw {
         return instance;
     }
 
-    /**
-     * Sets up the pneumatic channels for the claw. 
-     */
     private Claw() {
-        openClaw = new Solenoid(Config.Ports.SparkTank.PH, PneumaticsModuleType.REVPH, Config.Ports.Arm.CLAW);
+        intakeMotor = new CANSparkMax(Config.Ports.Arm.CLAW, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        intakeMotor.restoreFactoryDefaults();
+        intakeMotor.setInverted(false);
+        intakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        intakeMotor.setSmartCurrentLimit(40);
+        intakeMotor.setSecondaryCurrentLimit(60);
+
+        overCurrent = false;
     }
 
-    /**
-     * Opens the claw
-     */
-    public void openClaw() {
-        openClaw.set(true);
-        open = true;
-    }
-
-    /**
-     * Closes the claw
-     */
-    public void closeClaw() {
-        openClaw.set(false);
-        open = false;
-    }
-
-    public void toggleClaw() {
-        if(open) {
-            closeClaw();
+    public void intake() {
+        if (overCurrent) {
+            intakeMotor.stopMotor();
+            return;
         }
-        else {
-            openClaw();
-        }
+        // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
+        overCurrent = intakeMotor.getBusVoltage() < CURRENT_LIMIT;
+        intakeMotor.set(INTAKE_SPEED);
     }
 
-    public boolean isOpen() {
-        return open;
+    public void outtake() {
+        overCurrent = false;
+        // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
+        intakeMotor.set(-OUTTAKE_SPEED);
+    }
+
+    public void stop() {
+        overCurrent = false;
+        // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
+        intakeMotor.stopMotor();
     }
 }

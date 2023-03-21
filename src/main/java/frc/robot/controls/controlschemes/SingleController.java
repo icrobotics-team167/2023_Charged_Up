@@ -98,27 +98,20 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean openClaw() {
+    public boolean intake() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean closeClaw() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSlowTurret() {
-        // TODO Auto-generated method stub
+    public boolean outtake() {
         return false;
     }
 
     // @Override
     // public boolean doLockSwivel() {
-    //     // TODO Auto-generated method stub
-    //     return false;
+    // // TODO Auto-generated method stub
+    // return false;
     // }
 
     @Override
@@ -146,44 +139,8 @@ public class SingleController extends ControlScheme {
     }
 
     @Override
-    public boolean doSwivelNorth() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelEast() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelSouth() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean doSwivelWest() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public double getPreset() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public boolean doUnlockSwivel() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
-    @Override
-    public boolean toggleClaw() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -193,27 +150,27 @@ public class SingleController extends ControlScheme {
         return false;
     }
 
-	@Override
-	public boolean doAutoHighLeft() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoHighLeft() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoMidLeft() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoMidLeft() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoHighRight() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoHighRight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean doAutoMidRight() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean doAutoMidRight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

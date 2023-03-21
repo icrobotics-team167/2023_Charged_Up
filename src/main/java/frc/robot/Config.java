@@ -80,11 +80,8 @@ public class Config {
             public static final int SWIVEL = 9;
             public static final int PIVOT_1 = 10;
             public static final int PIVOT_2 = 11;
+            public static final int CLAW = 13;
 
-            // Pneumatic Hub Ports
-            // Arm PH Ports
-            // TEMPORARY VALUES
-            public static final int CLAW = 0;
             // public static final int CLOSE_CLAW = 2;
 
             // Digital Limit Switches

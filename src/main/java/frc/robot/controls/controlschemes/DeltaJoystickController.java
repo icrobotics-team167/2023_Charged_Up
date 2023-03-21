@@ -1,10 +1,12 @@
 package frc.robot.controls.controlschemes;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
 
 /**
- * Delta is the fourth Greek letter and we have four hypothetical joysticks. Q.E.D.
+ * Delta is the fourth Greek letter and we have four hypothetical joysticks.
+ * Q.E.D.
  */
 public class DeltaJoystickController extends ControlScheme {
 
@@ -32,13 +34,16 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArcadeThrottle() {
-        return primary.getLeftStickY();
-        
+        return Math.abs(primary.getLeftStickY()) >= Config.Tolerances.PRIMARY_CONTROLLER_DEADZONE_SIZE
+                ? primary.getLeftStickY()
+                : 0;
     }
 
     @Override
     public double getArcadeWheel() {
-        return -secondary.getLeftStickX();
+        return -(Math.abs(secondary.getLeftStickX()) >= Config.Tolerances.SECONDARY_CONTROLLER_DEADZONE_SIZE
+                ? secondary.getLeftStickX()
+                : 0);
     }
 
     @Override
@@ -57,41 +62,41 @@ public class DeltaJoystickController extends ControlScheme {
         return false;
     }
 
+
     @Override
-    public boolean toggleClaw() {
-        return tertiary.getLeftTriggerPressed();
+    public boolean intake() {
+        return tertiary.getButtonPressedById(3);
     }
 
     @Override
-    public boolean openClaw() {
-        return false;
-    }
-
-    @Override
-    public boolean closeClaw() {
-        return false;
+    public boolean outtake() {
+        return tertiary.getButtonPressedById(5);
     }
 
     @Override
     public double getArmSwivel() {
-        return -tertiary.getLeftStickX();
+        return -(Math.abs(tertiary.getLeftStickX()) >= Config.Tolerances.TERTIARY_CONTROLLER_DEADZONE_SIZE
+                ? tertiary.getLeftStickX()
+                : 0);
     }
 
     @Override
     public double getArmPivot() {
-        return -tertiary.getLeftStickY();
+        return (Math.abs(tertiary.getLeftStickY()) >= Config.Tolerances.TERTIARY_CONTROLLER_DEADZONE_SIZE
+                ? tertiary.getLeftStickY()
+                : 0);
     }
 
     @Override
     public double getArmExtend() {
-        if(tertiary.getButtonPressedById(5)){
+        if (tertiary.getDPadUp()) {
             return 1;
-        } else if(tertiary.getButtonPressedById(3)) {
+        } else if (tertiary.getDPadDown()) {
             return -1;
         } else {
             return 0;
         }
-        
+
     }
 
     @Override
@@ -105,11 +110,6 @@ public class DeltaJoystickController extends ControlScheme {
         return tertiary.getButtonPressedById(2);
     }
 
-    @Override
-    public boolean doSlowTurret() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     @Override
     public boolean doUnlockSwivel() {
@@ -118,18 +118,17 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-		return tertiary.getButtonPressedById(10);
+        return tertiary.getButtonPressedById(10);
     }
 
     @Override
     public boolean doAutoMid() {
-		return tertiary.getButtonPressedById(9);
+        return tertiary.getButtonPressedById(9);
     }
 
     @Override
     public boolean doAutoPickup() {
-        // TODO Auto-generated method stub
-        return false;
+        return tertiary.getButtonPressedById(4);
     }
 
     @Override
@@ -137,57 +136,30 @@ public class DeltaJoystickController extends ControlScheme {
         return tertiary.getButtonPressedById(6);
     }
 
-    @Override
-    public boolean doSwivelNorth() {
-        return tertiary.getDPadUp();
-    }
-
-    @Override
-    public boolean doSwivelEast() {
-        return tertiary.getDPadRight();
-    }
-
-    @Override
-    public boolean doSwivelSouth() {
-        return tertiary.getDPadDown();
-    }
-
-    @Override
-    public boolean doSwivelWest() {
-        return tertiary.getDPadLeft();
-    }
-
-    @Override
-    public double getPreset() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     @Override
     public boolean toggleLimelight() {
         return secondary.getRawButtonPressedById(16);
     }
 
-	@Override
-	public boolean doAutoHighLeft() {
-		return tertiary.getButtonPressedById(8);
-	}
+    @Override
+    public boolean doAutoHighLeft() {
+        return tertiary.getButtonPressedById(8);
+    }
 
-	@Override
-	public boolean doAutoMidLeft() {
-		return tertiary.getButtonPressedById(7);
-	}
+    @Override
+    public boolean doAutoMidLeft() {
+        return tertiary.getButtonPressedById(7);
+    }
 
-	@Override
-	public boolean doAutoHighRight() {
-		return tertiary.getButtonPressedById(12);
-	}
+    @Override
+    public boolean doAutoHighRight() {
+        return tertiary.getButtonPressedById(12);
+    }
 
-	@Override
-	public boolean doAutoMidRight() {
-		return tertiary.getButtonPressedById(11);
-	}
+    @Override
+    public boolean doAutoMidRight() {
+        return tertiary.getButtonPressedById(11);
+    }
 
-    
-    
 }
