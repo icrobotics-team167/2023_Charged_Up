@@ -91,10 +91,10 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        if (quaternary.getDPadUp()) {
-            return 1;
-        } else if (quaternary.getDPadDown()) {
+        if (tertiary.getButtonPressedById(9)) {
             return -1;
+        } else if (tertiary.getButtonPressedById(6)) {
+            return 1;
         } else {
             return 0;
         }

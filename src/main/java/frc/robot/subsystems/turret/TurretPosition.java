@@ -22,13 +22,13 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     // public static final TurretPosition MID_GOAL = new TurretPosition(36, 0, 20.1);
     // public static final TurretPosition HIGH_GOAL_CENTER = new TurretPosition(35, 0, 39.6);
     public static final TurretPosition INTAKE = new TurretPosition(-33, 0, 17);
-    public static final TurretPosition PLAYER_STATION = new TurretPosition(42, 0, 20);
+    public static final TurretPosition PLAYER_STATION = new TurretPosition(29.75, 0, 33.4);
 
-    public static final TurretPosition HIGH_RIGHT = new TurretPosition(30, 15.19, 56);
+    public static final TurretPosition HIGH_RIGHT = new TurretPosition(33, 15.19, 56);
     public static final TurretPosition HIGH_LEFT = HIGH_RIGHT.withSwivel(-18);
-    public static final TurretPosition HIGH_MID = new TurretPosition(31, 0, 51.3);
-    public static final TurretPosition MID_RIGHT = new TurretPosition(24.3, 21.2, 35);
-    public static final TurretPosition MID_LEFT = MID_RIGHT.withPivot(28.7).withExtension(38.5).withSwivel(-28);
+    public static final TurretPosition HIGH_MID = new TurretPosition(33, 0, 51.3);
+    public static final TurretPosition MID_RIGHT = new TurretPosition(25, 21.2, 35);
+    public static final TurretPosition MID_LEFT = new TurretPosition(28.7, 38.5, -28);
     public static final TurretPosition MID_MID = new TurretPosition(17.3, 0,30.2);
 
     // max extension can reach 2 more mid scoring positions PLEASE TEST THESE TOO

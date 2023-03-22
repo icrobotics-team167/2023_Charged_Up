@@ -48,8 +48,8 @@ public class Teleop {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
         } else {
-            driveBase.arcadeDrive(controls.getArcadeThrottle(),
-                    controls.getArcadeWheel());
+            driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.8,
+                    controls.getArcadeWheel() * .5);
         }
 
         if (controls.toggleLimelight()) {

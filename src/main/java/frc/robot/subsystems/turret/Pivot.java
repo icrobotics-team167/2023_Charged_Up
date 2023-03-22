@@ -23,7 +23,7 @@ public class Pivot {
     // private DigitalInput pivotSwitch;
     private static final double MAX_TURN_SPEED = 0.75;
     private static final double INITIAL_PIVOT_ANGLE = TurretPosition.INITIAL.pivotAngle();
-    private static final double MAX_PIVOT_ANGLE = 90;
+    private static final double MAX_PIVOT_ANGLE = 60;
     private static final double MIN_PIVOT_ANGLE = -35;
 
     private boolean overrideAngleLimits = false;
