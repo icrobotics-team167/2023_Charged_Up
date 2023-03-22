@@ -42,7 +42,7 @@ public class MoveArm extends Action {
 
     @Override
     public void periodic() {
-        doneMoving = Subsystems.turret.moveTo(targetState, 0.8);
+        doneMoving = Subsystems.turret.moveTo(targetState, 0.8 * speed);
     }
 
     @Override
