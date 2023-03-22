@@ -22,22 +22,13 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_MID),
                         new Outtake(),
                         new Wait(0.25),
-                        // new DriveStraight(20, -0.3).withTurret(TurretPosition.INITIAL),
                         new DriveStraight(170, -0.5).withTurret(TurretPosition.INITIAL),
-                        // new MoveArm(TurretPosition.INITIAL),
-                        // new DriveStraight(5, 0.2),
-                        // new DriveStraight(40, -0.3),
                         new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
-                                        0.3,
+                                        0.4,
                                         Duration.ofMillis(3500)),
-                        new DriveStraight(35, 0.4),
-                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
-                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
-                        // new Wait(0.5),
+                        new DriveStraight(35, 0.5),
                         new AutoBalance()
-        // new NaiveAutoBalance()
-
         })),
         GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
