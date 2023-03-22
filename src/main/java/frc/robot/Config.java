@@ -16,6 +16,7 @@ public class Config {
         public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
         public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
         public static final ControllerType TERTIARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType QUATERNARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
 
 
         // Dead zones
@@ -33,13 +34,16 @@ public class Config {
         public static final double XB_TRIGGER_PRESSED_THRESHOLD = 0.5;
 
         // Primary controller deadzone size
-        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.09;
+        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.12;
 
         // Secondary controller deadzone size
-        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.09;
+        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.12;
 
         // Tertiary controller deadzone size
         public static final double TERTIARY_CONTROLLER_DEADZONE_SIZE = 0.09;
+
+        // Quaternary controller deadzone size
+        public static final double QUATERNARY_CONTROLLER_DEADZONE_SIZE = 0.09;
     }
 
     public static final class Ports {
@@ -48,6 +52,7 @@ public class Config {
         public static final int PRIMARY_CONTROLLER = 0;
         public static final int SECONDARY_CONTROLLER = 1; // if applicable
         public static final int TERTIARY_CONTROLLER = 2; // if applicable
+        public static final int QUATERNARY_CONTROLLER = 3; // if applicable
 
 
         // main control system components

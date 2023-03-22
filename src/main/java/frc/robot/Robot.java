@@ -79,7 +79,12 @@ public class Robot extends TimedRobot {
         Controller tertiaryController = null;
         if (Config.Settings.TERTIARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
             tertiaryController = new ThrustMasterController(Config.Ports.TERTIARY_CONTROLLER);
-        } 
+        }
+
+        Controller quaternaryController = null;
+        if (Config.Settings.QUATERNARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
+            quaternaryController = new ThrustMasterController(Config.Ports.QUATERNARY_CONTROLLER);
+        }
 
 
         if (primaryController == null && secondaryController == null) {
@@ -88,7 +93,7 @@ public class Robot extends TimedRobot {
             controls = new SingleController(primaryController);
         } else if (Config.Settings.PRIMARY_CONTROLLER_TYPE == ControllerType.JOYSTICK) {
             // If the first contorller is a JOYSTICK type, assume we have three joysticks.
-            controls = new DeltaJoystickController(primaryController, secondaryController, tertiaryController);
+            controls = new DeltaJoystickController(primaryController, secondaryController, tertiaryController, quaternaryController);
         } else if (primaryController != null && secondaryController != null) {
             controls = new DoubleController(primaryController, secondaryController);
         } else {
