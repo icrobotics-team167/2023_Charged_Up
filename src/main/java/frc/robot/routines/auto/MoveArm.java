@@ -31,6 +31,10 @@ public class MoveArm extends Action {
         this(targetState, 1);
     }
 
+    public static MoveArm to(TurretPosition targetState) {
+        return new MoveArm(targetState);
+    }
+
     @Override
     public void init() {
         timer.reset();
