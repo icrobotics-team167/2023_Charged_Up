@@ -106,10 +106,34 @@ public class DeltaJoystickController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
-
+    
     @Override
     public boolean doResetTurret() {
-        return quaternary.getButtonPressedById(2);
+        boolean reset = quaternary.getButtonPressedById(2);
+        return reset;
+    }
+
+    int offset = 0;
+    @Override
+    public int getPositionOffset() {
+        if (quaternary.getDPadUp()) {
+            offset = 0;
+        // } else if (quaternary.getDPadLeft()) {
+        //     offset = -90;
+        // } else if (quaternary.getDPadRight()) {
+        //     offset = 90;
+        } else if (quaternary.getDPadDown()) {
+            offset = -180;
+        }
+        return offset;
+    }
+
+    @Override
+    public boolean offsetUpdated() {
+        return quaternary.getDPadUp() ||
+            // quaternary.getDPadLeft() ||
+            // quaternary.getDPadRight() ||
+            quaternary.getDPadDown();
     }
 
 
@@ -163,5 +187,4 @@ public class DeltaJoystickController extends ControlScheme {
     public boolean doAutoMidRight() {
         return quaternary.getButtonPressedById(5);
     }
-
 }

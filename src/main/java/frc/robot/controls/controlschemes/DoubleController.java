@@ -179,4 +179,16 @@ public class DoubleController extends ControlScheme {
     public boolean doAutoMidRight() {
         return getPreset() == 1 && secondary.getBButton();
     }
+
+    @Override
+    public int getPositionOffset() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean offsetUpdated() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
