@@ -51,7 +51,7 @@ public class NullController extends ControlScheme {
 
     @Override
     public boolean doSlowMode() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -62,7 +62,7 @@ public class NullController extends ControlScheme {
 
     @Override
     public boolean doResetTurret() {
-        // TODO Auto-generated method stub
+
         // throw new UnsupportedOperationException("Unimplemented method
         // 'doResetTurret'");
         return false;
@@ -87,25 +87,25 @@ public class NullController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean doAutoMid() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean doAutoPickup() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean doPlayerStation() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -115,11 +115,6 @@ public class NullController extends ControlScheme {
         return false;
     }
 
-    @Override
-    public boolean toggleLimelight() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     @Override
     public boolean doAutoHighLeft() {
@@ -141,6 +136,12 @@ public class NullController extends ControlScheme {
 
     @Override
     public boolean doAutoMidRight() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean toggleLimelight() {
         // TODO Auto-generated method stub
         return false;
     }

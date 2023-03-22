@@ -371,7 +371,8 @@ public class PSController implements Controller {
     }
 
     /**
-     * Gets if the Options button is pressed. Corresponds to the Start button on Xbox
+     * Gets if the Options button is pressed. Corresponds to the Start button on
+     * Xbox
      * controllers or the Plus button on Nintendo controllers.
      * 
      * @return If the button is pressed.
@@ -472,13 +473,13 @@ public class PSController implements Controller {
 
     @Override
     public boolean getButtonPressedById(int buttonId) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getRawButtonPressedById(int buttonId) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 

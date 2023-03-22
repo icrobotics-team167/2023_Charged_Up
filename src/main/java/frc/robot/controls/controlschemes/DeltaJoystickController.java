@@ -24,13 +24,13 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getTankLeftSpeed() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public double getTankRightSpeed() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -60,7 +60,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doSlowMode() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -103,7 +103,7 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doLimitOverride() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -143,25 +143,24 @@ public class DeltaJoystickController extends ControlScheme {
     public boolean toggleLimelight() {
         return secondary.getRawButtonPressedById(2);
     }
-
     @Override
     public boolean doAutoHighLeft() {
-        return quaternary.getButtonPressedById(5);
+        return tertiary.getButtonPressedById(8);
     }
 
     @Override
     public boolean doAutoMidLeft() {
-        return quaternary.getButtonPressedById(10);
+        return tertiary.getButtonPressedById(7);
     }
 
     @Override
     public boolean doAutoHighRight() {
-        return quaternary.getButtonPressedById(7);
+        return tertiary.getButtonPressedById(12);
     }
 
     @Override
     public boolean doAutoMidRight() {
-        return quaternary.getButtonPressedById(8);
+        return tertiary.getButtonPressedById(11);
     }
 
 }

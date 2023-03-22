@@ -442,13 +442,11 @@ public class XBController implements Controller {
 
     @Override
     public boolean getButtonPressedById(int buttonId) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean getRawButtonPressedById(int buttonId) {
-        // TODO Auto-generated method stub
         return false;
     }
 

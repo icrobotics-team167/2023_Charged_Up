@@ -24,7 +24,7 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public double getLeftTriggerValue() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -40,31 +40,31 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public boolean getLeftBumper() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getLeftBumperPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public double getRightTriggerValue() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public boolean getRightTrigger() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getRightTriggerPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -75,7 +75,7 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public boolean getRightBumperToggled() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -86,6 +86,7 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public double getLeftStickY() {
+
         return -joystick.getY();
     }
 
@@ -96,13 +97,13 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public boolean getLeftStickButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getLeftStickButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -113,91 +114,91 @@ public class ThrustMasterController implements Controller {
 
     @Override
     public double getRightStickY() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public boolean getRightStickButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getRightStickButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getAButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getAButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getBButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getBButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getXButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getXButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getYButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getYButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getBackButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getBackButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getStartButton() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean getStartButtonPressed() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -230,5 +231,5 @@ public class ThrustMasterController implements Controller {
     public boolean getRawButtonPressedById(int buttonId) {
         return joystick.getRawButtonPressed(buttonId);
     }
-    
+
 }
