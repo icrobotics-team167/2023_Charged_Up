@@ -34,10 +34,10 @@ public class Config {
         public static final double XB_TRIGGER_PRESSED_THRESHOLD = 0.5;
 
         // Primary controller deadzone size
-        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.12;
+        public static final double PRIMARY_CONTROLLER_DEADZONE_SIZE = 0.125;
 
         // Secondary controller deadzone size
-        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.12;
+        public static final double SECONDARY_CONTROLLER_DEADZONE_SIZE = 0.175;
 
         // Tertiary controller deadzone size
         public static final double TERTIARY_CONTROLLER_DEADZONE_SIZE = 0.09;

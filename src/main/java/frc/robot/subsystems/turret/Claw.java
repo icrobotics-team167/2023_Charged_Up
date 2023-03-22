@@ -10,7 +10,7 @@ public class Claw {
     private CANSparkMax intakeMotor;
 
     private static final double INTAKE_SPEED = 0.4;
-    private static final double OUTTAKE_SPEED = 0.2;
+    private static final double OUTTAKE_SPEED = 0.3;
 
     private boolean overCurrent;
     private static final double CURRENT_LIMIT = 9;

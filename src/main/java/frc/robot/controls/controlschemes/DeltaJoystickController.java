@@ -91,10 +91,10 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        if (quaternary.getDPadUp()) {
-            return 1;
-        } else if (quaternary.getDPadDown()) {
+        if (tertiary.getButtonPressedById(9)) {
             return -1;
+        } else if (tertiary.getButtonPressedById(6)) {
+            return 1;
         } else {
             return 0;
         }
@@ -106,10 +106,34 @@ public class DeltaJoystickController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
-
+    
     @Override
     public boolean doResetTurret() {
-        return quaternary.getButtonPressedById(2);
+        boolean reset = quaternary.getButtonPressedById(2);
+        return reset;
+    }
+
+    int offset = 0;
+    @Override
+    public int getPositionOffset() {
+        if (quaternary.getDPadUp()) {
+            offset = 0;
+        // } else if (quaternary.getDPadLeft()) {
+        //     offset = -90;
+        // } else if (quaternary.getDPadRight()) {
+        //     offset = 90;
+        } else if (quaternary.getDPadDown()) {
+            offset = -180;
+        }
+        return offset;
+    }
+
+    @Override
+    public boolean offsetUpdated() {
+        return quaternary.getDPadUp() ||
+            // quaternary.getDPadLeft() ||
+            // quaternary.getDPadRight() ||
+            quaternary.getDPadDown();
     }
 
 
@@ -120,22 +144,22 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        return quaternary.getButtonPressedById(6);
-    }
-
-    @Override
-    public boolean doAutoMid() {
         return quaternary.getButtonPressedById(9);
     }
 
     @Override
+    public boolean doAutoMid() {
+        return quaternary.getButtonPressedById(6);
+    }
+
+    @Override
     public boolean doAutoPickup() {
-        return tertiary.getButtonPressedById(9);
+        return tertiary.getButtonPressedById(5);
     }
 
     @Override
     public boolean doPlayerStation() {
-        return tertiary.getButtonPressedById(6);
+        return tertiary.getButtonPressedById(10);
     }
 
 
@@ -146,22 +170,21 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doAutoHighLeft() {
-        return quaternary.getButtonPressedById(5);
+        return quaternary.getButtonPressedById(8);
     }
 
     @Override
     public boolean doAutoMidLeft() {
-        return quaternary.getButtonPressedById(10);
-    }
-
-    @Override
-    public boolean doAutoHighRight() {
         return quaternary.getButtonPressedById(7);
     }
 
     @Override
-    public boolean doAutoMidRight() {
-        return quaternary.getButtonPressedById(8);
+    public boolean doAutoHighRight() {
+        return quaternary.getButtonPressedById(10);
     }
 
+    @Override
+    public boolean doAutoMidRight() {
+        return quaternary.getButtonPressedById(5);
+    }
 }

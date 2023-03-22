@@ -58,4 +58,8 @@ public abstract class ControlScheme {
     public abstract boolean doPlayerStation();
 
     public abstract boolean toggleLimelight();
+
+    public abstract int getPositionOffset();
+
+    public abstract boolean offsetUpdated();
 }
