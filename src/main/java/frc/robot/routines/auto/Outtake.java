@@ -11,7 +11,7 @@ import frc.robot.util.PeriodicTimer;
  */
 public class Outtake extends Action {
 
-    private final double WAIT_TIME = 0.25;
+    private final double WAIT_TIME = 0.5;
 
     private PeriodicTimer timer;
 
@@ -36,6 +36,6 @@ public class Outtake extends Action {
 
     @Override
     public void done() {
-
+        Subsystems.claw.stop();
     }
 }
