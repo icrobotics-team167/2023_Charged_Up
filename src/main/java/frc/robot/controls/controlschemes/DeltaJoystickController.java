@@ -67,12 +67,12 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean intake() {
-        return quaternary.getButtonPressedById(3);
+        return quaternary.getButtonById(3);
     }
 
     @Override
     public boolean outtake() {
-        return quaternary.getButtonPressedById(4);
+        return quaternary.getButtonById(4);
     }
 
     @Override
@@ -91,9 +91,9 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        if (tertiary.getButtonPressedById(7)) {
+        if (tertiary.getButtonById(7)) {
             return -1;
-        } else if (tertiary.getButtonPressedById(6)) {
+        } else if (tertiary.getButtonById(6)) {
             return 1;
         } else {
             return 0;
@@ -144,47 +144,47 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public boolean doAutoHigh() {
-        return quaternary.getButtonPressedById(9);
+        return quaternary.getButtonById(9);
     }
 
     @Override
     public boolean doAutoMid() {
-        return quaternary.getButtonPressedById(6);
+        return quaternary.getButtonById(6);
     }
 
     @Override
     public boolean doAutoPickup() {
-        return tertiary.getButtonPressedById(5);
+        return tertiary.getButtonById(5);
     }
 
     @Override
     public boolean doPlayerStation() {
-        return tertiary.getButtonPressedById(10);
+        return tertiary.getButtonById(10);
     }
 
 
     @Override
     public boolean toggleLimelight() {
-        return secondary.getRawButtonPressedById(2);
+        return secondary.getButtonPressedById(2);
     }
 
     @Override
     public boolean doAutoHighLeft() {
-        return quaternary.getButtonPressedById(8);
+        return quaternary.getButtonById(8);
     }
 
     @Override
     public boolean doAutoMidLeft() {
-        return quaternary.getButtonPressedById(7);
+        return quaternary.getButtonById(7);
     }
 
     @Override
     public boolean doAutoHighRight() {
-        return quaternary.getButtonPressedById(10);
+        return quaternary.getButtonById(10);
     }
 
     @Override
     public boolean doAutoMidRight() {
-        return quaternary.getButtonPressedById(5);
+        return quaternary.getButtonById(5);
     }
 }
