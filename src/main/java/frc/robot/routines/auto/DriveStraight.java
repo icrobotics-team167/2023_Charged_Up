@@ -25,6 +25,8 @@ public class DriveStraight extends Action {
     private boolean turretDone = true;
     private boolean driveDone;
 
+    private boolean runIntake = false;
+
     private PeriodicTimer timer;
     private double startAngle;
 
@@ -82,6 +84,11 @@ public class DriveStraight extends Action {
         return this;
     }
 
+    public DriveStraight withIntake() {
+        runIntake = true;
+        return this;
+    }
+
     @Override
     public void init() {
         Subsystems.driveBase.setBrake();
@@ -90,10 +97,12 @@ public class DriveStraight extends Action {
         startAngle = navx.getAngle();
         timer.reset();
         pidController = new PID(P, I, D, timer.get(), startAngle);
+        angleFilter.clear();
     }
 
     // new code starts here:
     public void periodic() {
+        // SmartDashboard.putBoolean("DriveStraight.intake", this.runIntake);
         if (timeoutSeconds >= 0 && timer.hasElapsed(timeoutSeconds)) { // If the timeout isn't a sentinel value and the
                                                                        // timeout has happened
             // Stop the routine and stop the robot
@@ -121,6 +130,12 @@ public class DriveStraight extends Action {
             turretDone = Subsystems.turret.moveTo(targetState);
         } else {
             Subsystems.turret.stop();
+        }
+
+        if (runIntake) {
+            Subsystems.claw.intake();
+        } else {
+            Subsystems.claw.stop();
         }
     }
 
@@ -157,6 +172,7 @@ public class DriveStraight extends Action {
     public void done() {
         Subsystems.driveBase.stop();
         Subsystems.turret.stop();
+        Subsystems.claw.stop();
     }
 
 }

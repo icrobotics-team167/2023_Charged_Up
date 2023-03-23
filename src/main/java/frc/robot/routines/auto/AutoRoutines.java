@@ -21,39 +21,27 @@ public enum AutoRoutines {
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
                         MoveArm.to(TurretPosition.HIGH_MID),
                         new Outtake(),
-                        new Wait(0.25),
-                        // new DriveStraight(20, -0.3).withTurret(TurretPosition.INITIAL),
                         new DriveStraight(170, -0.5).withTurret(TurretPosition.INITIAL),
-                        // new MoveArm(TurretPosition.INITIAL),
-                        // new DriveStraight(5, 0.2),
-                        // new DriveStraight(40, -0.3),
                         new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
-                                        0.3,
+                                        0.4,
                                         Duration.ofMillis(3500)),
                         new DriveStraight(35, 0.4),
-                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
-                        // new DriveStraight(30 + Math.random() * 4 - 2, -0.4),
-                        // new Wait(0.5),
                         new AutoBalance()
-        // new NaiveAutoBalance()
-
         })),
-        GO_STRAIGHT_BLUE("Score cube then cone (Blue Alliance)", new Routine(new Action[] {
-                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
-                        // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
-                        new Outtake(),
-                        new DriveStraight(195, -0.3)
-                                        .withTurret(TurretPosition.INITIAL),
-                        new MoveArm(TurretPosition.INITIAL.withSwivel(-180)),
-                        new MoveArm(new TurretPosition(-28, -180, 17)),
-                        new Wait(5),
-                        new Intake(),
-                        new DriveStraight(180, 0.3).withTurret(TurretPosition.INITIAL),
+        GO_STRAIGHT_BLUE("Score cone then cube (Blue Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
                         new Outtake(),
+                        new MoveArm(TurretPosition.INITIAL.withSwivel(-90)),
+                        new DriveStraight(160, -0.7).withTurret(TurretPosition.INTAKE.withSwivel(-185)),
+                        new DriveStraight(40, -0.4).withIntake(),
+                        new Wait(0.25),
+                        new DriveStraight(180, 0.7).withTurret(TurretPosition.INITIAL),
+                        new MoveArm(TurretPosition.HIGH_GOAL_CUBE_BLUE),
+                        new Outtake(),
+                        new MoveArm(TurretPosition.INITIAL)
         })),
-        GO_STRAIGHT_RED("Score cube then cone (Red Alliance)", new Routine(new Action[] {
+        GO_STRAIGHT_RED("Score cone then cube (Red Alliance)", new Routine(new Action[] {
                         new MoveArm(TurretPosition.HIGH_GOAL_CUBE_RED),
                         // new MoveArm(TurretPosition.HIGH_GOAL_CENTER),
                         new Outtake(),
@@ -74,6 +62,10 @@ public enum AutoRoutines {
                         new DriveStraight(35, -0.5),
                         new AutoBalance()
 
+        })),
+        TEST_DRIVE_INTAKE("Test:Intake while driving", new Routine(new Action[] {
+                        new DriveStraight(60, 0.25).withIntake(),
+                        new Intake()
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),

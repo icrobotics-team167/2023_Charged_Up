@@ -11,7 +11,7 @@ import frc.robot.util.PeriodicTimer;
  */
 public class Intake extends Action {
 
-    private final double WAIT_TIME = 0.25;
+    private final double WAIT_TIME = 1;
 
     private PeriodicTimer timer;
 
