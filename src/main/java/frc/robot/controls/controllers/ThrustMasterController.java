@@ -223,12 +223,12 @@ public class ThrustMasterController implements Controller {
     }
 
     @Override
-    public boolean getButtonPressedById(int buttonId) {
+    public boolean getButtonById(int buttonId) {
         return joystick.getRawButton(buttonId);
     }
 
     @Override
-    public boolean getRawButtonPressedById(int buttonId) {
+    public boolean getButtonPressedById(int buttonId) {
         return joystick.getRawButtonPressed(buttonId);
     }
 
