@@ -164,4 +164,16 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public int getPositionOffset() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean offsetUpdated() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

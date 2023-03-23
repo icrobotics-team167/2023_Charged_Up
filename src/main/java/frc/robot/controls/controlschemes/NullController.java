@@ -141,6 +141,18 @@ public class NullController extends ControlScheme {
     }
 
     @Override
+    public int getPositionOffset() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean offsetUpdated() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
     public boolean toggleLimelight() {
         // TODO Auto-generated method stub
         return false;

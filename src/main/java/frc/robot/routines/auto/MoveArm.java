@@ -31,6 +31,10 @@ public class MoveArm extends Action {
         this(targetState, 1);
     }
 
+    public static MoveArm to(TurretPosition targetState) {
+        return new MoveArm(targetState);
+    }
+
     @Override
     public void init() {
         timer.reset();
@@ -38,7 +42,7 @@ public class MoveArm extends Action {
 
     @Override
     public void periodic() {
-        doneMoving = Subsystems.turret.moveTo(targetState, 0.8);
+        doneMoving = Subsystems.turret.moveTo(targetState, 0.8 * speed);
     }
 
     @Override
