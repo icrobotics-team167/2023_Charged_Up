@@ -48,7 +48,7 @@ public class Teleop {
             driveBase.tankDrive(controls.getTankLeftSpeed(),
                     controls.getTankRightSpeed());
         } else {
-            driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.8,
+            driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.9,
                     controls.getArcadeWheel() * .5);
         }
 
@@ -82,7 +82,14 @@ public class Teleop {
         } else if (controls.offsetUpdated()) {
             targetState = TurretPosition.INITIAL;
         }
-        double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
+        
+        turret.setLimitOverride(controls.doLimitOverride());
+        if (controls.resetLimits()) {
+            turret.resetLimits();
+        }
+
+        // double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
+        double swivel = controls.getArmSwivel();
         if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(swivel) > 0 || Math.abs(controls.getArmExtend()) > 0) {
             targetState = null;
             turret.move(controls.getArmPivot(), swivel, controls.getArmExtend());

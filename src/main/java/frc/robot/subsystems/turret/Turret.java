@@ -136,6 +136,10 @@ public class Turret {
         extendRetract.setLimitOverride(newVal);
     }
 
+    public void resetLimits() {
+        pivot.resetLimit();
+    }
+
     /**
      * Toggles locking the turret, making it impossible to move
      */

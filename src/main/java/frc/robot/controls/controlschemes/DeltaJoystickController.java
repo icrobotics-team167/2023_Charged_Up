@@ -91,26 +91,23 @@ public class DeltaJoystickController extends ControlScheme {
 
     @Override
     public double getArmExtend() {
-        if (tertiary.getButtonById(7)) {
-            return -1;
-        } else if (tertiary.getButtonById(6)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return tertiary.getLeftStickY();
 
     }
 
     @Override
     public boolean doLimitOverride() {
+        return tertiary.getButtonById(3);
+    }
 
-        return false;
+    @Override
+    public boolean resetLimits() {
+        return tertiary.getButtonReleasedById(3);
     }
     
     @Override
     public boolean doResetTurret() {
-        boolean reset = quaternary.getButtonPressedById(2);
-        return reset;
+        return quaternary.getButtonPressedById(2);
     }
 
     int offset = 0;
@@ -143,23 +140,13 @@ public class DeltaJoystickController extends ControlScheme {
     }
 
     @Override
-    public boolean doAutoHigh() {
-        return quaternary.getButtonById(9);
-    }
-
-    @Override
-    public boolean doAutoMid() {
-        return quaternary.getButtonById(6);
-    }
-
-    @Override
     public boolean doAutoPickup() {
-        return tertiary.getButtonById(5);
+        return tertiary.getButtonById(2);
     }
 
     @Override
     public boolean doPlayerStation() {
-        return tertiary.getButtonById(10);
+        return tertiary.getButtonById(4);
     }
 
 
@@ -167,23 +154,34 @@ public class DeltaJoystickController extends ControlScheme {
     public boolean toggleLimelight() {
         return secondary.getButtonPressedById(2);
     }
+
+    @Override
+    public boolean doAutoHigh() {
+        return tertiary.getButtonById(15) || quaternary.getButtonById(9);
+    }
+
+    @Override
+    public boolean doAutoMid() {
+        return tertiary.getButtonById(12) || quaternary.getButtonById(6);
+    }
+
     @Override
     public boolean doAutoHighLeft() {
-        return quaternary.getButtonById(8);
+        return tertiary.getButtonById(14) || quaternary.getButtonById(8);
     }
 
     @Override
     public boolean doAutoMidLeft() {
-        return quaternary.getButtonById(7);
+        return tertiary.getButtonById(13) || quaternary.getButtonById(7);
     }
 
     @Override
     public boolean doAutoHighRight() {
-        return quaternary.getButtonById(10);
+        return tertiary.getButtonById(16) || quaternary.getButtonById(10);
     }
 
     @Override
     public boolean doAutoMidRight() {
-        return quaternary.getButtonById(5);
+        return tertiary.getButtonById(11) || quaternary.getButtonById(5);
     }
 }

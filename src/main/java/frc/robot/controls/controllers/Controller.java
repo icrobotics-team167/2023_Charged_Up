@@ -48,6 +48,8 @@ public interface Controller {
 
     boolean getButtonById(int buttonId);
 
+    public boolean getButtonReleasedById(int buttonId);
+
     boolean getAButton();
 
     boolean getAButtonPressed();

@@ -482,5 +482,10 @@ public class PSController implements Controller {
         // TODO Auto-generated method stub
         return false;
     }
+    
+    @Override
+    public boolean getButtonReleasedById(int buttonId) {
+        return false;
+    }
 
 }
