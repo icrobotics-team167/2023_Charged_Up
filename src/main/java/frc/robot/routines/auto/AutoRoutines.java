@@ -22,8 +22,8 @@ public enum AutoRoutines {
         BALANCE_CAUTIOUS("Balance Cautious", new Routine(new Action[] {
                         MoveArm.to(TurretPosition.HIGH_MID),
                         new Outtake(),
-                        new DriveStraight(180, -0.5).withTurret(TurretPosition.INITIAL),
-                        new Wait(0.25),
+                        new MoveArm(TurretPosition.INITIAL),
+                        new DriveStraight(190, -0.5),
                         new DriveStraightUntil(
                                         navx -> Math.abs(navx.getPitch()) >= 8,
                                         0.4,
@@ -35,7 +35,7 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_BLUE),
                         new Outtake(),
                         new MoveArm(TurretPosition.INITIAL.withSwivel(-90)),
-                        new DriveStraight(160, -0.7).withTurret(TurretPosition.INTAKE.withSwivel(-180)),
+                        new DriveStraight(160, -0.7).withTurret(TurretPosition.INTAKE.withSwivel(-179)),
                         new DriveStraight(40, -0.4).withIntake(),
                         new Wait(0.25),
                         new DriveStraight(190, 0.8).withTurret(TurretPosition.INITIAL),
@@ -47,7 +47,7 @@ public enum AutoRoutines {
                         new MoveArm(TurretPosition.HIGH_GOAL_CONE_RED),
                         new Outtake(),
                         new MoveArm(TurretPosition.INITIAL.withSwivel(90)),
-                        new DriveStraight(160, -0.7).withTurret(TurretPosition.INTAKE.withSwivel(180)),
+                        new DriveStraight(160, -0.7).withTurret(TurretPosition.INTAKE.withSwivel(179)),
                         new DriveStraight(40, -0.4).withIntake(),
                         new Wait(0.25),
                         new DriveStraight(190, 0.8).withTurret(TurretPosition.INITIAL),

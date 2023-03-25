@@ -88,8 +88,8 @@ public class Teleop {
             turret.resetLimits();
         }
 
-        // double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
-        double swivel = controls.getArmSwivel();
+        double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
+        // double swivel = controls.getArmSwivel();
         if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(swivel) > 0 || Math.abs(controls.getArmExtend()) > 0) {
             targetState = null;
             turret.move(controls.getArmPivot(), swivel, controls.getArmExtend());

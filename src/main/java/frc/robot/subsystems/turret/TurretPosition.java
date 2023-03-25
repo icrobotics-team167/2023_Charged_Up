@@ -43,7 +43,7 @@ public record TurretPosition(double pivotAngle, double swivelAngle, double exten
     public static final TurretPosition FAR_MID_LEFT = FAR_MID_RIGHT.flipSwivelSign();
 
     // positions for auto only
-    public static final TurretPosition HIGH_GOAL_CUBE_BLUE = new TurretPosition(34, -9, 55); // positioning for auto
+    public static final TurretPosition HIGH_GOAL_CUBE_BLUE = new TurretPosition(34, -9, 53.5); // positioning for auto
     public static final TurretPosition HIGH_GOAL_CUBE_RED = HIGH_GOAL_CUBE_BLUE.flipSwivelSign(); // positioning for
                                                                                                   // auto
     // public static final TurretPosition HIGH_GOAL_CONE_BLUE = new TurretPosition(34, 9, 54); // positioning for auto
