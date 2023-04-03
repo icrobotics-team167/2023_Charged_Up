@@ -176,4 +176,10 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean resetLimits() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

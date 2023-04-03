@@ -9,11 +9,8 @@ import frc.robot.Config;
 public class Claw {
     private CANSparkMax intakeMotor;
 
-    private static final double INTAKE_SPEED = 0.75;
+    private static final double INTAKE_SPEED = 1;
     private static final double OUTTAKE_SPEED = 0.4;
-
-    private boolean overCurrent;
-    private static final double CURRENT_LIMIT = 6;
 
     public static Claw instance;
     public static Claw getInstance() {
@@ -32,28 +29,19 @@ public class Claw {
         intakeMotor.setSmartCurrentLimit(40);
         intakeMotor.setSecondaryCurrentLimit(60);
 
-        overCurrent = false;
     }
 
     public void intake() {
-        SmartDashboard.putBoolean("Claw.overCurrent", overCurrent);
-        if (overCurrent) {
-            intakeMotor.stopMotor();
-            return;
-        }
-        SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
-        overCurrent = intakeMotor.getBusVoltage() < CURRENT_LIMIT;
+        // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         intakeMotor.set(INTAKE_SPEED);
     }
 
     public void outtake() {
-        overCurrent = false;
         // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         intakeMotor.set(-OUTTAKE_SPEED);
     }
 
     public void stop() {
-        overCurrent = false;
         // SmartDashboard.putNumber("Claw.Voltage", intakeMotor.getBusVoltage());
         intakeMotor.stopMotor();
     }

@@ -1,12 +1,16 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="SparkTankDriveBase.voltageMultiplier" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="20"/>
+	<widget field="SparkTankDriveBase.voltageMultiplier" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1222" y="386"/>
+		<width>316</width>
+		<height>192</height>
+		<property name="Buffer Size (samples)" value="8000"/>
+		<property name="Autoscale Y Values" value="false"/>
 	</widget>
 	<widget field="Robot.batteryVoltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="1221" y="285"/>
-		<width>312</width>
-		<height>270</height>
+		<location x="1222" y="200"/>
+		<width>316</width>
+		<height>185</height>
 		<property name="Buffer Size (samples)" value="8000"/>
 		<property name="Autoscale Y Values" value="false"/>
 		<property name="Minimum Y Value" value="6"/>
@@ -14,8 +18,8 @@
 	</widget>
 	<widget field="Robot.phCompressor.pressure" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="1222" y="0"/>
-		<width>310</width>
-		<height>285</height>
+		<width>316</width>
+		<height>199</height>
 		<property name="Buffer Size (samples)" value="8000"/>
 		<property name="Autoscale Y Values" value="false"/>
 		<property name="Maximum Y Value" value="125"/>
@@ -38,7 +42,7 @@
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
 		<location x="296" y="1"/>
 		<width>922</width>
-		<height>552</height>
+		<height>578</height>
 		<property name="Camera Choice" value=""/>
 	</static-widget>
 	<widget field="Autonomous Routines" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">

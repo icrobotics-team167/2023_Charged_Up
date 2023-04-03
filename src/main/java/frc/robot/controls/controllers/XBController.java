@@ -452,4 +452,9 @@ public class XBController implements Controller {
         return false;
     }
 
+    @Override
+    public boolean getButtonReleasedById(int buttonId) {
+        return false;
+    }
+
 }

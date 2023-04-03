@@ -45,14 +45,13 @@ public class AutoBalance extends Action {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("DumbAutoBalance.dampeningFactor", dampeningFactor);
-        double pitch = navx.getPitch();
-        if (MathUtils.getSign(pitch) * -1 == lastPitchSign) {
-            dampeningFactor += 0.4;
+        double pitch = navx.getPitch(); // Get the NavX pitch
+        if (MathUtils.getSign(pitch) * -1 == lastPitchSign) { //If the pitch tilts past balanced
+            dampeningFactor += 0.4; // Lower speed to adjust more carefully
         }
-        if (Math.abs(pitch) <= SENSITIVITY_THRESHOLD) {
+        if (Math.abs(pitch) <= SENSITIVITY_THRESHOLD) { // If we're not balanced
             // If we're balanced for more than 2 seconds, lower the dampening factor in
             // case we get knocked off balance
-            // TODO: Test this
             if ((double) balancedTickCount / 50.0 >= 2 && dampeningFactor >= 1) {
                 dampeningFactor -= 0.01;
             }
@@ -62,7 +61,7 @@ public class AutoBalance extends Action {
         } else {
             balancedTickCount = 0;
         }
-        Subsystems.driveBase.arcadeDrive(pitch / 9 * (SPEED / (dampeningFactor)), 0);
+        Subsystems.driveBase.arcadeDrive(pitch / 9 * (SPEED / (dampeningFactor)), 0); // Move according to the pitch
         lastPitchSign = MathUtils.getSign(navx.getPitch());
     }
 
