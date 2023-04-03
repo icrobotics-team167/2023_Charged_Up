@@ -63,25 +63,26 @@ public class Teleop {
         int swivelOffset = controls.getPositionOffset();
         if (controls.doResetTurret()) {
             targetState = TurretPosition.INITIAL;
-        } else if (controls.doAutoPickup()) {
-            targetState = TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
-        } else if (controls.doPlayerStation()) {
-            targetState = TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
-        } else if (controls.doAutoHigh()) {
-            targetState = TurretPosition.HIGH_MID;
-        } else if (controls.doAutoMid()) {
-            targetState = TurretPosition.MID_MID;
-        } else if (controls.doAutoHighRight()) {
-            targetState = TurretPosition.HIGH_RIGHT;
-        } else if (controls.doAutoMidRight()) {
-            targetState = TurretPosition.MID_RIGHT;
-        } else if (controls.doAutoHighLeft()) {
-            targetState = TurretPosition.HIGH_LEFT;
-        } else if (controls.doAutoMidLeft()) {
-            targetState = TurretPosition.MID_LEFT;
-        } else if (controls.offsetUpdated()) {
-            targetState = TurretPosition.INITIAL;
         }
+        // } else if (controls.doAutoPickup()) {
+        //     targetState = TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
+        // } else if (controls.doPlayerStation()) {
+        //     targetState = TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
+        // } else if (controls.doAutoHigh()) {
+        //     targetState = TurretPosition.HIGH_MID;
+        // } else if (controls.doAutoMid()) {
+        //     targetState = TurretPosition.MID_MID;
+        // } else if (controls.doAutoHighRight()) {
+        //     targetState = TurretPosition.HIGH_RIGHT;
+        // } else if (controls.doAutoMidRight()) {
+        //     targetState = TurretPosition.MID_RIGHT;
+        // } else if (controls.doAutoHighLeft()) {
+        //     targetState = TurretPosition.HIGH_LEFT;
+        // } else if (controls.doAutoMidLeft()) {
+        //     targetState = TurretPosition.MID_LEFT;
+        // } else if (controls.offsetUpdated()) {
+        //     targetState = TurretPosition.INITIAL;
+        // }
         double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
         if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(swivel) > 0 || Math.abs(controls.getArmExtend()) > 0) {
             targetState = null;

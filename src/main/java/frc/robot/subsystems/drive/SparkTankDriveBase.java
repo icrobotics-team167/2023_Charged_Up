@@ -24,7 +24,7 @@ public class SparkTankDriveBase implements TankDriveBase {
     private boolean highGear;
     private MovingAverage voltageFilter;
 
-    private double normalSpeed = 1;
+    private double normalSpeed = 0.5;
     private double slowSpeed = normalSpeed * 0.5;
     private double speedMultiplier = normalSpeed;
 
