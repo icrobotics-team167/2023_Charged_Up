@@ -36,21 +36,21 @@ public class Teleop {
     }
 
     public void periodic() {
-        if (controls.doSwitchHighGear()) {
-            driveBase.setHighGear();
-            driveBase.setNonSlowHighGear();
-        } else if (controls.doSwitchLowGear()) {
-            driveBase.setLowGear();
-            driveBase.setNonSlowLowGear();
-        }
-        driveBase.setLowerGear(controls.doSlowMode());
-        if (Config.Settings.TANK_DRIVE) {
-            driveBase.tankDrive(controls.getTankLeftSpeed(),
-                    controls.getTankRightSpeed());
-        } else {
-            driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.9,
-                    controls.getArcadeWheel() * .5);
-        }
+        // if (controls.doSwitchHighGear()) {
+        //     driveBase.setHighGear();
+        //     driveBase.setNonSlowHighGear();
+        // } else if (controls.doSwitchLowGear()) {
+        //     driveBase.setLowGear();
+        //     driveBase.setNonSlowLowGear();
+        // }
+        // driveBase.setLowerGear(controls.doSlowMode());
+        // if (Config.Settings.TANK_DRIVE) {
+        //     driveBase.tankDrive(controls.getTankLeftSpeed(),
+        //             controls.getTankRightSpeed());
+        // } else {
+        //     driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.9,
+        //             controls.getArcadeWheel() * .5);
+        // }
 
         if (controls.toggleLimelight()) {
             limeLight.toggleMode();
