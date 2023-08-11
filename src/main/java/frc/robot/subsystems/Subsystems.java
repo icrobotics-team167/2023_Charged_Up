@@ -3,10 +3,10 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.*;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.subsystems.drive.SparkTankDriveBase;
-import frc.robot.subsystems.drive.TankDriveBase;
 import frc.robot.subsystems.turret.Claw;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.drive.SparkTankDriveBase;
+import frc.robot.subsystems.turret.drive.TankDriveBase;
 
 public class Subsystems {
 
