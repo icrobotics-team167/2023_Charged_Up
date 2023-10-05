@@ -36,6 +36,9 @@ public class Teleop {
     }
 
     public void periodic() {
+        /*
+         * This code has been modifidied for the freshman to learn to code the robot. Commit before this is the last safe commit.
+         */
         // if (controls.doSwitchHighGear()) {
         //     driveBase.setHighGear();
         //     driveBase.setNonSlowHighGear();
