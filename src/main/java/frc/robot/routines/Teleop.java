@@ -37,23 +37,23 @@ public class Teleop {
 
     public void periodic() {
         /*
-         * This code has been modifidied for the freshman to learn to code the robot. Commit before this is the last safe commit.
+         * This code has been modifidied for the freshman to learn to code the robot.
+         * Commit before this is the last safe commit.
          */
-        // if (controls.doSwitchHighGear()) {
-        //     driveBase.setHighGear();
-        //     driveBase.setNonSlowHighGear();
-        // } else if (controls.doSwitchLowGear()) {
-        //     driveBase.setLowGear();
-        //     driveBase.setNonSlowLowGear();
-        // }
-        // driveBase.setLowerGear(controls.doSlowMode());
-        // if (Config.Settings.TANK_DRIVE) {
-        //     driveBase.tankDrive(controls.getTankLeftSpeed(),
-        //             controls.getTankRightSpeed());
-        // } else {
-        //     driveBase.arcadeDrive(controls.getArcadeThrottle() * 0.9,
-        //             controls.getArcadeWheel() * .5);
-        // }
+        if (controls.doSwitchHighGear()) {
+            driveBase.setHighGear();
+            driveBase.setNonSlowHighGear();
+        } else if (controls.doSwitchLowGear()) {
+            driveBase.setLowGear();
+            driveBase.setNonSlowLowGear();
+        }
+        driveBase.setLowerGear(controls.doSlowMode());
+        if (Config.Settings.TANK_DRIVE) {
+            driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
+        } else {
+            driveBase.arcadeDrive(controls.getArcadeThrottle() * Config.Settings.DRIVE_SPEED,
+                    controls.getArcadeWheel() * Config.Settings.TURN_SPEED);
+        }
 
         if (controls.toggleLimelight()) {
             limeLight.toggleMode();
@@ -68,37 +68,40 @@ public class Teleop {
             targetState = TurretPosition.INITIAL;
         }
         // } else if (controls.doAutoPickup()) {
-        //     targetState = TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
+        // targetState =
+        // TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
         // } else if (controls.doPlayerStation()) {
-        //     targetState = TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
+        // targetState =
+        // TurretPosition.PLAYER_STATION.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
         // } else if (controls.doAutoHigh()) {
-        //     targetState = TurretPosition.HIGH_MID;
+        // targetState = TurretPosition.HIGH_MID;
         // } else if (controls.doAutoMid()) {
-        //     targetState = TurretPosition.MID_MID;
+        // targetState = TurretPosition.MID_MID;
         // } else if (controls.doAutoHighRight()) {
-        //     targetState = TurretPosition.HIGH_RIGHT;
+        // targetState = TurretPosition.HIGH_RIGHT;
         // } else if (controls.doAutoMidRight()) {
-        //     targetState = TurretPosition.MID_RIGHT;
+        // targetState = TurretPosition.MID_RIGHT;
         // } else if (controls.doAutoHighLeft()) {
-        //     targetState = TurretPosition.HIGH_LEFT;
+        // targetState = TurretPosition.HIGH_LEFT;
         // } else if (controls.doAutoMidLeft()) {
-        //     targetState = TurretPosition.MID_LEFT;
+        // targetState = TurretPosition.MID_LEFT;
         // } else if (controls.offsetUpdated()) {
-        //     targetState = TurretPosition.INITIAL;
+        // targetState = TurretPosition.INITIAL;
         // }
         // double swivel = controls.doUnlockSwivel() ? controls.getArmSwivel() : 0;
-        double swivel = controls.getArmSwivel();
-        if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(swivel) > 0 || Math.abs(controls.getArmExtend()) > 0) {
-            targetState = null;
-            turret.move(controls.getArmPivot(), swivel, controls.getArmExtend());
-            holdState = turret.getPosition();
-        } else {
-            if (targetState != null) {
-                turret.moveTo(targetState.addSwivelOffset(swivelOffset));
-            } else {
-                turret.moveTo(holdState);
-            }
-        }
+        // double swivel = controls.getArmSwivel();
+        // if (Math.abs(controls.getArmPivot()) > 0 || Math.abs(swivel) > 0 ||
+        // Math.abs(controls.getArmExtend()) > 0) {
+        // targetState = null;
+        // turret.move(controls.getArmPivot(), swivel, controls.getArmExtend());
+        // holdState = turret.getPosition();
+        // } else {
+        // if (targetState != null) {
+        // turret.moveTo(targetState.addSwivelOffset(swivelOffset));
+        // } else {
+        // turret.moveTo(holdState);
+        // }
+        // }
 
         if (controls.intake()) {
             claw.intake();
