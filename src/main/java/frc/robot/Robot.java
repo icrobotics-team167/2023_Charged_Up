@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        AutoRoutines defaultRoutine = AutoRoutines.BALANCE_CAUTIOUS;
+        AutoRoutines defaultRoutine = AutoRoutines.CALDER_DRIVE;
         for (AutoRoutines routine : AutoRoutines.values()) {
             if (routine != defaultRoutine) {
                 autoChooser.addOption(routine.name, routine);
