@@ -1,11 +1,11 @@
 package frc.robot.routines.auto;
+//takes in 3 parameters
+//time out seconds
+//speed
+//turn= num of degrees robot turn - = left +=right
+//use my funny actions to do funny lap around tablepackage frc.robot.routines.auto;
 
 import frc.robot.subsystems.Subsystems;
-
-//timeout seconds
-//speed
-//drives timeout second amount of time at given speed
-//NO LOOIKE AT DRIVESTRAIT
 import frc.robot.util.PeriodicTimer;
 import frc.robot.routines.Action;
 
@@ -14,23 +14,26 @@ public class CalderDrive extends Action{
     
 
     private PeriodicTimer timer;
+    private double drect;
+    private double throttle;
 
+    
 
-    private double speed;
-    public CalderDrive(double speed, double timeOutSeconds) {
-        this.speed = speed;
+    public CalderDrive(double timeOutSeconds, double drect, double throttle) {
         this.timeOutSeconds = timeOutSeconds;
+        this.drect = drect;
+        this.throttle = throttle;
+
         timer = new PeriodicTimer();
     }
     @Override
     public void init() {
         timer.reset();
-        System.out.println("IT WORKEDED");
     }
 
     @Override
     public void periodic() {
-        Subsystems.driveBase.tankDrive(speed, speed);
+        Subsystems.driveBase.arcadeDrive(throttle, drect);
     }
 
     @Override

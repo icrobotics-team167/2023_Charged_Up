@@ -69,20 +69,12 @@ public enum AutoRoutines {
                         new Intake()
         })),
         CALDER_DRIVE("CalderDrive", new Routine(new Action[] {
-                new CalderDrive(0.2, 5)
-        })),
-        CALDER_TURN("CalderTurn", new Routine(new Action[] {
-                new CalderTurn(0.44)
+                new CalderDrive(1, 1, 1)
         })),
         CALDER_TABLE("CalderTable", new Routine(new Action[] {
-                new CalderDrive(0.2, 6.0),
-                new CalderTurn(0.48),
-                new CalderDrive(0.2, 6.5),
-                new CalderTurn(0.48),
-                new CalderDrive(0.2, 6.0),
-                new CalderTurn(0.50),
-                new CalderDrive(0.2, 7.0),
-                new CalderTurn(0.51)
+                new CalderDrive(2.5,1,0.7),
+                new CalderDrive(0.5,0,0),
+                new CalderDrive(2.5, -1, 0.7),
         })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),
