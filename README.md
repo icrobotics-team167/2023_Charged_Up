@@ -9,3 +9,6 @@ Robot code for the 2023 FRC game
 * Benjamin Kleiman
 * Jerry Li
 * Catherine Yang
+* John Galvez
+* Calder WendtGeisler
+* Luqmaan Khan
