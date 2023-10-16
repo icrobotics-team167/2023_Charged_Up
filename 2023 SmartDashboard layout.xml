@@ -63,6 +63,9 @@
 	<widget field="Swivel.position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="7" y="324"/>
 	</widget>
+	<widget field="Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1" y="25"/>
+	</widget>
 </dashboard>
 <live-window>
 </live-window>

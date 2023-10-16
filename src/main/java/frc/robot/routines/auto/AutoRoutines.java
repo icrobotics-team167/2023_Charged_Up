@@ -76,6 +76,9 @@ public enum AutoRoutines {
                 new CalderDrive(0.5,0,0),
                 new CalderDrive(2.5, -1, 0.7),
         })),
+        GO_STRAIGHT("GoStraight", new Routine(new Action[] {
+                new DriveStraight(60,0.25)
+        })),
         NOTHING("Nothing", new Routine(new Action[] {
                         new NullAction(),
         }));

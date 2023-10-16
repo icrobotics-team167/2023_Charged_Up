@@ -1,5 +1,6 @@
 package frc.robot.controls.controlschemes;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Config;
 import frc.robot.controls.controllers.Controller;
@@ -183,5 +184,10 @@ public class DeltaJoystickController extends ControlScheme {
     @Override
     public boolean doAutoMidRight() {
         return tertiary.getButtonById(11) || quaternary.getButtonById(5);
+    }
+
+    @Override
+    public double getSpeed() {
+        return ((-primary.getLeftStickZ() + 1) / 2);
     }
 }

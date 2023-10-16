@@ -14,6 +14,8 @@ public abstract class ControlScheme {
 
     public abstract double getArcadeWheel();
 
+    public abstract double getSpeed();
+
     // Gearing
     public abstract boolean doSwitchLowGear();
 

@@ -13,15 +13,16 @@ public class Config {
         public static final double JOYSTICKS_EXPONENT = 2;
 
         // Controllers
-        public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.XB;
-        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.NONE;
-        public static final ControllerType TERTIARY_CONTROLLER_TYPE = ControllerType.NONE;
-        public static final ControllerType QUATERNARY_CONTROLLER_TYPE = ControllerType.NONE;
+        public static final ControllerType PRIMARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType SECONDARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType TERTIARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
+        public static final ControllerType QUATERNARY_CONTROLLER_TYPE = ControllerType.JOYSTICK;
 
         // Speed Control
         // Set percentage as a decimal value i.e. 100% is 1.0
         public static final double DRIVE_SPEED = 0.40;
         public static final double TURN_SPEED = 0.40;
+        public static final double MINIMUM_SPEED = 0.10;
 
         // Dead zones
         public static final boolean PRIMARY_DEADZONE_ENABLED = true;

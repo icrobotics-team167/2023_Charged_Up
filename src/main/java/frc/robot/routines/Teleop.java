@@ -1,3 +1,9 @@
+/*
+ * See where the joystick is
+ * Move a motor with that value
+ */
+ 
+
 package frc.robot.routines;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -8,6 +14,7 @@ import frc.robot.controls.controlschemes.ControlScheme;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.turret.*;
 import frc.robot.subsystems.turret.drive.TankDriveBase;
+import frc.robot.util.MathUtils;
 
 public class Teleop {
     private ControlScheme controls;
@@ -40,33 +47,42 @@ public class Teleop {
          * This code has been modifidied for the freshman to learn to code the robot.
          * Commit before this is the last safe commit.
          */
-        if (controls.doSwitchHighGear()) {
-            driveBase.setHighGear();
-            driveBase.setNonSlowHighGear();
-        } else if (controls.doSwitchLowGear()) {
-            driveBase.setLowGear();
-            driveBase.setNonSlowLowGear();
-        }
-        driveBase.setLowerGear(controls.doSlowMode());
-        if (Config.Settings.TANK_DRIVE) {
-            driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
-        } else {
-            driveBase.arcadeDrive(controls.getArcadeThrottle() * Config.Settings.DRIVE_SPEED,
-                    controls.getArcadeWheel() * Config.Settings.TURN_SPEED);
-        }
 
-        if (controls.toggleLimelight()) {
-            limeLight.toggleMode();
-        }
-        // turret.setSlowMode(controls.doSlowTurret());
 
-        // Code so that u only have to press one button and it will automatically go to
-        // it.
 
-        int swivelOffset = controls.getPositionOffset();
-        if (controls.doResetTurret()) {
-            targetState = TurretPosition.INITIAL;
-        }
+        
+        double leftJoystickPosition = controls.getTankLeftSpeed(); //  Value of where the left joystick is
+        SmartDashboard.putNumber("getTankLeftSpeed", leftJoystickPosition);
+
+
+
+
+
+
+
+
+
+
+        // if (Config.Settings.TANK_DRIVE) {
+        //     driveBase.tankDrive(controls.getTankLeftSpeed(), controls.getTankRightSpeed());
+        // } else {
+        //     SmartDashboard.putNumber("Speed", controls.getSpeed());
+        //     driveBase.arcadeDrive(controls.getArcadeThrottle() * MathUtils.clamp(controls.getSpeed(), Config.Settings.MINIMUM_SPEED, 1.0) * Config.Settings.DRIVE_SPEED,
+        //             controls.getArcadeWheel() * MathUtils.clamp(controls.getSpeed(), Config.Settings.MINIMUM_SPEED, 1.0) * Config.Settings.TURN_SPEED);
+        // }
+
+        // if (controls.toggleLimelight()) {
+        //     limeLight.toggleMode();
+        // }
+        // // turret.setSlowMode(controls.doSlowTurret());
+
+        // // Code so that u only have to press one button and it will automatically go to
+        // // it.
+
+        // int swivelOffset = controls.getPositionOffset();
+        // if (controls.doResetTurret()) {
+        //     targetState = TurretPosition.INITIAL;
+        // }
         // } else if (controls.doAutoPickup()) {
         // targetState =
         // TurretPosition.INTAKE.withSwivel(turret.getPosition().swivelAngle()).addSwivelOffset(-swivelOffset);
@@ -103,20 +119,20 @@ public class Teleop {
         // }
         // }
 
-        if (controls.intake()) {
-            claw.intake();
-        } else if (controls.outtake()) {
-            claw.outtake();
-        } else {
-            claw.stop();
-        }
+        // if (controls.intake()) {
+        //     claw.intake();
+        // } else if (controls.outtake()) {
+        //     claw.outtake();
+        // } else {
+        //     claw.stop();
+        // }
 
-        // PUT DEBUG STATEMENTS HERE
-        SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
-        SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
-        SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
-        SmartDashboard.putNumber("Navx.yaw", navx.getAngle());
-        SmartDashboard.putNumber("Navx.pitch", navx.getPitch());
+        // // PUT DEBUG STATEMENTS HERE
+        // SmartDashboard.putNumber("Pivot.position", Subsystems.turret.getPosition().pivotAngle());
+        // SmartDashboard.putNumber("Swivel.position", Subsystems.turret.getPosition().swivelAngle());
+        // SmartDashboard.putNumber("ExtendRetract.position", Subsystems.turret.getPosition().extensionPosition());
+        // SmartDashboard.putNumber("Navx.yaw", navx.getAngle());
+        // SmartDashboard.putNumber("Navx.pitch", navx.getPitch());
 
     }
 

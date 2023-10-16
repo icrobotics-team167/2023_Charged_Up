@@ -182,4 +182,10 @@ public class SingleController extends ControlScheme {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public double getSpeed() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
