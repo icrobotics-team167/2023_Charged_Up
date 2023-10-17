@@ -1,6 +1,13 @@
 /*
  * See where the joystick is
  * Move a motor with that value
+ * 
+ * If a button is clicked switch to a motor
+ * When clicked again switch back or to another motor 
+ * 
+ * Ideas:
+ * Have all the motors be part of an array?
+ * When the button to switch motors is clicked add one to a value until it exceeds the value of the last index of the array
  */
  
 
@@ -24,6 +31,8 @@ public class Teleop {
     private Claw claw;
     private LimeLight limeLight;
     private AHRS navx = Subsystems.navx;
+    private int pressedCheck;
+    private int pressedCount;
 
     private TurretPosition targetState = null;
     private TurretPosition holdState;
@@ -49,10 +58,32 @@ public class Teleop {
          */
 
 
+        // pressedCheck makes sure that rightTrigger became false before becoming true again so it doesn't add to pressedCount every tick
+        // pressedCount is how many times the rightTrigger has been pressed unless it becomes 2.
+        boolean isRightTriggerPressed = XBController.getRightTrigger();
 
-        
+        // If right trigger is pressed add 1 to pressedCheck
+        if(isRightTriggerPressed == true) {
+            pressedCheck++
+        } else { // If right trigger isn't pressed reset pressedCheck
+            pressedCheck = 0;
+        } // If presedCheck is 1 add one to pressCount
+
+        if(pressedCheck==1) {
+            pressCount++;
+        } // If pressCount is 2 reset pressCount back to 0 as press count should only be 1 or 0
+
+        if(pressCount == 2) {
+            pressCount = 0;
+        } else if(pressCount == 1) { // If pressCount is 1 only move the left side of the robot
+            driveBase.tankDrive(controls.getTankLeftSpeed(), 0);
+        } else if(pressCount == 0) { // If pressCount is 0 only move the right side of the robot
+            driveBase.tankDrive(0, controls.getTankRightSpeed());
+        }
+
         double leftJoystickPosition = controls.getTankLeftSpeed(); //  Value of where the left joystick is
         SmartDashboard.putNumber("getTankLeftSpeed", leftJoystickPosition);
+        SmartDashboard.putNumber("Press count", pressedCount);
 
 
 
