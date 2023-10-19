@@ -32,7 +32,7 @@ public class Teleop {
     private LimeLight limeLight;
     private AHRS navx = Subsystems.navx;
     private int pressedCheck;
-    private int pressedCount;
+    private int pressCount;
 
     private TurretPosition targetState = null;
     private TurretPosition holdState;
@@ -59,15 +59,15 @@ public class Teleop {
 
 
         // pressedCheck makes sure that rightTrigger became false before becoming true again so it doesn't add to pressedCount every tick
-        // pressedCount is how many times the rightTrigger has been pressed unless it becomes 2.
-        boolean isRightTriggerPressed = XBController.getRightTrigger();
+        // pressCount is how many times the rightTrigger has been pressed unless it becomes 2.
+        boolean isRightTriggerPressed = controls.doSwitchHighGear();
 
         // If right trigger is pressed add 1 to pressedCheck
         if(isRightTriggerPressed == true) {
-            pressedCheck++
+            pressedCheck++;
         } else { // If right trigger isn't pressed reset pressedCheck
             pressedCheck = 0;
-        } // If presedCheck is 1 add one to pressCount
+        } // If pressedCheck is 1 add one to pressCount
 
         if(pressedCheck==1) {
             pressCount++;
@@ -83,7 +83,7 @@ public class Teleop {
 
         double leftJoystickPosition = controls.getTankLeftSpeed(); //  Value of where the left joystick is
         SmartDashboard.putNumber("getTankLeftSpeed", leftJoystickPosition);
-        SmartDashboard.putNumber("Press count", pressedCount);
+        SmartDashboard.putNumber("Press count", pressCount);
 
 
 
